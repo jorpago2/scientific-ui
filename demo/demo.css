@@ -1,0 +1,4 @@
+.fixture-panel,
+.fixture-stage {
+  padding: var(--cds-spacing-05);
+}

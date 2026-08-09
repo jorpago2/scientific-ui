@@ -1,0 +1,23 @@
+# Design — Scientific UI
+
+This is the normative design system for the shared scientific workbench package.
+
+## Foundation
+
+- Genre: modern-minimal technical workbench.
+- Theme: Carbon `g10`; custom UI colors are semantic aliases of `--cds-*` tokens.
+- Typography: IBM Plex Sans for interface text and IBM Plex Mono for scientific values.
+- Geometry: square Carbon surfaces and controls; no decorative shadows, pills or gradients.
+- Motion: only functional state transitions, with reduced-motion support.
+
+## Workbench structure
+
+Application pages use one product header, workflow navigation, one controlled task panel, a dominant scientific stage, an optional contextual inspector and a concise status bar. On mobile, workflow navigation moves to the bottom and an open task panel exposes a compact live preview rather than hiding the scientific context completely.
+
+## Scientific exceptions
+
+Domain colors are allowed only for data series, material identity, device regions, field maps and geometry. Every meaning must also be available through text, shape, pattern or position.
+
+## Conformance
+
+All components and consumers are verified at 320, 375, 414, 768, 1024 and 1440 CSS pixels. Page-level horizontal overflow, inaccessible focus, two-line action labels and controls smaller than 44 px on coarse pointers are release blockers.
