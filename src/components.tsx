@@ -1,17 +1,25 @@
 import {
-  Button,
   Column,
+  ComposedModal,
   ContentSwitcher,
   Grid,
+  Header,
+  HeaderGlobalBar,
+  HeaderName,
   InlineNotification,
+  ModalBody,
+  ModalHeader,
   ProgressBar,
+  SideNav,
+  SideNavItems,
+  SideNavLink,
   Switch,
   TextInput,
+  preview__IconIndicator as IconIndicator,
 } from "@carbon/react";
 import {
   forwardRef,
   useEffect,
-  useId,
   useRef,
   useState,
   type ChangeEvent,
@@ -43,19 +51,17 @@ export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
 
 export function ScientificHeader({ product, context, status, primaryAction, secondaryActions, className, ...props }: ScientificHeaderProps) {
   return (
-    <header className={joinClassNames("scientific-header", className)} {...props}>
-      <Grid fullWidth condensed>
-        <Column sm={4} md={4} lg={8} className="scientific-header__identity">
-          <h1>{product}</h1>
-          {context && <p>{context}</p>}
-        </Column>
-        <Column sm={4} md={4} lg={8} className="scientific-header__actions">
-          {status && <ScientificStatus status={status} compact />}
-          {secondaryActions}
-          {primaryAction}
-        </Column>
-      </Grid>
-    </header>
+    <Header className={joinClassNames("scientific-header", className)} {...props}>
+      <h1 className="scientific-header__title">
+        <HeaderName as="span" prefix="">{product}</HeaderName>
+      </h1>
+      {context && <p className="scientific-header__context">{context}</p>}
+      <HeaderGlobalBar className="scientific-header__actions">
+        {status && <ScientificStatus status={status} compact />}
+        {secondaryActions}
+        {primaryAction}
+      </HeaderGlobalBar>
+    </Header>
   );
 }
 
@@ -115,50 +121,67 @@ export function ScientificToolRail({
   };
 
   return (
-    <nav ref={navigationRef} className={joinClassNames("scientific-tool-rail", className)} aria-label={label}>
-      <ul>
+    <SideNav
+      ref={navigationRef}
+      className={joinClassNames("scientific-tool-rail", className)}
+      aria-label={label}
+      expanded
+      isFixedNav
+      isPersistent
+      addFocusListeners={false}
+      addMouseListeners={false}
+    >
+      <SideNavItems className="scientific-tool-rail__items">
         {items.map((item) => {
           const active = item.id === activeId;
           const expanded = item.id === expandedId;
+          const ToolIcon = item.icon
+            ? () => <span aria-hidden="true" className="scientific-tool-rail__icon">{item.icon}</span>
+            : undefined;
           return (
-            <li key={item.id}>
-              <Button
-                ref={(node: HTMLButtonElement | null) => registerItemRef?.(item.id, node)}
-                id={item.triggerId ?? `workflow-${item.id}`}
-                kind="ghost"
-                size="sm"
-                disabled={item.disabled}
-                aria-controls={item.controlsId}
-                aria-current={active ? "page" : undefined}
-                aria-expanded={expanded}
-                aria-busy={item.status === "loading" || undefined}
-                title={item.disabled ? item.disabledReason : item.label}
-                data-state={item.status}
-                className={joinClassNames("scientific-tool-rail__item", active && "is-active")}
-                onClick={() => onChange(expanded && collapsible ? null : item.id)}
-                onKeyDown={(event) => {
-                  if (event.key === "ArrowDown" || event.key === "ArrowRight") moveFocus(event, 1);
-                  else if (event.key === "ArrowUp" || event.key === "ArrowLeft") moveFocus(event, -1);
-                  else if (event.key === "Home") moveFocus(event, "first");
-                  else if (event.key === "End") moveFocus(event, "last");
-                  else if (event.key === "Escape" && expanded && collapsible) {
-                    event.preventDefault();
-                    onChange(null);
-                  }
-                }}
-              >
-                {item.icon && <span aria-hidden="true" className="scientific-tool-rail__icon">{item.icon}</span>}
-                <span className="scientific-tool-rail__label">{item.label}</span>
-                {item.status && <span className="scientific-tool-rail__state" aria-hidden="true">
-                  {item.status === "loading" ? "…" : item.status === "error" ? "!" : "✓"}
-                </span>}
-                {item.statusLabel && <span className="scientific-tool-rail__sr-only">{item.statusLabel}</span>}
-              </Button>
-            </li>
+            <SideNavLink
+              key={item.id}
+              ref={(node: HTMLButtonElement | null) => registerItemRef?.(item.id, node)}
+              as="button"
+              type="button"
+              id={item.triggerId ?? `workflow-${item.id}`}
+              disabled={item.disabled}
+              renderIcon={ToolIcon}
+              isActive={active}
+              aria-controls={item.controlsId}
+              aria-current={active ? "page" : undefined}
+              aria-expanded={expanded}
+              aria-busy={item.status === "loading" || undefined}
+              title={item.disabled ? item.disabledReason : item.label}
+              data-state={item.status}
+              className="scientific-tool-rail__item"
+              onClick={() => onChange(expanded && collapsible ? null : item.id)}
+              onKeyDown={(event: ReactKeyboardEvent<HTMLButtonElement>) => {
+                if (event.key === "ArrowDown" || event.key === "ArrowRight") moveFocus(event, 1);
+                else if (event.key === "ArrowUp" || event.key === "ArrowLeft") moveFocus(event, -1);
+                else if (event.key === "Home") moveFocus(event, "first");
+                else if (event.key === "End") moveFocus(event, "last");
+                else if (event.key === "Escape" && expanded && collapsible) {
+                  event.preventDefault();
+                  onChange(null);
+                }
+              }}
+            >
+              <span className="scientific-tool-rail__label">{item.label}</span>
+              {item.status && (
+                <IconIndicator
+                  className="scientific-tool-rail__state"
+                  kind={item.status === "loading" ? "in-progress" : item.status === "error" ? "failed" : "succeeded"}
+                  label=""
+                  size={16}
+                />
+              )}
+              {item.statusLabel && <span className="scientific-tool-rail__sr-only">{item.statusLabel}</span>}
+            </SideNavLink>
           );
         })}
-      </ul>
-    </nav>
+      </SideNavItems>
+    </SideNav>
   );
 }
 
@@ -171,35 +194,20 @@ export interface InspectorPanelProps extends HTMLAttributes<HTMLElement> {
 }
 
 export function InspectorPanel({ open, title, onClose, triggerRef, children, className, ...props }: InspectorPanelProps) {
-  const headingId = useId();
-  const panelRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    panelRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onClose();
-        requestAnimationFrame(() => triggerRef?.current?.focus());
-      }
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose, open, triggerRef]);
-
-  if (!open) return null;
   return (
-    <aside ref={panelRef} tabIndex={-1} aria-labelledby={headingId} className={joinClassNames("scientific-inspector", className)} {...props}>
-      <div className="scientific-inspector__heading">
-        <h2 id={headingId}>{title}</h2>
-        <Button kind="ghost" size="sm" onClick={() => {
-          onClose();
-          requestAnimationFrame(() => triggerRef?.current?.focus());
-        }}>Close</Button>
-      </div>
-      <div className="scientific-inspector__body">{children}</div>
-    </aside>
+    <ComposedModal
+      open={open}
+      size="sm"
+      className="scientific-inspector-shell"
+      containerClassName={joinClassNames("scientific-inspector", className)}
+      aria-label={title}
+      launcherButtonRef={triggerRef as RefObject<HTMLButtonElement | null> | undefined}
+      onClose={() => onClose()}
+      {...props}
+    >
+      <ModalHeader className="scientific-inspector__heading" title={title} iconDescription={`Close ${title}`} />
+      <ModalBody className="scientific-inspector__body" hasScrollingContent>{children}</ModalBody>
+    </ComposedModal>
   );
 }
 
@@ -211,11 +219,20 @@ export interface ScientificStatusProps extends HTMLAttributes<HTMLDivElement> {
 export function ScientificStatus({ status, compact, className, ...props }: ScientificStatusProps) {
   const live = status.state === "running" ? "polite" : status.state === "failed" ? "assertive" : "off";
   const progress = status.progress === undefined ? undefined : Math.max(0, Math.min(100, status.progress));
+  const indicatorKind = {
+    "needs-input": "not-started",
+    ready: "normal",
+    running: "in-progress",
+    "up-to-date": "succeeded",
+    modified: "pending",
+    validated: "succeeded",
+    warning: "caution-minor",
+    failed: "failed",
+  }[status.state] as "not-started" | "normal" | "in-progress" | "succeeded" | "pending" | "caution-minor" | "failed";
   return (
     <div className={joinClassNames("scientific-status", compact && "scientific-status--compact", className)} data-state={status.state} role="status" aria-live={live} aria-atomic="true" {...props}>
-      <span className="scientific-status__marker" aria-hidden="true" />
+      <IconIndicator className="scientific-status__indicator" kind={indicatorKind} label={status.label} size={16} />
       <span className="scientific-status__content">
-        <strong>{status.label}</strong>
         {!compact && status.detail && <span>{status.detail}</span>}
       </span>
       {status.state === "running" && progress !== undefined && !compact && (
@@ -384,10 +401,10 @@ export function ScientificAppShell({ header, navigation, panel, children, inspec
   return (
     <div className={joinClassNames("scientific-app-shell", className)} data-panel-open={panelOpen || undefined}>
       {header}
+      {navigation}
       <Grid as="main" fullWidth condensed className="scientific-workbench">
-        <Column sm={4} md={8} lg={2} className="scientific-workbench__navigation">{navigation}</Column>
         {panelOpen && panel && <Column sm={4} md={8} lg={4} className="scientific-workbench__panel">{panel}</Column>}
-        <Column sm={4} md={8} lg={panelOpen ? 10 : 14} className="scientific-workbench__stage">
+        <Column sm={4} md={8} lg={panelOpen ? 12 : 16} className="scientific-workbench__stage">
           {panelOpen && miniPreview && <div className="scientific-workbench__mini-preview">{miniPreview}</div>}
           {children}
         </Column>

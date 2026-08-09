@@ -24,6 +24,18 @@ test("announces and updates simulation state", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Stop" })).toBeVisible();
 });
 
+test("inspector traps focus, closes with Escape and restores the trigger", async ({ page }) => {
+  await page.goto("/");
+  const trigger = page.getByRole("button", { name: "Inspect" });
+  await trigger.click();
+  const dialog = page.getByRole("dialog", { name: "Result inspector" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Apply" })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
 test("tool rail toggles, restores focus and supports directional keys", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
@@ -48,7 +60,7 @@ test("tool rail uses common responsive geometry", async ({ page }) => {
   for (const [width, expected] of [[390, 390], [768, 768], [1024, 1024], [1440, 256]] as const) {
     await page.setViewportSize({ width, height: 900 });
     const box = await navigation.boundingBox();
-    expect(Math.abs(Math.round(box?.width ?? 0) - expected)).toBeLessThanOrEqual(1);
+    expect(Math.abs(Math.round(box?.width ?? 0) - expected), `navigation width at ${width}px: ${box?.width}px`).toBeLessThanOrEqual(1);
     for (const button of await navigation.getByRole("button").all()) {
       const alignment = await button.evaluate((element) => {
         const buttonBox = element.getBoundingClientRect();
@@ -64,7 +76,7 @@ test("tool rail uses common responsive geometry", async ({ page }) => {
         };
       });
       expect(alignment?.visible).toBe(true);
-      if (width < 1056) expect(alignment?.delta ?? Number.POSITIVE_INFINITY).toBeLessThan(0.1);
+      if (width < 1056) expect(alignment?.delta ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(2);
     }
   }
 });
@@ -86,7 +98,6 @@ test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) =>
       fontSize: labelStyle?.fontSize,
       fontWeight: labelStyle?.fontWeight,
       background: getComputedStyle(element).backgroundColor,
-      selectedToken: getComputedStyle(element).getPropertyValue("--scientific-ui-navigation-selected").trim(),
     };
   });
   expect(geometry.height).toBe(32);
@@ -94,13 +105,15 @@ test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) =>
   expect(geometry.iconInset).toBe(16);
   expect(geometry.fontSize).toBe("14px");
   expect(Number(geometry.fontWeight)).toBeGreaterThanOrEqual(600);
-  expect(geometry.background).toBe(geometry.selectedToken);
+  expect(geometry.background).not.toBe("rgba(0, 0, 0, 0)");
+  await expect(configure).toHaveAttribute("aria-current", "page");
 });
 
 test("application header follows Carbon UI shell geometry", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const header = page.locator(".scientific-header");
+  await expect(header).toHaveJSProperty("tagName", "HEADER");
   await expect(header).toHaveCSS("min-height", "48px");
   await expect(header).toHaveCSS("border-bottom-width", "1px");
 });

@@ -1,5 +1,17 @@
 # @jorpago2/scientific-ui
 
+## 0.3.5
+
+### Patch Changes
+
+- Guarantee the documented minimum touch target in the responsive workflow navigation, even when consumer styles set a physical height.
+
+## 0.3.4
+
+### Patch Changes
+
+- Compose the shared header, desktop navigation, inspector and scientific status from canonical Carbon React components. Resolve chrome colors from the active Carbon theme and retain the mobile bottom navigation as the sole documented shell exception.
+
 ## 0.3.3
 
 ### Patch Changes
