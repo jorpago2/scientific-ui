@@ -119,4 +119,33 @@ test("application header follows Carbon UI shell geometry", async ({ page }) => 
   await expect(header).toHaveJSProperty("tagName", "HEADER");
   await expect(header).toHaveCSS("min-height", "48px");
   await expect(header).toHaveCSS("border-bottom-width", "1px");
+  await page.setViewportSize({ width: 390, height: 844 });
+  const contextOffset = await page.locator(".scientific-header__context").evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return Math.abs(rect.left + rect.width / 2 - window.innerWidth / 2);
+  });
+  expect(contextOffset).toBeLessThanOrEqual(1);
+});
+
+test("task panel owns consistent Carbon surface, heading and scrolling", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const panel = page.locator("#fixture-panel");
+  const heading = panel.locator(".scientific-task-panel__header");
+  const body = panel.locator(".scientific-task-panel__body");
+  const desktopPanelWidth = (await panel.boundingBox())?.width ?? 0;
+  expect(desktopPanelWidth).toBeGreaterThanOrEqual(360);
+  expect(desktopPanelWidth).toBeLessThanOrEqual(400);
+  await expect(heading).toHaveCSS("min-height", "72px");
+  await expect(heading).toHaveCSS("padding", "16px");
+  await expect(body).toHaveCSS("overflow-y", "auto");
+  await expect(panel).toHaveCSS("border-right-width", "1px");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(Math.abs(((await panel.boundingBox())?.width ?? 0) - 390)).toBeLessThanOrEqual(2);
+  expect(Math.round((await heading.evaluate((element) => element.getBoundingClientRect().height)))).toBe(72);
+  await expect(page.locator("#hidden-fixture-panel")).toBeHidden();
+  const close = panel.getByRole("button", { name: "Close panel" });
+  await close.click();
+  await expect(panel).toBeHidden();
 });

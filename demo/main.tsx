@@ -5,7 +5,7 @@ import "../src/styles.css";
 import "./demo.css";
 import { createRoot } from "react-dom/client";
 import { useRef, useState } from "react";
-import { InspectorPanel, ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, ScientificToolRail } from "@jorpago2/scientific-ui";
+import { InspectorPanel, ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, ScientificTaskPanel, ScientificToolRail } from "@jorpago2/scientific-ui";
 
 const FixtureIcon = () => <svg viewBox="0 0 16 16"><path d="M2 3h12v2H2zm0 4h12v2H2zm0 4h12v2H2z" /></svg>;
 
@@ -24,11 +24,11 @@ function Demo() {
       { id: "results", label: "Results", icon: <FixtureIcon />, controlsId: "fixture-panel" },
       { id: "export", label: "Export", icon: <FixtureIcon />, controlsId: "fixture-panel" },
     ]} />}
-    panel={active ? <section id="fixture-panel" className="fixture-panel"><h2>{active}</h2><p>The panel remains readable at every Carbon breakpoint.</p></section> : undefined}
+    panel={active ? <ScientificTaskPanel id="fixture-panel" className="fixture-panel" title={active === "configure" ? "Configure" : active === "results" ? "Results" : "Export"} titleId="fixture-panel-title" eyebrow="Scientific workflow parameters and constraints" onClose={() => setActive(null)}><p>The panel remains readable at every Carbon breakpoint.</p></ScientificTaskPanel> : undefined}
     panelOpen={active !== null}
     inspector={<InspectorPanel open={inspectorOpen} title="Result inspector" triggerRef={inspectorTriggerRef} onClose={() => setInspectorOpen(false)}><p>Carbon manages focus, Escape and return focus for this inspector.</p><Button data-modal-primary-focus onClick={() => setInspectorOpen(false)}>Apply</Button></InspectorPanel>}
     statusBar={<ScientificStatusBar status={status} metadata="390–1440 px" />}
-  ><div className="fixture-stage"><ScientificEmptyState title="No result yet" description="Run the model to populate this scientific canvas." action={<Button size="sm" onClick={() => setRunning(true)}>Run model</Button>} /></div></ScientificAppShell></GlobalTheme>;
+  ><div className="fixture-stage"><ScientificEmptyState title="No result yet" description="Run the model to populate this scientific canvas." action={<Button size="sm" onClick={() => setRunning(true)}>Run model</Button>} /></div><ScientificTaskPanel id="hidden-fixture-panel" title="Hidden panel" hidden>Hidden content</ScientificTaskPanel></ScientificAppShell></GlobalTheme>;
 }
 
 createRoot(document.getElementById("root")!).render(<Demo />);

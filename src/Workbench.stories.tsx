@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "@carbon/react";
 import { useState } from "react";
-import { ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, WorkflowNavigation } from "./components";
+import { ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, ScientificTaskPanel, WorkflowNavigation } from "./components";
 import type { ScientificStatusDescriptor } from "./types";
 
 function WorkbenchExample({ status = { state: "modified", label: "Parameters modified", detail: "Run the model to refresh results." }, longContent = false }: { status?: ScientificStatusDescriptor; longContent?: boolean }) {
@@ -14,7 +14,7 @@ function WorkbenchExample({ status = { state: "modified", label: "Parameters mod
         { id: "results", label: "Results", controlsId: "example-panel" },
         { id: "export", label: "Export", controlsId: "example-panel" },
       ]} />}
-      panel={<section id="example-panel" aria-label="Configuration" style={{ padding: "1rem" }}><h2>{activeId}</h2><p>{longContent ? "A deliberately long configuration description verifies wrapping without changing the width of the scientific canvas or hiding the primary action." : "Controlled application content."}</p></section>}
+      panel={<ScientificTaskPanel id="example-panel" title={activeId} titleId="example-panel-title" eyebrow="Scientific workflow"><p>{longContent ? "A deliberately long configuration description verifies wrapping without changing the width of the scientific canvas or hiding the primary action." : "Controlled application content."}</p></ScientificTaskPanel>}
       statusBar={<ScientificStatusBar status={status} metadata="Fixture · deterministic" />}
     >
       <ScientificEmptyState title="No result yet" description="Configure the model and run it to create the first result." action={<Button size="sm">Run model</Button>} />

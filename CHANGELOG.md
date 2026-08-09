@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.0
+
+### Minor Changes
+
+- Add the canonical Carbon task panel and scientific stage/status surfaces, make panel refs focus-safe, and enforce the shared 360–384 px desktop workbench geometry.
+
 ## 0.4.0
 
 ### Minor Changes

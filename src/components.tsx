@@ -1,4 +1,5 @@
 import {
+  Button,
   Column,
   ComposedModal,
   ContentSwitcher,
@@ -7,6 +8,7 @@ import {
   HeaderGlobalBar,
   HeaderName,
   InlineNotification,
+  Layer,
   ModalBody,
   ModalHeader,
   ProgressBar,
@@ -77,6 +79,36 @@ export function ScientificHeader({ product, productMark, descriptor, href = "./"
     </Header>
   );
 }
+
+export interface ScientificTaskPanelProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  title: ReactNode;
+  titleId?: string;
+  eyebrow?: ReactNode;
+  actions?: ReactNode;
+  footer?: ReactNode;
+  onClose?: () => void;
+  closeLabel?: string;
+  bodyClassName?: string;
+}
+
+export const ScientificTaskPanel = forwardRef<HTMLElement, ScientificTaskPanelProps>(function ScientificTaskPanel({ title, titleId, eyebrow = "Configuration", actions, footer, onClose, closeLabel = "Close panel", bodyClassName, children, className, ...props }, ref) {
+  return (
+    <Layer ref={ref} as="aside" withBackground className={joinClassNames("scientific-task-panel", "scientific-task-panel--managed", className)} aria-labelledby={titleId} {...props}>
+      <div className="scientific-task-panel__header">
+        <div className="scientific-task-panel__heading">
+          {eyebrow && <p>{eyebrow}</p>}
+          <h2 id={titleId} tabIndex={-1}>{title}</h2>
+        </div>
+        {(actions || onClose) && <div className="scientific-task-panel__actions">
+          {actions}
+          {onClose && <Button type="button" kind="ghost" size="sm" onClick={onClose}>{closeLabel}</Button>}
+        </div>}
+      </div>
+      <div className={joinClassNames("scientific-task-panel__body", bodyClassName)}>{children}</div>
+      {footer && <div className="scientific-task-panel__footer">{footer}</div>}
+    </Layer>
+  );
+});
 
 export interface WorkflowNavigationProps {
   items: WorkflowItem[];

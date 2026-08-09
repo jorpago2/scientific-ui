@@ -11,6 +11,13 @@ body {
   overflow-x: clip;
 }
 
+body {
+  margin: 0;
+  background: var(--scientific-ui-background);
+  color: var(--scientific-ui-text);
+  font-family: var(--scientific-ui-font-sans);
+}
+
 html {
   scroll-padding-block-start: var(--scientific-ui-header-block-size);
 }
@@ -154,6 +161,130 @@ header.scientific-header.scientific-app-header {
   display: flex;
   block-size: 100%;
   align-items: center;
+}
+
+/* Canonical task panel. Applications retain only positioning adapters for the
+ * scientific canvas; panel surface, heading, spacing and scrolling live here. */
+.scientific-task-panel.scientific-task-panel {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow: hidden;
+  border: 0;
+  border-inline-end: 1px solid var(--scientific-ui-border);
+  background: var(--scientific-ui-layer);
+  color: var(--scientific-ui-text);
+  container-type: inline-size;
+}
+
+.scientific-task-panel,
+.scientific-task-panel * {
+  box-sizing: border-box;
+}
+
+.scientific-task-panel--managed.scientific-task-panel--managed {
+  display: flex;
+  flex-direction: column;
+}
+
+.scientific-task-panel[hidden] {
+  display: none !important;
+}
+
+.scientific-task-panel__header {
+  position: sticky;
+  z-index: 2;
+  inset-block-start: 0;
+  min-block-size: 4.5rem;
+  block-size: 4.5rem;
+  max-block-size: 4.5rem;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--scientific-ui-spacing-05);
+  margin: 0;
+  padding: var(--scientific-ui-spacing-05);
+  border-block-end: 1px solid var(--scientific-ui-border);
+  background: var(--scientific-ui-layer);
+}
+
+.scientific-task-panel__heading {
+  min-inline-size: 0;
+}
+
+.scientific-task-panel__heading p,
+.scientific-task-panel__heading h2 {
+  margin: 0;
+}
+
+.scientific-task-panel__heading p {
+  overflow: hidden;
+  color: var(--scientific-ui-text-secondary);
+  font-size: var(--scientific-ui-label-font-size);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scientific-task-panel__heading h2 {
+  overflow: hidden;
+  font-size: var(--scientific-ui-heading-panel-font-size);
+  font-weight: 600;
+  line-height: var(--scientific-ui-heading-panel-line-height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scientific-task-panel__actions {
+  min-inline-size: 0;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--scientific-ui-spacing-03);
+}
+
+.scientific-task-panel__body {
+  min-block-size: 0;
+  min-inline-size: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--scientific-ui-spacing-05);
+  scrollbar-gutter: stable;
+}
+
+.scientific-task-panel__footer {
+  flex: 0 0 auto;
+  padding: var(--scientific-ui-spacing-05);
+  border-block-start: 1px solid var(--scientific-ui-border);
+  background: var(--scientific-ui-layer);
+}
+
+.scientific-stage {
+  min-block-size: 0;
+  min-inline-size: 0;
+  background: var(--scientific-ui-background);
+  color: var(--scientific-ui-text);
+}
+
+.scientific-stage__header {
+  min-block-size: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--scientific-ui-spacing-05);
+  padding: var(--scientific-ui-spacing-05);
+  border-block-end: 1px solid var(--scientific-ui-border);
+  background: var(--scientific-ui-background);
+}
+
+.scientific-status-surface {
+  min-block-size: var(--scientific-ui-status-block-size);
+  border-block-start: 1px solid var(--scientific-ui-border);
+  background: var(--scientific-ui-layer);
+  color: var(--scientific-ui-text-secondary);
 }
 
 .scientific-workbench {
@@ -322,10 +453,14 @@ header.scientific-header.scientific-app-header {
   }
 
   .scientific-header__context {
+    position: absolute;
+    inset-inline-start: 50%;
+    inline-size: min(28rem, calc(100% - 2 * var(--scientific-ui-header-block-size)));
     max-inline-size: none;
-    justify-self: stretch;
+    justify-self: auto;
     justify-content: center;
     padding-inline: var(--scientific-ui-spacing-03);
+    transform: translateX(-50%);
   }
 
   .scientific-header__context-value {
@@ -656,6 +791,22 @@ header.scientific-header.scientific-app-header {
   .scientific-workbench {
     inline-size: calc(100% - var(--scientific-ui-rail-inline-size));
     margin-inline-start: var(--scientific-ui-rail-inline-size);
+  }
+
+  .scientific-app-shell[data-panel-open] .scientific-workbench {
+    grid-template-columns: minmax(22.5rem, var(--scientific-ui-panel-inline-size)) minmax(0, 1fr);
+  }
+
+  .scientific-app-shell[data-panel-open] .scientific-workbench__panel {
+    grid-column: 1;
+  }
+
+  .scientific-app-shell[data-panel-open] .scientific-workbench__stage {
+    grid-column: 2;
+  }
+
+  .scientific-app-shell:not([data-panel-open]) .scientific-workbench__stage {
+    grid-column: 1 / -1;
   }
 
   .scientific-workflow {

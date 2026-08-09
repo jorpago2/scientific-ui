@@ -32,6 +32,8 @@
   --scientific-ui-heading-compact-font-size: 0.875rem;
   --scientific-ui-heading-compact-line-height: 1.125rem;
   --scientific-ui-heading-compact-font-weight: 600;
+  --scientific-ui-heading-panel-font-size: 1.25rem;
+  --scientific-ui-heading-panel-line-height: 1.5rem;
   --scientific-ui-code-font-size: 0.75rem;
 }
 
