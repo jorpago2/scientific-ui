@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.3.3
+
+### Patch Changes
+
+- Align application headers with Carbon UI Shell Header geometry and theme tokens.
+
 ## 0.3.2
 
 ### Patch Changes

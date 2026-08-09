@@ -11,7 +11,7 @@ import "@jorpago2/scientific-ui/styles.css";
 
 Load the shared stylesheet after application styles. Consumers may position the rail container, but must not target `scientific-tool-rail__*` descendants; their geometry and states are part of the package contract.
 
-Application headers use `scientific-app-header` and their product mark uses `scientific-app-header__brand-mark`. The shared contract fixes the g10 layer surface, 64 px height, subtle rule and 32 px square mark while leaving each application free to arrange product, context, status and actions.
+Application headers use `scientific-app-header` and their product mark uses `scientific-app-header__brand-mark`. The shared contract follows Carbon UI Shell Header: the `g10` background token, a 48 px height and a subtle border. Applications may arrange product, context and actions without redefining that shell geometry.
 
 ## Commands
 

@@ -96,3 +96,11 @@ test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) =>
   expect(Number(geometry.fontWeight)).toBeGreaterThanOrEqual(600);
   expect(geometry.background).toBe(geometry.selectedToken);
 });
+
+test("application header follows Carbon UI shell geometry", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const header = page.locator(".scientific-header");
+  await expect(header).toHaveCSS("min-height", "48px");
+  await expect(header).toHaveCSS("border-bottom-width", "1px");
+});

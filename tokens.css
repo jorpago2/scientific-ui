@@ -23,7 +23,7 @@
   --scientific-ui-navigation-indicator: #0f62fe;
   --scientific-ui-navigation-text: #525252;
   --scientific-ui-navigation-text-active: #161616;
-  --scientific-ui-header-background: #ffffff;
+  --scientific-ui-header-background: #f4f4f4;
   --scientific-ui-header-border: #e0e0e0;
   --scientific-ui-header-mark-background: #161616;
   --scientific-ui-header-mark-text: #ffffff;
@@ -35,7 +35,7 @@
   --scientific-ui-tool-rail-item-block-size: 2rem;
   --scientific-ui-tool-rail-icon-size: 1rem;
   --scientific-ui-active-indicator-size: 0.25rem;
-  --scientific-ui-header-block-size: 4rem;
+  --scientific-ui-header-block-size: 3rem;
   --scientific-ui-header-mark-size: 2rem;
   --scientific-ui-status-block-size: 2.5rem;
   --scientific-ui-mobile-nav-block-size: 3.5rem;
