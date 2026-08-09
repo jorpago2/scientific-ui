@@ -1,5 +1,14 @@
 # @jorpago2/scientific-ui
 
+## 0.5.4
+
+### Patch Changes
+
+- Keep the status bar visible beside desktop navigation and above mobile
+  navigation, constrain workbench content and mini-previews to the available
+  viewport, preserve each desktop stage's native display mode, and enforce
+  shared 44 px workbench targets. Expose header actions as a labelled group.
+
 ## 0.5.3
 
 - Standardize task-panel close actions on Carbon's icon-only close button.
@@ -58,6 +67,7 @@
 - Keep scientific tool labels visible and center icon-label groups consistently across mobile, tablet and desktop layouts.
 - ef891bb: Add the shared responsive ScientificToolRail and standardize navigation geometry, interaction states and keyboard behavior.
 - 31e63bb: Introduce the Carbon g10 scientific workbench components, semantic states, responsive shell, accessibility behavior and conformance fixture.
+
 # @jorpago2/scientific-ui 0.5.1
 
 - Normalize Carbon header actions to the full 48 px header track.

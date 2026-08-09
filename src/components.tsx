@@ -74,7 +74,7 @@ export function ScientificHeader({ product, productMark, descriptor, href = "./"
         {contextDetail && <div className="scientific-header__context-detail">{contextDetail}</div>}
         {status && <ScientificStatus className="scientific-header__status" status={status} compact />}
       </div>}
-      <HeaderGlobalBar className="scientific-header__actions scientific-app-header__actions" aria-label={actionsLabel}>
+      <HeaderGlobalBar className="scientific-header__actions scientific-app-header__actions" role="group" aria-label={actionsLabel}>
         {secondaryActions && <div className="scientific-header__secondary-actions">{secondaryActions}</div>}
         {primaryAction && <div className="scientific-header__primary-action">{primaryAction}</div>}
       </HeaderGlobalBar>
