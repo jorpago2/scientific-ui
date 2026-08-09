@@ -15,6 +15,8 @@
   --scientific-ui-header-mark-size: 2rem;
   --scientific-ui-status-block-size: 2.5rem;
   --scientific-ui-mobile-nav-block-size: 3.5rem;
+  --scientific-ui-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --scientific-ui-mobile-nav-total-block-size: calc(var(--scientific-ui-mobile-nav-block-size) + var(--scientific-ui-safe-area-bottom));
   --scientific-ui-mini-preview-block-size: 9rem;
   --scientific-ui-target-size: 2.75rem;
   --scientific-ui-duration: 110ms;

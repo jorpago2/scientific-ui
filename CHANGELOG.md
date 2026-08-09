@@ -1,5 +1,14 @@
 # @jorpago2/scientific-ui
 
+## 0.5.5
+
+### Patch Changes
+
+- Keep bottom-navigation icons and labels above the device safe area and reserve
+  the same total height in the mobile workbench and status layout. On small
+  screens, open task panels use the full space between the header and bottom
+  navigation instead of reserving room for status and mini-preview surfaces.
+
 ## 0.5.4
 
 ### Patch Changes

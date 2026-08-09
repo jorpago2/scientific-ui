@@ -149,3 +149,24 @@ test("task panel owns consistent Carbon surface, heading and scrolling", async (
   await close.click();
   await expect(panel).toBeHidden();
 });
+
+test("mobile panels use the safe workspace above bottom navigation", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.evaluate(() => document.documentElement.style.setProperty("--scientific-ui-safe-area-bottom", "24px"));
+
+  const navigation = page.getByRole("navigation", { name: "Scientific tools" });
+  const workbench = page.locator(".scientific-workbench");
+  const status = page.locator(".scientific-status-bar");
+  const stage = page.locator(".scientific-workbench__stage");
+
+  expect(Math.round((await navigation.boundingBox())?.height ?? 0)).toBe(80);
+  expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(716);
+  await expect(status).toBeHidden();
+  await expect(stage).toBeHidden();
+
+  await page.locator("#fixture-panel").getByRole("button", { name: "Close panel" }).click();
+  await expect(status).toBeVisible();
+  await expect(stage).toBeVisible();
+  expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(676);
+});
