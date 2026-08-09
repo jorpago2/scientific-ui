@@ -41,8 +41,14 @@
   .scientific-app-shell,
   .scientific-header,
   .scientific-app-header,
+  .scientific-task-panel,
   .scientific-tool-rail,
   .scientific-inspector-shell,
+  .scientific-inspector,
+  .scientific-stage,
+  .scientific-status-surface,
+  .scientific-workbench,
+  .scientific-workflow,
   .scientific-status,
   .scientific-status-bar,
   .scientific-empty-state,
@@ -57,6 +63,7 @@
   --scientific-ui-border-strong: var(--cds-border-strong-01);
   --scientific-ui-text: var(--cds-text-primary);
   --scientific-ui-text-secondary: var(--cds-text-secondary);
+  --scientific-ui-text-helper: var(--cds-text-helper);
   --scientific-ui-link: var(--cds-link-primary);
   --scientific-ui-focus: var(--cds-focus);
   --scientific-ui-danger: var(--cds-support-error);

@@ -1,5 +1,10 @@
 # @jorpago2/scientific-ui
 
+## 0.5.2
+
+- Fix Carbon token inheritance for standalone task panels, inspectors, stages and workbenches.
+- Keep panel close actions compact while preserving their descriptive accessible labels.
+
 ## 0.5.0
 
 ### Minor Changes

@@ -101,7 +101,7 @@ export const ScientificTaskPanel = forwardRef<HTMLElement, ScientificTaskPanelPr
         </div>
         {(actions || onClose) && <div className="scientific-task-panel__actions">
           {actions}
-          {onClose && <Button type="button" kind="ghost" size="sm" onClick={onClose}>{closeLabel}</Button>}
+          {onClose && <Button type="button" kind="ghost" size="sm" aria-label={closeLabel} onClick={onClose}>Close</Button>}
         </div>}
       </div>
       <div className={joinClassNames("scientific-task-panel__body", bodyClassName)}>{children}</div>
