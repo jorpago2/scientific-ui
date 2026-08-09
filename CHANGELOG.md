@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.3.1
+
+### Patch Changes
+
+- Align the shared workbench chrome around a 64 px header and keep tool navigation horizontal through the Carbon medium breakpoint.
+
 ## 0.3.0
 
 ### Minor Changes

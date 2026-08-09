@@ -520,6 +520,38 @@ html {
 }
 
 @media (min-width: 42rem) {
+  .scientific-header__identity,
+  .scientific-header__actions,
+  .scientific-status-bar__status,
+  .scientific-status-bar__metadata {
+    grid-column: span 4;
+  }
+
+  .scientific-header__actions,
+  .scientific-status-bar__metadata {
+    justify-content: flex-end;
+  }
+
+  .scientific-header__actions {
+    flex-wrap: nowrap;
+  }
+
+  .scientific-header__identity p {
+    display: block;
+  }
+
+  .scientific-inspector {
+    inset-block-end: var(--scientific-ui-status-block-size);
+    inline-size: min(var(--scientific-ui-panel-inline-size), 100%);
+  }
+
+  .scientific-empty-state {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: var(--cds-spacing-07);
+  }
+}
+
+@media (min-width: 66rem) {
   .scientific-tool-rail {
     inline-size: var(--scientific-ui-rail-inline-size);
     block-size: 100%;
@@ -582,38 +614,6 @@ html {
   .scientific-header__actions,
   .scientific-status-bar__status,
   .scientific-status-bar__metadata {
-    grid-column: span 4;
-  }
-
-  .scientific-header__actions,
-  .scientific-status-bar__metadata {
-    justify-content: flex-end;
-  }
-
-  .scientific-header__actions {
-    flex-wrap: nowrap;
-  }
-
-  .scientific-header__identity p {
-    display: block;
-  }
-
-  .scientific-inspector {
-    inset-block-end: var(--scientific-ui-status-block-size);
-    inline-size: min(var(--scientific-ui-panel-inline-size), 100%);
-  }
-
-  .scientific-empty-state {
-    grid-template-columns: auto minmax(0, 1fr);
-    padding: var(--cds-spacing-07);
-  }
-}
-
-@media (min-width: 66rem) {
-  .scientific-header__identity,
-  .scientific-header__actions,
-  .scientific-status-bar__status,
-  .scientific-status-bar__metadata {
     grid-column: span 8;
   }
 
@@ -666,6 +666,17 @@ html {
 
   .scientific-status-bar {
     margin-block-end: 0;
+  }
+}
+
+@media (max-width: 23.99rem) {
+  .scientific-tool-rail__item {
+    gap: var(--cds-spacing-01);
+    padding-inline: var(--cds-spacing-01);
+  }
+
+  .scientific-tool-rail__label {
+    font-size: 0.6875rem;
   }
 }
 

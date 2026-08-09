@@ -45,7 +45,7 @@ test("tool rail toggles, restores focus and supports directional keys", async ({
 test("tool rail uses common responsive geometry", async ({ page }) => {
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Scientific tools" });
-  for (const [width, expected] of [[390, 390], [768, 160], [1440, 160]] as const) {
+  for (const [width, expected] of [[390, 390], [768, 768], [1024, 1024], [1440, 160]] as const) {
     await page.setViewportSize({ width, height: 900 });
     const box = await navigation.boundingBox();
     expect(Math.abs(Math.round(box?.width ?? 0) - expected)).toBeLessThanOrEqual(1);
