@@ -158,6 +158,7 @@ html {
   max-inline-size: none;
   min-block-size: var(--scientific-ui-target-size);
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: var(--cds-spacing-02);
   padding: var(--cds-spacing-02);
@@ -165,6 +166,7 @@ html {
   border-block-start: var(--scientific-ui-active-indicator-size) solid transparent;
   color: var(--scientific-ui-text-secondary);
   background: transparent;
+  text-align: center;
   white-space: nowrap;
   transition: background-color var(--scientific-ui-duration) var(--scientific-ui-ease),
     color var(--scientific-ui-duration) var(--scientific-ui-ease),
@@ -519,7 +521,7 @@ html {
 
 @media (min-width: 42rem) {
   .scientific-tool-rail {
-    inline-size: var(--scientific-ui-rail-compact-inline-size);
+    inline-size: var(--scientific-ui-rail-inline-size);
     block-size: 100%;
     border-block-start: 0;
     border-inline-end: 1px solid var(--scientific-ui-border);
@@ -536,22 +538,44 @@ html {
   }
 
   .scientific-tool-rail__item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cds-spacing-04);
+    padding-inline: var(--cds-spacing-05);
     border-block-start: 0;
-    border-inline-start: var(--scientific-ui-active-indicator-size) solid transparent;
+    border-inline-start: 0;
+    text-align: start;
+  }
+
+  .scientific-tool-rail__item::before {
+    content: "";
+    position: absolute;
+    inset-block: var(--cds-spacing-03);
+    inset-inline-start: 0;
+    inline-size: var(--scientific-ui-active-indicator-size);
+    background: transparent;
   }
 
   .scientific-tool-rail__item.is-active,
   .scientific-tool-rail__item[aria-expanded="true"] {
-    border-inline-start-color: var(--scientific-ui-link);
+    border-block-start-color: transparent;
+  }
+
+  .scientific-tool-rail__item.is-active::before,
+  .scientific-tool-rail__item[aria-expanded="true"]::before {
+    background: var(--scientific-ui-link);
   }
 
   .scientific-tool-rail__label {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
+    position: static;
+    inline-size: 5.5rem;
+    block-size: auto;
+    flex: 0 0 5.5rem;
     overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
+    clip: auto;
+    clip-path: none;
+    text-align: start;
   }
 
   .scientific-header__identity,
@@ -586,25 +610,6 @@ html {
 }
 
 @media (min-width: 66rem) {
-  .scientific-tool-rail {
-    inline-size: var(--scientific-ui-rail-inline-size);
-  }
-
-  .scientific-tool-rail__item {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: var(--cds-spacing-03);
-    padding-inline: var(--cds-spacing-05);
-  }
-
-  .scientific-tool-rail__label {
-    position: static;
-    inline-size: auto;
-    block-size: auto;
-    clip: auto;
-    clip-path: none;
-  }
-
   .scientific-header__identity,
   .scientific-header__actions,
   .scientific-status-bar__status,

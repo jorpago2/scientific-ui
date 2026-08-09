@@ -1,25 +1,45 @@
 {
   "name": "@jorpago2/scientific-ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Carbon-based workbench components for scientific web applications.",
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/jorpago2/scientific-ui.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorpago2/scientific-ui.git"
+  },
   "homepage": "https://github.com/jorpago2/scientific-ui#readme",
-  "bugs": { "url": "https://github.com/jorpago2/scientific-ui/issues" },
+  "bugs": {
+    "url": "https://github.com/jorpago2/scientific-ui/issues"
+  },
   "type": "module",
-  "sideEffects": ["./dist/styles.css", "./tokens.css"],
-  "files": ["dist", "tokens.css", "README.md", "LICENSE"],
+  "sideEffects": [
+    "./dist/styles.css",
+    "./tokens.css"
+  ],
+  "files": [
+    "dist",
+    "tokens.css",
+    "README.md",
+    "LICENSE"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./tokens.css"
   },
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "packageManager": "pnpm@11.9.0",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "node scripts/build.mjs",

@@ -45,9 +45,26 @@ test("tool rail toggles, restores focus and supports directional keys", async ({
 test("tool rail uses common responsive geometry", async ({ page }) => {
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Scientific tools" });
-  for (const [width, expected] of [[390, 390], [768, 64], [1440, 192]] as const) {
+  for (const [width, expected] of [[390, 390], [768, 160], [1440, 160]] as const) {
     await page.setViewportSize({ width, height: 900 });
     const box = await navigation.boundingBox();
     expect(Math.abs(Math.round(box?.width ?? 0) - expected)).toBeLessThanOrEqual(1);
+    for (const button of await navigation.getByRole("button").all()) {
+      const alignment = await button.evaluate((element) => {
+        const buttonBox = element.getBoundingClientRect();
+        const iconBox = element.querySelector(".scientific-tool-rail__icon")?.getBoundingClientRect();
+        const label = element.querySelector(".scientific-tool-rail__label");
+        const labelBox = label?.getBoundingClientRect();
+        if (!labelBox || !label) return null;
+        const parts = iconBox ? [iconBox, labelBox] : [labelBox];
+        const contentCenter = (Math.min(...parts.map((part) => part.left)) + Math.max(...parts.map((part) => part.right))) / 2;
+        return {
+          delta: Math.abs(buttonBox.left + buttonBox.width / 2 - contentCenter),
+          visible: getComputedStyle(label).visibility === "visible",
+        };
+      });
+      expect(alignment?.visible).toBe(true);
+      expect(alignment?.delta ?? Number.POSITIVE_INFINITY).toBeLessThan(0.1);
+    }
   }
 });
