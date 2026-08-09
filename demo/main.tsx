@@ -6,6 +6,8 @@ import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import { ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, ScientificToolRail } from "@jorpago2/scientific-ui";
 
+const FixtureIcon = () => <svg viewBox="0 0 16 16"><path d="M2 3h12v2H2zm0 4h12v2H2zm0 4h12v2H2z" /></svg>;
+
 function Demo() {
   const [active, setActive] = useState<string | null>("configure");
   const [running, setRunning] = useState(false);
@@ -15,9 +17,9 @@ function Demo() {
   return <GlobalTheme theme="g10"><ScientificAppShell
     header={<ScientificHeader product="Scientific UI" context="Conformance fixture" status={status} primaryAction={<Button onClick={() => setRunning((value) => !value)}>{running ? "Stop" : "Run model"}</Button>} />}
     navigation={<ScientificToolRail activeId={active} onChange={setActive} items={[
-      { id: "configure", label: "Configure", controlsId: "fixture-panel" },
-      { id: "results", label: "Results", controlsId: "fixture-panel" },
-      { id: "export", label: "Export", controlsId: "fixture-panel" },
+      { id: "configure", label: "Configure", icon: <FixtureIcon />, controlsId: "fixture-panel" },
+      { id: "results", label: "Results", icon: <FixtureIcon />, controlsId: "fixture-panel" },
+      { id: "export", label: "Export", icon: <FixtureIcon />, controlsId: "fixture-panel" },
     ]} />}
     panel={active ? <section id="fixture-panel" className="fixture-panel"><h2>{active}</h2><p>The panel remains readable at every Carbon breakpoint.</p></section> : undefined}
     panelOpen={active !== null}

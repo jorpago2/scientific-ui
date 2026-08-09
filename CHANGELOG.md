@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.3.2
+
+### Patch Changes
+
+- Align the scientific tool rail with Carbon's UI shell left-panel geometry, separate selected and expanded state, and make shared navigation and header chrome authoritative for consumers.
+
 ## 0.3.1
 
 ### Patch Changes

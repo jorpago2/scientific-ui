@@ -81,6 +81,7 @@ export function WorkflowNavigation({ items, activeId, onChange, label = "Scienti
 export interface ScientificToolRailProps {
   items: WorkflowItem[];
   activeId: string | null;
+  expandedId?: string | null;
   onChange: (id: string | null) => void;
   label?: string;
   className?: string;
@@ -91,6 +92,7 @@ export interface ScientificToolRailProps {
 export function ScientificToolRail({
   items,
   activeId,
+  expandedId = activeId,
   onChange,
   label = "Scientific tools",
   className,
@@ -117,28 +119,29 @@ export function ScientificToolRail({
       <ul>
         {items.map((item) => {
           const active = item.id === activeId;
+          const expanded = item.id === expandedId;
           return (
             <li key={item.id}>
               <Button
                 ref={(node: HTMLButtonElement | null) => registerItemRef?.(item.id, node)}
                 id={item.triggerId ?? `workflow-${item.id}`}
                 kind="ghost"
-                size="lg"
+                size="sm"
                 disabled={item.disabled}
                 aria-controls={item.controlsId}
-                aria-expanded={active}
-                aria-pressed={active}
+                aria-current={active ? "page" : undefined}
+                aria-expanded={expanded}
                 aria-busy={item.status === "loading" || undefined}
                 title={item.disabled ? item.disabledReason : item.label}
                 data-state={item.status}
                 className={joinClassNames("scientific-tool-rail__item", active && "is-active")}
-                onClick={() => onChange(active && collapsible ? null : item.id)}
+                onClick={() => onChange(expanded && collapsible ? null : item.id)}
                 onKeyDown={(event) => {
                   if (event.key === "ArrowDown" || event.key === "ArrowRight") moveFocus(event, 1);
                   else if (event.key === "ArrowUp" || event.key === "ArrowLeft") moveFocus(event, -1);
                   else if (event.key === "Home") moveFocus(event, "first");
                   else if (event.key === "End") moveFocus(event, "last");
-                  else if (event.key === "Escape" && active && collapsible) {
+                  else if (event.key === "Escape" && expanded && collapsible) {
                     event.preventDefault();
                     onChange(null);
                   }

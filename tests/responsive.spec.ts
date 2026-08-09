@@ -45,7 +45,7 @@ test("tool rail toggles, restores focus and supports directional keys", async ({
 test("tool rail uses common responsive geometry", async ({ page }) => {
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Scientific tools" });
-  for (const [width, expected] of [[390, 390], [768, 768], [1024, 1024], [1440, 160]] as const) {
+  for (const [width, expected] of [[390, 390], [768, 768], [1024, 1024], [1440, 256]] as const) {
     await page.setViewportSize({ width, height: 900 });
     const box = await navigation.boundingBox();
     expect(Math.abs(Math.round(box?.width ?? 0) - expected)).toBeLessThanOrEqual(1);
@@ -64,7 +64,35 @@ test("tool rail uses common responsive geometry", async ({ page }) => {
         };
       });
       expect(alignment?.visible).toBe(true);
-      expect(alignment?.delta ?? Number.POSITIVE_INFINITY).toBeLessThan(0.1);
+      if (width < 1056) expect(alignment?.delta ?? Number.POSITIVE_INFINITY).toBeLessThan(0.1);
     }
   }
+});
+
+test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const navigation = page.getByRole("navigation", { name: "Scientific tools" });
+  const configure = navigation.getByRole("button", { name: "Configure" });
+  const geometry = await configure.evaluate((element) => {
+    const button = element.getBoundingClientRect();
+    const icon = element.querySelector(".scientific-tool-rail__icon")?.getBoundingClientRect();
+    const label = element.querySelector(".scientific-tool-rail__label");
+    const labelStyle = label ? getComputedStyle(label) : null;
+    return {
+      height: button.height,
+      iconSize: icon?.width ?? 0,
+      iconInset: (icon?.left ?? button.left) - button.left,
+      fontSize: labelStyle?.fontSize,
+      fontWeight: labelStyle?.fontWeight,
+      background: getComputedStyle(element).backgroundColor,
+      selectedToken: getComputedStyle(element).getPropertyValue("--scientific-ui-navigation-selected").trim(),
+    };
+  });
+  expect(geometry.height).toBe(32);
+  expect(geometry.iconSize).toBe(16);
+  expect(geometry.iconInset).toBe(16);
+  expect(geometry.fontSize).toBe("14px");
+  expect(Number(geometry.fontWeight)).toBeGreaterThanOrEqual(600);
+  expect(geometry.background).toBe(geometry.selectedToken);
 });

@@ -3,32 +3,58 @@
  * pre-emit critique: P5 H5 E4 S5 R5 V4
  */
 :root {
-  --scientific-ui-background: var(--cds-background);
-  --scientific-ui-layer: var(--cds-layer-01);
-  --scientific-ui-layer-hover: var(--cds-layer-hover-01);
-  --scientific-ui-border: var(--cds-border-subtle-01);
-  --scientific-ui-border-strong: var(--cds-border-strong-01);
-  --scientific-ui-text: var(--cds-text-primary);
-  --scientific-ui-text-secondary: var(--cds-text-secondary);
-  --scientific-ui-link: var(--cds-link-primary);
-  --scientific-ui-focus: var(--cds-focus);
-  --scientific-ui-danger: var(--cds-support-error);
-  --scientific-ui-warning: var(--cds-support-warning);
-  --scientific-ui-success: var(--cds-support-success);
-  --scientific-ui-info: var(--cds-support-info);
+  --scientific-ui-background: var(--cds-background, #f4f4f4);
+  --scientific-ui-layer: var(--cds-layer-01, #ffffff);
+  --scientific-ui-layer-hover: var(--cds-layer-hover-01, #e8e8e8);
+  --scientific-ui-border: var(--cds-border-subtle-01, #e0e0e0);
+  --scientific-ui-border-strong: var(--cds-border-strong-01, #8d8d8d);
+  --scientific-ui-text: var(--cds-text-primary, #161616);
+  --scientific-ui-text-secondary: var(--cds-text-secondary, #525252);
+  --scientific-ui-link: var(--cds-link-primary, #0f62fe);
+  --scientific-ui-focus: var(--cds-focus, #0f62fe);
+  --scientific-ui-danger: var(--cds-support-error, #da1e28);
+  --scientific-ui-warning: var(--cds-support-warning, #f1c21b);
+  --scientific-ui-success: var(--cds-support-success, #24a148);
+  --scientific-ui-info: var(--cds-support-info, #0043ce);
+  --scientific-ui-navigation-background: #f4f4f4;
+  --scientific-ui-navigation-hover: rgba(141, 141, 141, 0.12);
+  --scientific-ui-navigation-active: rgba(141, 141, 141, 0.5);
+  --scientific-ui-navigation-selected: rgba(141, 141, 141, 0.2);
+  --scientific-ui-navigation-indicator: #0f62fe;
+  --scientific-ui-navigation-text: #525252;
+  --scientific-ui-navigation-text-active: #161616;
+  --scientific-ui-header-background: #ffffff;
+  --scientific-ui-header-border: #e0e0e0;
+  --scientific-ui-header-mark-background: #161616;
+  --scientific-ui-header-mark-text: #ffffff;
   --scientific-ui-font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
   --scientific-ui-font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --scientific-ui-panel-inline-size: 24rem;
-  --scientific-ui-rail-inline-size: 10rem;
+  --scientific-ui-rail-inline-size: 16rem;
   --scientific-ui-rail-compact-inline-size: 4rem;
-  --scientific-ui-tool-rail-item-block-size: 3rem;
-  --scientific-ui-tool-rail-icon-size: 1.25rem;
-  --scientific-ui-active-indicator-size: 0.125rem;
+  --scientific-ui-tool-rail-item-block-size: 2rem;
+  --scientific-ui-tool-rail-icon-size: 1rem;
+  --scientific-ui-active-indicator-size: 0.25rem;
   --scientific-ui-header-block-size: 4rem;
+  --scientific-ui-header-mark-size: 2rem;
   --scientific-ui-status-block-size: 2.5rem;
   --scientific-ui-mobile-nav-block-size: 3.5rem;
   --scientific-ui-mini-preview-block-size: 9rem;
   --scientific-ui-target-size: 2.75rem;
   --scientific-ui-duration: 110ms;
   --scientific-ui-ease: cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+.cds--g100 {
+  --scientific-ui-navigation-background: var(--cds-background, #161616);
+  --scientific-ui-navigation-hover: var(--cds-background-hover, rgba(141, 141, 141, 0.16));
+  --scientific-ui-navigation-active: var(--cds-background-active, rgba(141, 141, 141, 0.4));
+  --scientific-ui-navigation-selected: var(--cds-background-selected, rgba(141, 141, 141, 0.24));
+  --scientific-ui-navigation-indicator: var(--cds-border-interactive, #78a9ff);
+  --scientific-ui-navigation-text: var(--cds-text-secondary, #c6c6c6);
+  --scientific-ui-navigation-text-active: var(--cds-text-primary, #f4f4f4);
+  --scientific-ui-header-background: var(--cds-layer-01, #262626);
+  --scientific-ui-header-border: var(--cds-border-subtle-01, #393939);
+  --scientific-ui-header-mark-background: var(--cds-text-primary, #f4f4f4);
+  --scientific-ui-header-mark-text: var(--cds-background, #161616);
 }

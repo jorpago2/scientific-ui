@@ -33,6 +33,26 @@ html {
   background: var(--scientific-ui-background);
 }
 
+/* Shared Carbon g10 application-header contract. Consumer styles may arrange
+ * header content, but must not redefine its surface, rule, height or brand mark. */
+.scientific-app-header {
+  block-size: var(--scientific-ui-header-block-size);
+  min-block-size: var(--scientific-ui-header-block-size);
+  border-block-end: 1px solid var(--scientific-ui-header-border);
+  background: var(--scientific-ui-header-background);
+}
+
+.scientific-app-header__brand-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 var(--scientific-ui-header-mark-size);
+  inline-size: var(--scientific-ui-header-mark-size);
+  block-size: var(--scientific-ui-header-mark-size);
+  border-radius: 0;
+  color: var(--scientific-ui-header-mark-text);
+  background: var(--scientific-ui-header-mark-background);
+}
+
 .scientific-header > * {
   min-block-size: inherit;
 }
@@ -133,7 +153,7 @@ html {
   inline-size: 100%;
   block-size: var(--scientific-ui-mobile-nav-block-size);
   border-block-start: 1px solid var(--scientific-ui-border-strong);
-  background: var(--scientific-ui-layer);
+  background: var(--scientific-ui-navigation-background);
 }
 
 .scientific-tool-rail ul {
@@ -160,11 +180,11 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--cds-spacing-02);
-  padding: var(--cds-spacing-02);
+  gap: var(--cds-spacing-02, 0.25rem);
+  padding: var(--cds-spacing-02, 0.25rem);
   border: 0;
   border-block-start: var(--scientific-ui-active-indicator-size) solid transparent;
-  color: var(--scientific-ui-text-secondary);
+  color: var(--scientific-ui-navigation-text);
   background: transparent;
   text-align: center;
   white-space: nowrap;
@@ -174,8 +194,8 @@ html {
 }
 
 .scientific-tool-rail__item:hover {
-  color: var(--scientific-ui-text);
-  background: var(--scientific-ui-layer-hover);
+  color: var(--scientific-ui-navigation-text-active);
+  background: var(--scientific-ui-navigation-hover);
 }
 
 .scientific-tool-rail__item:focus-visible {
@@ -186,7 +206,7 @@ html {
 
 .scientific-tool-rail__item:active {
   transform: translateY(1px);
-  background: var(--cds-layer-active-01, var(--scientific-ui-layer-hover));
+  background: var(--scientific-ui-navigation-active);
 }
 
 .scientific-tool-rail__item:disabled {
@@ -197,8 +217,8 @@ html {
 .scientific-tool-rail__item.is-active,
 .scientific-tool-rail__item[aria-expanded="true"] {
   border-block-start-color: var(--scientific-ui-link);
-  color: var(--scientific-ui-text);
-  background: var(--cds-layer-selected-01, var(--scientific-ui-layer-hover));
+  color: var(--scientific-ui-navigation-text-active);
+  background: var(--scientific-ui-navigation-selected);
 }
 
 .scientific-tool-rail__icon {
@@ -213,6 +233,7 @@ html {
 .scientific-tool-rail__icon > svg {
   inline-size: 100%;
   block-size: 100%;
+  fill: currentColor;
 }
 
 .scientific-tool-rail__label {
@@ -572,9 +593,10 @@ html {
   .scientific-tool-rail__item {
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: var(--cds-spacing-04);
-    padding-inline: var(--cds-spacing-05);
+    justify-content: flex-start;
+    gap: var(--cds-spacing-05, 1rem);
+    min-block-size: var(--scientific-ui-tool-rail-item-block-size);
+    padding-inline: var(--cds-spacing-05, 1rem);
     border-block-start: 0;
     border-inline-start: 0;
     text-align: start;
@@ -583,7 +605,7 @@ html {
   .scientific-tool-rail__item::before {
     content: "";
     position: absolute;
-    inset-block: var(--cds-spacing-03);
+    inset-block: 0;
     inset-inline-start: 0;
     inline-size: var(--scientific-ui-active-indicator-size);
     background: transparent;
@@ -596,18 +618,22 @@ html {
 
   .scientific-tool-rail__item.is-active::before,
   .scientific-tool-rail__item[aria-expanded="true"]::before {
-    background: var(--scientific-ui-link);
+    background: var(--scientific-ui-navigation-indicator);
   }
 
   .scientific-tool-rail__label {
     position: static;
-    inline-size: 5.5rem;
+    inline-size: auto;
     block-size: auto;
-    flex: 0 0 5.5rem;
+    flex: 1 1 auto;
     overflow: hidden;
     clip: auto;
     clip-path: none;
     text-align: start;
+    font-size: var(--cds-heading-compact-01-font-size, 0.875rem);
+    font-weight: var(--cds-heading-compact-01-font-weight, 600);
+    line-height: var(--cds-heading-compact-01-line-height, 1.28572);
+    letter-spacing: var(--cds-heading-compact-01-letter-spacing, 0.16px);
   }
 
   .scientific-header__identity,
@@ -681,7 +707,6 @@ html {
 }
 
 @media (pointer: coarse) {
-  .scientific-tool-rail__item,
   .scientific-workflow button,
   .scientific-inspector button,
   .scientific-result-switcher button {
