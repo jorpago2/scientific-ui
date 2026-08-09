@@ -1,5 +1,9 @@
 # @jorpago2/scientific-ui
 
+## 0.5.3
+
+- Standardize task-panel close actions on Carbon's icon-only close button.
+
 ## 0.5.2
 
 - Fix Carbon token inheritance for standalone task panels, inspectors, stages and workbenches.

@@ -7,6 +7,7 @@ import {
   Header,
   HeaderGlobalBar,
   HeaderName,
+  IconButton,
   InlineNotification,
   Layer,
   ModalBody,
@@ -19,6 +20,7 @@ import {
   TextInput,
   preview__IconIndicator as IconIndicator,
 } from "@carbon/react";
+import { Close } from "@carbon/icons-react";
 import {
   forwardRef,
   useEffect,
@@ -101,7 +103,7 @@ export const ScientificTaskPanel = forwardRef<HTMLElement, ScientificTaskPanelPr
         </div>
         {(actions || onClose) && <div className="scientific-task-panel__actions">
           {actions}
-          {onClose && <Button type="button" kind="ghost" size="sm" aria-label={closeLabel} onClick={onClose}>Close</Button>}
+          {onClose && <IconButton type="button" kind="ghost" size="lg" label={closeLabel} onClick={onClose}><Close size={20} aria-hidden={true} /></IconButton>}
         </div>}
       </div>
       <div className={joinClassNames("scientific-task-panel__body", bodyClassName)}>{children}</div>
