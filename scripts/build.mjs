@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
@@ -12,4 +12,8 @@ function run(command, args) {
 
 await run(process.execPath, [fileURLToPath(new URL("../node_modules/typescript/bin/tsc", import.meta.url)), "-p", "tsconfig.json"]);
 await mkdir("dist", { recursive: true });
-await copyFile("src/styles.css", "dist/styles.css");
+const [tokens, styles] = await Promise.all([
+  readFile("tokens.css", "utf8"),
+  readFile("src/styles.css", "utf8"),
+]);
+await writeFile("dist/styles.css", `${tokens}\n${styles.replace('@import "../tokens.css";', "")}`);

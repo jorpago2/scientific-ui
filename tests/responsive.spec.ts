@@ -6,7 +6,7 @@ for (const width of widths) {
   test(`workbench remains usable at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 600 ? 844 : 900 });
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1, name: "Scientific UI" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Scientific UI" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Run model" }).first()).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(1);
@@ -90,11 +90,14 @@ test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) =>
     const button = element.getBoundingClientRect();
     const icon = element.querySelector(".scientific-tool-rail__icon")?.getBoundingClientRect();
     const label = element.querySelector(".scientific-tool-rail__label");
+    const labelBox = label?.getBoundingClientRect();
     const labelStyle = label ? getComputedStyle(label) : null;
     return {
       height: button.height,
       iconSize: icon?.width ?? 0,
-      iconInset: (icon?.left ?? button.left) - button.left,
+      contentCenterDelta: icon && labelBox
+        ? Math.abs(button.left + button.width / 2 - (icon.left + labelBox.right) / 2)
+        : Number.POSITIVE_INFINITY,
       fontSize: labelStyle?.fontSize,
       fontWeight: labelStyle?.fontWeight,
       background: getComputedStyle(element).backgroundColor,
@@ -102,7 +105,7 @@ test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) =>
   });
   expect(geometry.height).toBe(32);
   expect(geometry.iconSize).toBe(16);
-  expect(geometry.iconInset).toBe(16);
+  expect(geometry.contentCenterDelta).toBeLessThanOrEqual(2);
   expect(geometry.fontSize).toBe("14px");
   expect(Number(geometry.fontWeight)).toBeGreaterThanOrEqual(600);
   expect(geometry.background).not.toBe("rgba(0, 0, 0, 0)");

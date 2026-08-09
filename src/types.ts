@@ -20,6 +20,8 @@ export interface WorkflowItem {
   disabledReason?: string;
   status?: "loading" | "error" | "success";
   statusLabel?: string;
+  className?: string;
+  dataAttributes?: Record<`data-${string}`, string>;
 }
 
 export interface ScientificStatusDescriptor {

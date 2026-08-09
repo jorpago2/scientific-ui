@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.4.0
+
+### Minor Changes
+
+- Make the shared Carbon header and workflow navigation the canonical responsive chrome, including structured product, context, status, action, and legacy-adapter slots.
+
 ## 0.3.5
 
 ### Patch Changes

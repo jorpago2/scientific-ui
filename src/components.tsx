@@ -43,23 +43,36 @@ function joinClassNames(...classNames: Array<string | undefined | false>) {
 
 export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   product: string;
-  context?: string;
+  productMark?: ReactNode;
+  descriptor?: ReactNode;
+  href?: string;
+  contextLabel?: ReactNode;
+  context?: ReactNode;
+  contextDetail?: ReactNode;
   status?: ScientificStatusDescriptor;
   primaryAction?: ReactNode;
   secondaryActions?: ReactNode;
+  actionsLabel?: string;
+  skipLink?: ReactNode;
 }
 
-export function ScientificHeader({ product, context, status, primaryAction, secondaryActions, className, ...props }: ScientificHeaderProps) {
+export function ScientificHeader({ product, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
   return (
-    <Header className={joinClassNames("scientific-header", className)} {...props}>
-      <h1 className="scientific-header__title">
-        <HeaderName as="span" prefix="">{product}</HeaderName>
-      </h1>
-      {context && <p className="scientific-header__context">{context}</p>}
-      <HeaderGlobalBar className="scientific-header__actions">
-        {status && <ScientificStatus status={status} compact />}
-        {secondaryActions}
-        {primaryAction}
+    <Header className={joinClassNames("scientific-header", "scientific-app-header", className)} {...props}>
+      {skipLink}
+      <HeaderName className="scientific-header__brand scientific-app-header__brand" href={href} prefix="" aria-label={product}>
+        <span className="scientific-header__brand-mark scientific-app-header__brand-mark" aria-hidden="true">{productMark ?? product.slice(0, 1)}</span>
+        <span className="scientific-header__brand-copy"><strong>{product}</strong>{descriptor && <small>{descriptor}</small>}</span>
+      </HeaderName>
+      {(contextLabel || context || contextDetail || status) && <div className="scientific-header__context scientific-app-header__context">
+        {contextLabel && <span className="scientific-header__context-label">{contextLabel}</span>}
+        {context && <strong className="scientific-header__context-value">{context}</strong>}
+        {contextDetail && <span className="scientific-header__context-detail">{contextDetail}</span>}
+        {status && <ScientificStatus className="scientific-header__status" status={status} compact />}
+      </div>}
+      <HeaderGlobalBar className="scientific-header__actions scientific-app-header__actions" aria-label={actionsLabel}>
+        {secondaryActions && <div className="scientific-header__secondary-actions">{secondaryActions}</div>}
+        {primaryAction && <div className="scientific-header__primary-action">{primaryAction}</div>}
       </HeaderGlobalBar>
     </Header>
   );
@@ -154,7 +167,8 @@ export function ScientificToolRail({
               aria-busy={item.status === "loading" || undefined}
               title={item.disabled ? item.disabledReason : item.label}
               data-state={item.status}
-              className="scientific-tool-rail__item"
+              className={joinClassNames("scientific-tool-rail__item", item.className)}
+              {...item.dataAttributes}
               onClick={() => onChange(expanded && collapsible ? null : item.id)}
               onKeyDown={(event: ReactKeyboardEvent<HTMLButtonElement>) => {
                 if (event.key === "ArrowDown" || event.key === "ArrowRight") moveFocus(event, 1);

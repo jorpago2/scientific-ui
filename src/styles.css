@@ -27,21 +27,41 @@ html {
   font-family: var(--scientific-ui-font-sans);
 }
 
-header.scientific-header {
+/* Canonical Carbon g10 application header. Local applications provide content
+ * through component slots; they do not own shell geometry or responsive rules. */
+header.scientific-header.scientific-app-header {
   position: sticky;
+  z-index: 6600;
   inset-block-start: 0;
-  min-block-size: var(--scientific-ui-header-block-size);
-  border-bottom: 1px solid var(--scientific-ui-border);
-  background: var(--scientific-ui-background);
-}
-
-/* Shared Carbon g10 application-header contract. Consumer styles may arrange
- * header content, but must not redefine its surface, rule, height or brand mark. */
-.scientific-app-header {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(var(--scientific-ui-rail-inline-size), 1fr) minmax(0, 36rem) minmax(var(--scientific-ui-rail-inline-size), 1fr);
+  align-items: center;
   block-size: var(--scientific-ui-header-block-size);
   min-block-size: var(--scientific-ui-header-block-size);
   border-block-end: 1px solid var(--scientific-ui-header-border);
   background: var(--scientific-ui-header-background);
+}
+
+.scientific-header__brand {
+  display: flex;
+  inline-size: var(--scientific-ui-rail-inline-size);
+  min-inline-size: 0;
+  block-size: var(--scientific-ui-header-block-size);
+  min-block-size: 0;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+  color: var(--scientific-ui-text);
+  text-decoration: none;
+}
+
+.scientific-header__brand > * {
+  display: flex;
+  inline-size: 100%;
+  block-size: 100%;
+  min-inline-size: 0;
+  align-items: center;
 }
 
 .scientific-app-header__brand-mark {
@@ -53,14 +73,47 @@ header.scientific-header {
   border-radius: 0;
   color: var(--scientific-ui-header-mark-text);
   background: var(--scientific-ui-header-mark-background);
+  font-family: var(--scientific-ui-font-mono);
+  font-size: var(--scientific-ui-label-font-size);
+  font-weight: 600;
+  line-height: 1;
 }
 
-.scientific-header__title {
-  margin: 0;
+.scientific-header__brand-copy {
+  display: grid;
+  min-inline-size: 0;
+  padding-inline: var(--scientific-ui-spacing-05);
+  line-height: 1;
+}
+
+.scientific-header__brand-copy strong,
+.scientific-header__brand-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scientific-header__brand-copy strong {
+  font-size: var(--scientific-ui-heading-compact-font-size);
+  font-weight: var(--scientific-ui-heading-compact-font-weight);
+  line-height: var(--scientific-ui-heading-compact-line-height);
+}
+
+.scientific-header__brand-copy small {
+  color: var(--scientific-ui-text-secondary);
+  font-size: var(--scientific-ui-label-font-size);
+  line-height: var(--scientific-ui-label-line-height);
 }
 
 .scientific-header__context {
-  margin: 0;
+  display: flex;
+  min-inline-size: 0;
+  max-inline-size: 36rem;
+  inline-size: 100%;
+  block-size: var(--scientific-ui-header-block-size);
+  align-items: center;
+  justify-self: center;
+  gap: var(--scientific-ui-spacing-03);
   padding-inline: var(--scientific-ui-spacing-05);
   color: var(--scientific-ui-text-secondary);
   font-size: var(--scientific-ui-body-compact-font-size);
@@ -70,7 +123,36 @@ header.scientific-header {
   white-space: nowrap;
 }
 
+.scientific-header__context-label {
+  color: var(--scientific-ui-text-helper);
+  font-size: var(--scientific-ui-label-font-size);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.scientific-header__context-value {
+  min-inline-size: 0;
+  overflow: hidden;
+  color: var(--scientific-ui-text);
+  text-overflow: ellipsis;
+}
+
+.scientific-header__context-detail {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .scientific-header__actions {
+  display: flex;
+  block-size: var(--scientific-ui-header-block-size);
+  align-items: center;
+  justify-self: end;
+}
+
+.scientific-header__secondary-actions,
+.scientific-header__primary-action {
+  display: flex;
+  block-size: 100%;
   align-items: center;
 }
 
@@ -139,7 +221,12 @@ header.scientific-header {
   inset: var(--scientific-ui-header-block-size) auto 0 0;
   inline-size: var(--scientific-ui-rail-inline-size);
   width: var(--scientific-ui-rail-inline-size);
-  block-size: auto;
+  block-size: calc(100dvh - var(--scientific-ui-header-block-size));
+  min-block-size: calc(100dvh - var(--scientific-ui-header-block-size));
+  max-block-size: calc(100dvh - var(--scientific-ui-header-block-size));
+  border-inline-end: 1px solid var(--scientific-ui-header-border);
+  background: var(--scientific-ui-navigation-background);
+  color: var(--scientific-ui-navigation-text);
   transition: none;
 }
 
@@ -147,11 +234,30 @@ header.scientific-header {
   block-size: 100%;
 }
 
-.scientific-tool-rail__item {
+.scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item {
   inline-size: 100%;
   border: 0;
+  border-inline-start: var(--scientific-ui-active-indicator-size) solid transparent;
+  background: transparent;
+  color: var(--scientific-ui-navigation-text);
   font: inherit;
   text-align: start;
+}
+
+.scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item:hover {
+  background: var(--scientific-ui-navigation-hover);
+  color: var(--scientific-ui-navigation-text-active);
+}
+
+.scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item:active {
+  background: var(--scientific-ui-navigation-active);
+}
+
+.scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item[aria-current="page"],
+.scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item[aria-expanded="true"] {
+  border-inline-start-color: var(--scientific-ui-navigation-indicator);
+  background: var(--scientific-ui-navigation-selected);
+  color: var(--scientific-ui-navigation-text-active);
 }
 
 .scientific-tool-rail__icon {
@@ -197,6 +303,39 @@ header.scientific-header {
 /* Documented product exception: Carbon SideNav is presented as a bottom
  * navigation bar below the lg breakpoint while retaining Carbon semantics. */
 @media (max-width: 65.99rem) {
+  header.scientific-header.scientific-app-header {
+    grid-template-columns: var(--scientific-ui-header-block-size) minmax(0, 1fr) max-content;
+  }
+
+  .scientific-header__brand {
+    inline-size: var(--scientific-ui-header-block-size);
+    min-inline-size: var(--scientific-ui-header-block-size);
+    max-inline-size: var(--scientific-ui-header-block-size);
+    justify-content: center;
+  }
+
+  .scientific-header__brand-copy,
+  .scientific-header__context-label,
+  .scientific-header__context-detail,
+  .scientific-header__secondary-actions {
+    display: none;
+  }
+
+  .scientific-header__context {
+    max-inline-size: none;
+    justify-self: stretch;
+    justify-content: center;
+    padding-inline: var(--scientific-ui-spacing-03);
+  }
+
+  .scientific-header__context-value {
+    font-size: var(--scientific-ui-body-compact-font-size);
+  }
+
+  .scientific-header__status {
+    flex: 0 0 auto;
+  }
+
   .scientific-tool-rail.scientific-tool-rail {
     position: fixed;
     z-index: 6500;
@@ -205,6 +344,10 @@ header.scientific-header {
     width: 100%;
     max-inline-size: none;
     block-size: var(--scientific-ui-mobile-nav-block-size);
+    min-block-size: var(--scientific-ui-mobile-nav-block-size);
+    max-block-size: var(--scientific-ui-mobile-nav-block-size);
+    border-block-start: 1px solid var(--scientific-ui-header-border);
+    border-inline-end: 0;
     border-block-start: 1px solid var(--scientific-ui-border-strong);
     background: var(--scientific-ui-background);
     transform: none;
@@ -218,7 +361,7 @@ header.scientific-header {
     padding: 0;
   }
 
-  .scientific-tool-rail__item {
+  .scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item {
     position: relative;
     display: flex;
     min-inline-size: 0;
@@ -233,23 +376,24 @@ header.scientific-header {
     gap: var(--scientific-ui-spacing-02);
     padding: var(--scientific-ui-spacing-02);
     border-block-start: var(--scientific-ui-active-indicator-size) solid transparent;
+    border-inline-start: 0;
     color: var(--scientific-ui-navigation-text);
     background: transparent;
     text-align: center;
     white-space: nowrap;
   }
 
-  .scientific-tool-rail__item:hover {
+  .scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item:hover {
     color: var(--scientific-ui-navigation-text-active);
     background: var(--scientific-ui-navigation-hover);
   }
 
-  .scientific-tool-rail__item:active {
+  .scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item:active {
     background: var(--scientific-ui-navigation-active);
   }
 
-  .scientific-tool-rail__item[aria-current="page"],
-  .scientific-tool-rail__item[aria-expanded="true"] {
+  .scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item[aria-current="page"],
+  .scientific-tool-rail.scientific-tool-rail .scientific-tool-rail__item[aria-expanded="true"] {
     border-block-start-color: var(--scientific-ui-navigation-indicator);
     color: var(--scientific-ui-navigation-text-active);
     background: var(--scientific-ui-navigation-selected);
@@ -487,6 +631,7 @@ header.scientific-header {
     block-size: var(--scientific-ui-tool-rail-item-block-size);
     min-block-size: var(--scientific-ui-tool-rail-item-block-size);
     align-items: center;
+    justify-content: center;
     gap: var(--scientific-ui-spacing-05);
     padding-block: 0;
     padding-inline: var(--scientific-ui-spacing-05);
@@ -494,7 +639,7 @@ header.scientific-header {
 
   .scientific-tool-rail__label {
     min-inline-size: 0;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     overflow: hidden;
     font-size: var(--scientific-ui-heading-compact-font-size);
     font-weight: var(--scientific-ui-heading-compact-font-weight);
