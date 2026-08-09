@@ -4,22 +4,23 @@ import "../src/styles.css";
 import "./demo.css";
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
-import { ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, WorkflowNavigation } from "@jorpago2/scientific-ui";
+import { ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, ScientificToolRail } from "@jorpago2/scientific-ui";
 
 function Demo() {
-  const [active, setActive] = useState("configure");
+  const [active, setActive] = useState<string | null>("configure");
   const [running, setRunning] = useState(false);
   const status = running
     ? { state: "running" as const, label: "Simulation running", detail: "Solving deterministic fixture", progress: 42 }
     : { state: "ready" as const, label: "Ready", detail: "Inputs are valid" };
   return <GlobalTheme theme="g10"><ScientificAppShell
     header={<ScientificHeader product="Scientific UI" context="Conformance fixture" status={status} primaryAction={<Button onClick={() => setRunning((value) => !value)}>{running ? "Stop" : "Run model"}</Button>} />}
-    navigation={<WorkflowNavigation activeId={active} onChange={setActive} items={[
+    navigation={<ScientificToolRail activeId={active} onChange={setActive} items={[
       { id: "configure", label: "Configure", controlsId: "fixture-panel" },
       { id: "results", label: "Results", controlsId: "fixture-panel" },
       { id: "export", label: "Export", controlsId: "fixture-panel" },
     ]} />}
-    panel={<section id="fixture-panel" className="fixture-panel"><h2>{active}</h2><p>The panel remains readable at every Carbon breakpoint.</p></section>}
+    panel={active ? <section id="fixture-panel" className="fixture-panel"><h2>{active}</h2><p>The panel remains readable at every Carbon breakpoint.</p></section> : undefined}
+    panelOpen={active !== null}
     statusBar={<ScientificStatusBar status={status} metadata="390–1440 px" />}
   ><div className="fixture-stage"><ScientificEmptyState title="No result yet" description="Run the model to populate this scientific canvas." action={<Button size="sm" onClick={() => setRunning(true)}>Run model</Button>} /></div></ScientificAppShell></GlobalTheme>;
 }

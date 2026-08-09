@@ -19,6 +19,11 @@
   --scientific-ui-font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
   --scientific-ui-font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --scientific-ui-panel-inline-size: 24rem;
+  --scientific-ui-rail-inline-size: 12rem;
+  --scientific-ui-rail-compact-inline-size: 4rem;
+  --scientific-ui-tool-rail-item-block-size: 3rem;
+  --scientific-ui-tool-rail-icon-size: 1.25rem;
+  --scientific-ui-active-indicator-size: 0.25rem;
   --scientific-ui-header-block-size: 3rem;
   --scientific-ui-status-block-size: 2.5rem;
   --scientific-ui-mobile-nav-block-size: 4rem;

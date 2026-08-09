@@ -16,6 +16,7 @@ import {
   useState,
   type ChangeEvent,
   type HTMLAttributes,
+  type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
   type RefObject,
 } from "react";
@@ -67,27 +68,88 @@ export interface WorkflowNavigationProps {
 }
 
 export function WorkflowNavigation({ items, activeId, onChange, label = "Scientific workflow", className }: WorkflowNavigationProps) {
+  return <ScientificToolRail
+    items={items}
+    activeId={activeId}
+    onChange={(id) => { if (id !== null) onChange(id); }}
+    label={label}
+    className={className}
+    collapsible={false}
+  />;
+}
+
+export interface ScientificToolRailProps {
+  items: WorkflowItem[];
+  activeId: string | null;
+  onChange: (id: string | null) => void;
+  label?: string;
+  className?: string;
+  collapsible?: boolean;
+  registerItemRef?: (id: string, node: HTMLButtonElement | null) => void;
+}
+
+export function ScientificToolRail({
+  items,
+  activeId,
+  onChange,
+  label = "Scientific tools",
+  className,
+  collapsible = true,
+  registerItemRef,
+}: ScientificToolRailProps) {
+  const navigationRef = useRef<HTMLElement>(null);
+
+  const moveFocus = (event: ReactKeyboardEvent<HTMLButtonElement>, direction: number | "first" | "last") => {
+    const buttons = Array.from(navigationRef.current?.querySelectorAll<HTMLButtonElement>(".scientific-tool-rail__item:not(:disabled)") ?? []);
+    if (buttons.length === 0) return;
+    const currentIndex = buttons.indexOf(event.currentTarget);
+    const nextIndex = direction === "first"
+      ? 0
+      : direction === "last"
+        ? buttons.length - 1
+        : (Math.max(0, currentIndex) + direction + buttons.length) % buttons.length;
+    event.preventDefault();
+    buttons[nextIndex]?.focus();
+  };
+
   return (
-    <nav className={joinClassNames("scientific-workflow", className)} aria-label={label}>
+    <nav ref={navigationRef} className={joinClassNames("scientific-tool-rail", className)} aria-label={label}>
       <ul>
         {items.map((item) => {
           const active = item.id === activeId;
           return (
             <li key={item.id}>
               <Button
-                id={`workflow-${item.id}`}
+                ref={(node: HTMLButtonElement | null) => registerItemRef?.(item.id, node)}
+                id={item.triggerId ?? `workflow-${item.id}`}
                 kind="ghost"
                 size="lg"
                 disabled={item.disabled}
                 aria-controls={item.controlsId}
                 aria-expanded={active}
                 aria-pressed={active}
-                title={item.disabled ? item.disabledReason : undefined}
-                className={active ? "is-active" : undefined}
-                onClick={() => onChange(item.id)}
+                aria-busy={item.status === "loading" || undefined}
+                title={item.disabled ? item.disabledReason : item.label}
+                data-state={item.status}
+                className={joinClassNames("scientific-tool-rail__item", active && "is-active")}
+                onClick={() => onChange(active && collapsible ? null : item.id)}
+                onKeyDown={(event) => {
+                  if (event.key === "ArrowDown" || event.key === "ArrowRight") moveFocus(event, 1);
+                  else if (event.key === "ArrowUp" || event.key === "ArrowLeft") moveFocus(event, -1);
+                  else if (event.key === "Home") moveFocus(event, "first");
+                  else if (event.key === "End") moveFocus(event, "last");
+                  else if (event.key === "Escape" && active && collapsible) {
+                    event.preventDefault();
+                    onChange(null);
+                  }
+                }}
               >
-                {item.icon && <span aria-hidden="true" className="scientific-workflow__icon">{item.icon}</span>}
-                <span>{item.label}</span>
+                {item.icon && <span aria-hidden="true" className="scientific-tool-rail__icon">{item.icon}</span>}
+                <span className="scientific-tool-rail__label">{item.label}</span>
+                {item.status && <span className="scientific-tool-rail__state" aria-hidden="true">
+                  {item.status === "loading" ? "…" : item.status === "error" ? "!" : "✓"}
+                </span>}
+                {item.statusLabel && <span className="scientific-tool-rail__sr-only">{item.statusLabel}</span>}
               </Button>
             </li>
           );

@@ -15,8 +15,11 @@ export interface WorkflowItem {
   label: string;
   icon?: ReactNode;
   controlsId: string;
+  triggerId?: string;
   disabled?: boolean;
   disabledReason?: string;
+  status?: "loading" | "error" | "success";
+  statusLabel?: string;
 }
 
 export interface ScientificStatusDescriptor {

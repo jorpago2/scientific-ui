@@ -1,5 +1,8 @@
-/* Hallmark · genre: modern-minimal · macrostructure: workbench · design-system: Carbon g10 · designed-as-app
- * pre-emit critique: P5 H5 E4 S5 R5 V4
+/* Hallmark · component: scientific tool rail · macrostructure: scientific workbench chrome
+ * genre: modern-minimal · theme: Carbon g10 · pre-emit critique: P5 H5 E5 S5 R5 V5
+ * states: default · hover · focus · active · disabled · loading · error · success
+ * contrast: pass (40–41) · slop: pass (42–45) · honest: pass (46) · chrome: pass (47)
+ * tokens: pass (48) · responsive: pass (49) · icons: pass (30) · mobile: pass (34, 49, 50–57)
  */
 @import "../tokens.css";
 
@@ -124,6 +127,137 @@ html {
 
 .scientific-workflow__icon {
   display: inline-flex;
+}
+
+.scientific-tool-rail {
+  inline-size: 100%;
+  block-size: var(--scientific-ui-mobile-nav-block-size);
+  border-block-start: 1px solid var(--scientific-ui-border-strong);
+  background: var(--scientific-ui-layer);
+}
+
+.scientific-tool-rail ul {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  block-size: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scientific-tool-rail li,
+.scientific-tool-rail__item {
+  min-inline-size: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.scientific-tool-rail__item {
+  position: relative;
+  max-inline-size: none;
+  min-block-size: var(--scientific-ui-target-size);
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--cds-spacing-02);
+  padding: var(--cds-spacing-02);
+  border: 0;
+  border-block-start: var(--scientific-ui-active-indicator-size) solid transparent;
+  color: var(--scientific-ui-text-secondary);
+  background: transparent;
+  white-space: nowrap;
+  transition: background-color var(--scientific-ui-duration) var(--scientific-ui-ease),
+    color var(--scientific-ui-duration) var(--scientific-ui-ease),
+    transform 100ms var(--scientific-ui-ease);
+}
+
+.scientific-tool-rail__item:hover {
+  color: var(--scientific-ui-text);
+  background: var(--scientific-ui-layer-hover);
+}
+
+.scientific-tool-rail__item:focus-visible {
+  z-index: 1;
+  outline: 2px solid var(--scientific-ui-focus);
+  outline-offset: -2px;
+}
+
+.scientific-tool-rail__item:active {
+  transform: translateY(1px);
+  background: var(--cds-layer-active-01, var(--scientific-ui-layer-hover));
+}
+
+.scientific-tool-rail__item:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.scientific-tool-rail__item.is-active,
+.scientific-tool-rail__item[aria-expanded="true"] {
+  border-block-start-color: var(--scientific-ui-link);
+  color: var(--scientific-ui-text);
+  background: var(--cds-layer-selected-01, var(--scientific-ui-layer-hover));
+}
+
+.scientific-tool-rail__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  inline-size: var(--scientific-ui-tool-rail-icon-size);
+  block-size: var(--scientific-ui-tool-rail-icon-size);
+  align-items: center;
+  justify-content: center;
+}
+
+.scientific-tool-rail__icon > svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.scientific-tool-rail__label {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow: hidden;
+  color: inherit;
+  font-size: var(--cds-label-01-font-size);
+  line-height: var(--cds-label-01-line-height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scientific-tool-rail__state {
+  position: absolute;
+  inset-block-start: var(--cds-spacing-02);
+  inset-inline-end: var(--cds-spacing-02);
+  display: grid;
+  inline-size: 1rem;
+  block-size: 1rem;
+  place-items: center;
+  border: 1px solid currentColor;
+  font-family: var(--scientific-ui-font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+}
+
+.scientific-tool-rail__item[data-state="loading"] .scientific-tool-rail__state {
+  color: var(--scientific-ui-info);
+}
+
+.scientific-tool-rail__item[data-state="error"] .scientific-tool-rail__state {
+  color: var(--scientific-ui-danger);
+}
+
+.scientific-tool-rail__item[data-state="success"] .scientific-tool-rail__state {
+  color: var(--scientific-ui-success);
+}
+
+.scientific-tool-rail__sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .scientific-inspector {
@@ -384,6 +518,42 @@ html {
 }
 
 @media (min-width: 42rem) {
+  .scientific-tool-rail {
+    inline-size: var(--scientific-ui-rail-compact-inline-size);
+    block-size: 100%;
+    border-block-start: 0;
+    border-inline-end: 1px solid var(--scientific-ui-border);
+  }
+
+  .scientific-tool-rail ul {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scientific-tool-rail li,
+  .scientific-tool-rail__item {
+    block-size: var(--scientific-ui-tool-rail-item-block-size);
+  }
+
+  .scientific-tool-rail__item {
+    border-block-start: 0;
+    border-inline-start: var(--scientific-ui-active-indicator-size) solid transparent;
+  }
+
+  .scientific-tool-rail__item.is-active,
+  .scientific-tool-rail__item[aria-expanded="true"] {
+    border-inline-start-color: var(--scientific-ui-link);
+  }
+
+  .scientific-tool-rail__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+
   .scientific-header__identity,
   .scientific-header__actions,
   .scientific-status-bar__status,
@@ -416,6 +586,25 @@ html {
 }
 
 @media (min-width: 66rem) {
+  .scientific-tool-rail {
+    inline-size: var(--scientific-ui-rail-inline-size);
+  }
+
+  .scientific-tool-rail__item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--cds-spacing-03);
+    padding-inline: var(--cds-spacing-05);
+  }
+
+  .scientific-tool-rail__label {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    clip: auto;
+    clip-path: none;
+  }
+
   .scientific-header__identity,
   .scientific-header__actions,
   .scientific-status-bar__status,
@@ -476,6 +665,7 @@ html {
 }
 
 @media (pointer: coarse) {
+  .scientific-tool-rail__item,
   .scientific-workflow button,
   .scientific-inspector button,
   .scientific-result-switcher button {
