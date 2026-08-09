@@ -68,8 +68,8 @@ export function ScientificHeader({ product, productMark, descriptor, href = "./"
       </HeaderName>
       {(contextLabel || context || contextDetail || status) && <div className="scientific-header__context scientific-app-header__context">
         {contextLabel && <span className="scientific-header__context-label">{contextLabel}</span>}
-        {context && <strong className="scientific-header__context-value">{context}</strong>}
-        {contextDetail && <span className="scientific-header__context-detail">{contextDetail}</span>}
+        {context && <div className="scientific-header__context-value">{context}</div>}
+        {contextDetail && <div className="scientific-header__context-detail">{contextDetail}</div>}
         {status && <ScientificStatus className="scientific-header__status" status={status} compact />}
       </div>}
       <HeaderGlobalBar className="scientific-header__actions scientific-app-header__actions" aria-label={actionsLabel}>

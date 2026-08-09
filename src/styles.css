@@ -138,13 +138,19 @@ header.scientific-header.scientific-app-header {
 }
 
 .scientific-header__context-value {
+  display: flex;
   min-inline-size: 0;
+  align-items: center;
   overflow: hidden;
   color: var(--scientific-ui-text);
+  font-weight: 600;
   text-overflow: ellipsis;
 }
 
 .scientific-header__context-detail {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -161,6 +167,13 @@ header.scientific-header.scientific-app-header {
   display: flex;
   block-size: 100%;
   align-items: center;
+}
+
+/* Carbon Header actions occupy the full 48 px header track. Keeping this
+ * geometry here prevents app-level size props from creating different bars. */
+.scientific-header__actions button {
+  min-inline-size: var(--scientific-ui-header-block-size);
+  min-block-size: var(--scientific-ui-header-block-size);
 }
 
 /* Canonical task panel. Applications retain only positioning adapters for the
@@ -243,6 +256,11 @@ header.scientific-header.scientific-app-header {
   flex: 0 0 auto;
   align-items: center;
   gap: var(--scientific-ui-spacing-03);
+}
+
+.scientific-task-panel__actions button {
+  min-inline-size: var(--scientific-ui-target-size);
+  min-block-size: var(--scientific-ui-target-size);
 }
 
 .scientific-task-panel__body {
@@ -547,6 +565,20 @@ header.scientific-header.scientific-app-header {
     inset-block-start: var(--scientific-ui-spacing-02);
     inset-inline-end: var(--scientific-ui-spacing-02);
     margin: 0;
+  }
+
+  .scientific-task-panel button,
+  .scientific-task-panel a[role="button"],
+  .scientific-inspector button,
+  .scientific-result-switcher button {
+    min-inline-size: var(--scientific-ui-target-size);
+    min-block-size: var(--scientific-ui-target-size);
+  }
+
+  .scientific-task-panel input:not([type="hidden"]):not([type="file"]),
+  .scientific-task-panel select,
+  .scientific-task-panel textarea {
+    min-block-size: var(--scientific-ui-target-size);
   }
 }
 

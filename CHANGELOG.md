@@ -49,3 +49,8 @@
 - Keep scientific tool labels visible and center icon-label groups consistently across mobile, tablet and desktop layouts.
 - ef891bb: Add the shared responsive ScientificToolRail and standardize navigation geometry, interaction states and keyboard behavior.
 - 31e63bb: Introduce the Carbon g10 scientific workbench components, semantic states, responsive shell, accessibility behavior and conformance fixture.
+# @jorpago2/scientific-ui 0.5.1
+
+- Normalize Carbon header actions to the full 48 px header track.
+- Support interactive header context content without invalid inline nesting.
+- Enforce 44 px panel actions and mobile form targets.
