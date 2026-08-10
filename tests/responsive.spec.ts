@@ -72,11 +72,19 @@ test("tool rail uses common responsive geometry", async ({ page }) => {
         const contentCenter = (Math.min(...parts.map((part) => part.left)) + Math.max(...parts.map((part) => part.right))) / 2;
         return {
           delta: Math.abs(buttonBox.left + buttonBox.width / 2 - contentCenter),
+          iconDelta: iconBox ? Math.abs(buttonBox.left + buttonBox.width / 2 - (iconBox.left + iconBox.width / 2)) : 0,
+          labelDelta: Math.abs(buttonBox.left + buttonBox.width / 2 - (labelBox.left + labelBox.width / 2)),
+          axisDelta: iconBox ? Math.abs((iconBox.left + iconBox.width / 2) - (labelBox.left + labelBox.width / 2)) : 0,
           visible: getComputedStyle(label).visibility === "visible",
         };
       });
       expect(alignment?.visible).toBe(true);
-      if (width < 1056) expect(alignment?.delta ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(2);
+      if (width < 1056) {
+        expect(alignment?.delta ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(1);
+        expect(alignment?.iconDelta ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(1);
+        expect(alignment?.labelDelta ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(1);
+        expect(alignment?.axisDelta ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(1);
+      }
     }
   }
 });

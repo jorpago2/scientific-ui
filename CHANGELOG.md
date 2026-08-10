@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.13
+
+### Patch Changes
+
+- Center bottom-navigation icons and labels on the same visual axis at every responsive width while preserving Carbon SideNav semantics on desktop.
+
 ## 0.5.12
 
 ### Patch Changes

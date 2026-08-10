@@ -215,9 +215,6 @@ export function ScientificToolRail({
         {items.map((item) => {
           const active = item.id === activeId;
           const expanded = item.id === expandedId;
-          const ToolIcon = item.icon
-            ? () => <span aria-hidden="true" className="scientific-tool-rail__icon">{item.icon}</span>
-            : undefined;
           return (
             <SideNavLink
               key={item.id}
@@ -226,7 +223,6 @@ export function ScientificToolRail({
               type="button"
               id={item.triggerId ?? `workflow-${item.id}`}
               disabled={item.disabled}
-              renderIcon={ToolIcon}
               isActive={active}
               aria-controls={item.controlsId}
               aria-current={active ? "page" : undefined}
@@ -248,16 +244,19 @@ export function ScientificToolRail({
                 }
               }}
             >
-              <span className="scientific-tool-rail__label">{item.label}</span>
-              {item.status && (
-                <IconIndicator
-                  className="scientific-tool-rail__state"
-                  kind={item.status === "loading" ? "in-progress" : item.status === "error" ? "failed" : "succeeded"}
-                  label=""
-                  size={16}
-                />
-              )}
-              {item.statusLabel && <span className="scientific-tool-rail__sr-only">{item.statusLabel}</span>}
+              <span className="scientific-tool-rail__content">
+                {item.icon && <span aria-hidden="true" className="scientific-tool-rail__icon">{item.icon}</span>}
+                <span className="scientific-tool-rail__label">{item.label}</span>
+                {item.status && (
+                  <IconIndicator
+                    className="scientific-tool-rail__state"
+                    kind={item.status === "loading" ? "in-progress" : item.status === "error" ? "failed" : "succeeded"}
+                    label=""
+                    size={16}
+                  />
+                )}
+                {item.statusLabel && <span className="scientific-tool-rail__sr-only">{item.statusLabel}</span>}
+              </span>
             </SideNavLink>
           );
         })}
