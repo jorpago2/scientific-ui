@@ -447,7 +447,11 @@ export interface ScientificAppShellProps {
 
 export function ScientificAppShell({ header, navigation, panel, children, inspector, statusBar, panelOpen = Boolean(panel), miniPreview, className }: ScientificAppShellProps) {
   return (
-    <div className={joinClassNames("scientific-app-shell", className)} data-panel-open={panelOpen || undefined}>
+    <div
+      className={joinClassNames("scientific-app-shell", className)}
+      data-panel-open={panelOpen || undefined}
+      data-mini-preview={panelOpen && Boolean(miniPreview) || undefined}
+    >
       {header}
       {navigation}
       <Grid as="main" fullWidth condensed className="scientific-workbench">

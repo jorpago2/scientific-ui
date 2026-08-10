@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.6
+
+### Patch Changes
+
+- Remove the empty tablet mini-preview row when an application does not provide a preview, and use the Carbon focus token for task-panel headings.
+
 ## 0.5.5
 
 ### Patch Changes

@@ -180,6 +180,8 @@ header.scientific-header.scientific-app-header {
  * scientific canvas; panel surface, heading, spacing and scrolling live here. */
 .scientific-task-panel.scientific-task-panel {
   min-inline-size: 0;
+  min-block-size: 0;
+  block-size: 100%;
   max-inline-size: 100%;
   overflow: hidden;
   border: 0;
@@ -239,6 +241,11 @@ header.scientific-header.scientific-app-header {
   line-height: 1rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.scientific-task-panel__heading h2:focus {
+  outline: 2px solid var(--scientific-ui-focus);
+  outline-offset: 2px;
 }
 
 .scientific-task-panel__heading h2 {
@@ -759,7 +766,7 @@ header.scientific-header.scientific-app-header {
   padding-block-end: 0;
 }
 
-.scientific-app-shell[data-panel-open] .scientific-workbench {
+.scientific-app-shell[data-mini-preview] .scientific-workbench {
   grid-template-rows: minmax(0, 1fr) var(--scientific-ui-mini-preview-block-size);
 }
 
@@ -770,12 +777,16 @@ header.scientific-header.scientific-app-header {
   border-block-end: 1px solid var(--scientific-ui-border-strong);
 }
 
-.scientific-app-shell[data-panel-open] .scientific-workbench__stage {
+.scientific-app-shell[data-mini-preview] .scientific-workbench__stage {
   min-block-size: var(--scientific-ui-mini-preview-block-size);
 }
 
 @media (max-width: 65.99rem) {
-  .scientific-app-shell[data-panel-open] .scientific-workbench__stage > :not(.scientific-workbench__mini-preview) {
+  .scientific-app-shell[data-panel-open]:not([data-mini-preview]) .scientific-workbench__stage {
+    display: none;
+  }
+
+  .scientific-app-shell[data-mini-preview] .scientific-workbench__stage > :not(.scientific-workbench__mini-preview) {
     display: none;
   }
 }

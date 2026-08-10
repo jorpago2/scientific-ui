@@ -170,3 +170,15 @@ test("mobile panels use the safe workspace above bottom navigation", async ({ pa
   await expect(stage).toBeVisible();
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(676);
 });
+
+test("tablet panels do not reserve an empty mini-preview row", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 900 });
+  await page.goto("/");
+
+  const workbench = page.locator(".scientific-workbench");
+  const panel = page.locator("#fixture-panel");
+  const stage = page.locator(".scientific-workbench__stage");
+
+  await expect(stage).toBeHidden();
+  expect(Math.abs(((await panel.boundingBox())?.height ?? 0) - ((await workbench.boundingBox())?.height ?? 0))).toBeLessThanOrEqual(1);
+});
