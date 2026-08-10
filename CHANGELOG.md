@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.9
+
+### Patch Changes
+
+- Align desktop tool-rail items to the leading edge and use the Carbon compact spacing rhythm.
+
 ## 0.5.8
 
 ### Patch Changes

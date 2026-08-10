@@ -847,8 +847,8 @@ header.scientific-header.scientific-app-header {
     block-size: var(--scientific-ui-tool-rail-item-block-size);
     min-block-size: var(--scientific-ui-tool-rail-item-block-size);
     align-items: center;
-    justify-content: center;
-    gap: var(--scientific-ui-spacing-05);
+    justify-content: flex-start;
+    gap: var(--scientific-ui-spacing-04);
     padding-block: 0;
     padding-inline: var(--scientific-ui-spacing-05);
   }
