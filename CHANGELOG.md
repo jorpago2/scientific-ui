@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.10
+
+### Patch Changes
+
+- Let Carbon own the icon-to-label spacing in desktop tool-rail items while retaining leading alignment.
+
 ## 0.5.9
 
 ### Patch Changes

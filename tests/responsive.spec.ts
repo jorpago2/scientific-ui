@@ -95,9 +95,8 @@ test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) =>
     return {
       height: button.height,
       iconSize: icon?.width ?? 0,
-      contentCenterDelta: icon && labelBox
-        ? Math.abs(button.left + button.width / 2 - (icon.left + labelBox.right) / 2)
-        : Number.POSITIVE_INFINITY,
+      contentInset: icon ? icon.left - button.left : Number.POSITIVE_INFINITY,
+      contentGap: icon && labelBox ? labelBox.left - icon.right : Number.POSITIVE_INFINITY,
       fontSize: labelStyle?.fontSize,
       fontWeight: labelStyle?.fontWeight,
       background: getComputedStyle(element).backgroundColor,
@@ -105,7 +104,8 @@ test("desktop tool rail follows Carbon left-panel geometry", async ({ page }) =>
   });
   expect(geometry.height).toBe(32);
   expect(geometry.iconSize).toBe(16);
-  expect(geometry.contentCenterDelta).toBeLessThanOrEqual(2);
+  expect(geometry.contentInset).toBe(20);
+  expect(geometry.contentGap).toBe(24);
   expect(geometry.fontSize).toBe("14px");
   expect(Number(geometry.fontWeight)).toBeGreaterThanOrEqual(600);
   expect(geometry.background).not.toBe("rgba(0, 0, 0, 0)");
