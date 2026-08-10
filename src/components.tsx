@@ -356,17 +356,27 @@ export interface ScientificNumberFieldProps {
   className?: string;
 }
 
+function formatScientificInputValue(value: number | string): string {
+  if (typeof value !== "number" || !Number.isFinite(value) || value === 0) return String(value);
+  const magnitude = Math.abs(value);
+  return magnitude >= 1e6 || magnitude < 1e-4
+    ? value.toExponential().replace(/\.0+(?=e)/, "").replace(/(\.\d*?)0+(?=e)/, "$1")
+    : String(value);
+}
+
 export const ScientificNumberField = forwardRef<unknown, ScientificNumberFieldProps>(function ScientificNumberField({
   id, labelText, value, onValueChange, min, max, unit, helperText, disabled, required, className,
 }, ref) {
-  const [rawValue, setRawValue] = useState(String(value));
+  const [rawValue, setRawValue] = useState(formatScientificInputValue(value));
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
-  useEffect(() => setRawValue(String(value)), [value]);
+  useEffect(() => setRawValue(formatScientificInputValue(value)), [value]);
   const commit = (nextRawValue: string) => {
     const error = validateScientificNumber(nextRawValue, { min, max });
     setValidationMessage(error);
-    onValueChange(error ? null : parseScientificNumber(nextRawValue), nextRawValue);
+    const parsedValue = error ? null : parseScientificNumber(nextRawValue);
+    if (parsedValue !== null) setRawValue(formatScientificInputValue(parsedValue));
+    onValueChange(parsedValue, nextRawValue);
   };
 
   return (

@@ -243,11 +243,6 @@ header.scientific-header.scientific-app-header {
   white-space: nowrap;
 }
 
-.scientific-task-panel__heading h2:focus {
-  outline: 2px solid var(--scientific-ui-focus);
-  outline-offset: 2px;
-}
-
 .scientific-task-panel__heading h2 {
   overflow: hidden;
   font-size: var(--scientific-ui-heading-panel-font-size);
@@ -255,6 +250,13 @@ header.scientific-header.scientific-app-header {
   line-height: var(--scientific-ui-heading-panel-line-height);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* The heading receives programmatic focus so assistive technology announces a
+ * newly opened panel. It is not an interactive target, so the user-agent focus
+ * ring would falsely present it as a control. */
+.scientific-task-panel__heading h2:focus {
+  outline: none;
 }
 
 .scientific-task-panel__actions {
@@ -677,6 +679,10 @@ header.scientific-header.scientific-app-header {
   color: var(--scientific-ui-text-secondary);
 }
 
+.scientific-empty-state p + * {
+  margin-block-start: var(--scientific-ui-spacing-05);
+}
+
 .scientific-empty-state__icon {
   color: var(--scientific-ui-text-secondary);
 }
@@ -819,6 +825,12 @@ header.scientific-header.scientific-app-header {
 
 .scientific-status-bar__metadata {
   justify-content: flex-start;
+}
+
+@media (max-width: 41.99rem) {
+  .scientific-status-bar__metadata {
+    display: none;
+  }
 }
 
 @media (min-width: 42rem) {

@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.11
+
+### Patch Changes
+
+- Improve mobile status-bar density, pointer-opened panel focus, empty-state action spacing, and scientific-number formatting.
+
 ## 0.5.10
 
 ### Patch Changes
