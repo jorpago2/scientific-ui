@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.7
+
+### Patch Changes
+
+- Remove mini-preview support so open mobile and tablet panels always use the full workbench above bottom navigation.
+
 ## 0.5.6
 
 ### Patch Changes

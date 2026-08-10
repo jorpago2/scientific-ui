@@ -441,23 +441,20 @@ export interface ScientificAppShellProps {
   inspector?: ReactNode;
   statusBar?: ReactNode;
   panelOpen?: boolean;
-  miniPreview?: ReactNode;
   className?: string;
 }
 
-export function ScientificAppShell({ header, navigation, panel, children, inspector, statusBar, panelOpen = Boolean(panel), miniPreview, className }: ScientificAppShellProps) {
+export function ScientificAppShell({ header, navigation, panel, children, inspector, statusBar, panelOpen = Boolean(panel), className }: ScientificAppShellProps) {
   return (
     <div
       className={joinClassNames("scientific-app-shell", className)}
       data-panel-open={panelOpen || undefined}
-      data-mini-preview={panelOpen && Boolean(miniPreview) || undefined}
     >
       {header}
       {navigation}
       <Grid as="main" fullWidth condensed className="scientific-workbench">
         {panelOpen && panel && <Column sm={4} md={8} lg={4} className="scientific-workbench__panel">{panel}</Column>}
         <Column sm={4} md={8} lg={panelOpen ? 12 : 16} className="scientific-workbench__stage">
-          {panelOpen && miniPreview && <div className="scientific-workbench__mini-preview">{miniPreview}</div>}
           {children}
         </Column>
       </Grid>

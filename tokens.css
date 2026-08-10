@@ -17,7 +17,6 @@
   --scientific-ui-mobile-nav-block-size: 3.5rem;
   --scientific-ui-safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --scientific-ui-mobile-nav-total-block-size: calc(var(--scientific-ui-mobile-nav-block-size) + var(--scientific-ui-safe-area-bottom));
-  --scientific-ui-mini-preview-block-size: 9rem;
   --scientific-ui-target-size: 2.75rem;
   --scientific-ui-duration: 110ms;
   --scientific-ui-ease: cubic-bezier(0.2, 0, 0.38, 0.9);

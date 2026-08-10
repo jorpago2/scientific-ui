@@ -171,7 +171,7 @@ test("mobile panels use the safe workspace above bottom navigation", async ({ pa
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(676);
 });
 
-test("tablet panels do not reserve an empty mini-preview row", async ({ page }) => {
+test("tablet panels occupy the full workbench without a preview row", async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/");
 
