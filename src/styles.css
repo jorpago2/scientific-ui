@@ -773,7 +773,7 @@ header.scientific-header.scientific-app-header {
   }
 }
 
-@media (max-width: 41.99rem) {
+@media (max-width: 65.99rem) {
   .scientific-app-shell[data-panel-open] .scientific-workbench {
     block-size: calc(
       100dvh

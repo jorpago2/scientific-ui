@@ -178,7 +178,10 @@ test("tablet panels occupy the full workbench without a preview row", async ({ p
   const workbench = page.locator(".scientific-workbench");
   const panel = page.locator("#fixture-panel");
   const stage = page.locator(".scientific-workbench__stage");
+  const status = page.locator(".scientific-status-bar");
 
   await expect(stage).toBeHidden();
+  await expect(status).toBeHidden();
+  expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(796);
   expect(Math.abs(((await panel.boundingBox())?.height ?? 0) - ((await workbench.boundingBox())?.height ?? 0))).toBeLessThanOrEqual(1);
 });

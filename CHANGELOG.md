@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.8
+
+### Patch Changes
+
+- Let open task panels use the full tablet workbench, hiding the underlying stage and status bar above bottom navigation.
+
 ## 0.5.7
 
 ### Patch Changes
