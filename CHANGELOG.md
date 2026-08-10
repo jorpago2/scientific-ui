@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.12
+
+### Patch Changes
+
+- Standardize Carbon header actions and downward tooltips, improve tablet panel reading width, stack mobile stage headings and actions, and keep bottom-navigation labels legible at 320 px.
+
 ## 0.5.11
 
 ### Patch Changes

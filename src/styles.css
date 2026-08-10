@@ -34,6 +34,16 @@ html {
   font-family: var(--scientific-ui-font-sans);
 }
 
+.scientific-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Canonical Carbon g10 application header. Local applications provide content
  * through component slots; they do not own shell geometry or responsive rules. */
 header.scientific-header.scientific-app-header {
@@ -176,6 +186,17 @@ header.scientific-header.scientific-app-header {
   min-block-size: var(--scientific-ui-header-block-size);
 }
 
+.scientific-header-action,
+.scientific-header__icon-action {
+  inline-size: var(--scientific-ui-header-block-size);
+  min-inline-size: var(--scientific-ui-header-block-size);
+  block-size: var(--scientific-ui-header-block-size);
+  min-block-size: var(--scientific-ui-header-block-size);
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Canonical task panel. Applications retain only positioning adapters for the
  * scientific canvas; panel surface, heading, spacing and scrolling live here. */
 .scientific-task-panel.scientific-task-panel {
@@ -201,8 +222,8 @@ header.scientific-header.scientific-app-header {
   flex-direction: column;
 }
 
-.scientific-task-panel[hidden] {
-  display: none !important;
+.scientific-task-panel[hidden][hidden] {
+  display: none;
 }
 
 .scientific-task-panel__header {
@@ -278,7 +299,12 @@ header.scientific-header.scientific-app-header {
   flex: 1 1 auto;
   overflow: auto;
   overscroll-behavior: contain;
-  padding: var(--scientific-ui-spacing-05);
+  padding-block: var(--scientific-ui-spacing-05);
+  padding-inline: clamp(
+    var(--scientific-ui-spacing-05),
+    calc((100% - 42rem) / 2),
+    11rem
+  );
   scrollbar-gutter: stable;
 }
 
@@ -305,6 +331,13 @@ header.scientific-header.scientific-app-header {
   padding: var(--scientific-ui-spacing-05);
   border-block-end: 1px solid var(--scientific-ui-border);
   background: var(--scientific-ui-background);
+}
+
+.scientific-stage__actions {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  gap: var(--scientific-ui-spacing-03);
 }
 
 .scientific-status-surface {
@@ -592,6 +625,12 @@ header.scientific-header.scientific-app-header {
   .scientific-task-panel textarea {
     min-block-size: var(--scientific-ui-target-size);
   }
+
+  .scientific-header__field input,
+  .scientific-header__field select,
+  .scientific-header__field textarea {
+    min-block-size: var(--scientific-ui-target-size);
+  }
 }
 
 .scientific-inspector {
@@ -828,6 +867,22 @@ header.scientific-header.scientific-app-header {
 }
 
 @media (max-width: 41.99rem) {
+  .scientific-stage__header {
+    min-block-size: 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .scientific-stage__actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  }
+
+  .scientific-stage__actions > * {
+    inline-size: 100%;
+    min-block-size: var(--scientific-ui-target-size);
+  }
+
   .scientific-status-bar__metadata {
     display: none;
   }
@@ -959,7 +1014,7 @@ header.scientific-header.scientific-app-header {
   }
 
   .scientific-tool-rail__label {
-    font-size: 0.6875rem;
+    font-size: var(--scientific-ui-label-font-size);
   }
 }
 
@@ -975,9 +1030,9 @@ header.scientific-header.scientific-app-header {
   .scientific-app-shell *,
   .scientific-app-shell *::before,
   .scientific-app-shell *::after {
-    scroll-behavior: auto !important;
-    transition-duration: 1ms !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
+    scroll-behavior: auto;
+    transition-duration: 0s;
+    animation-duration: 0s;
+    animation-iteration-count: 1;
   }
 }

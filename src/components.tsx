@@ -32,6 +32,7 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
+import type { IconButtonProps } from "@carbon/react";
 import { parseScientificNumber, validateScientificNumber } from "./number.js";
 import type {
   ResultOption,
@@ -82,6 +83,38 @@ export function ScientificHeader({ product, productMark, descriptor, href = "./"
   );
 }
 
+export interface ScientificHeaderActionProps extends Omit<IconButtonProps, "label"> {
+  label: ReactNode;
+}
+
+/**
+ * Canonical icon-only action for the 48 px application header. Carbon owns the
+ * button, tooltip, focus and selected states; the shared wrapper only fixes the
+ * tooltip direction so it cannot be clipped above the viewport.
+ */
+export function ScientificHeaderAction({
+  label,
+  align = "bottom-end",
+  kind = "ghost",
+  size = "lg",
+  className,
+  children,
+  ...props
+}: ScientificHeaderActionProps) {
+  return (
+    <IconButton
+      label={label}
+      align={align}
+      kind={kind}
+      size={size}
+      className={joinClassNames("scientific-header-action", className)}
+      {...props}
+    >
+      {children}
+    </IconButton>
+  );
+}
+
 export interface ScientificTaskPanelProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
   title: ReactNode;
   titleId?: string;
@@ -103,7 +136,7 @@ export const ScientificTaskPanel = forwardRef<HTMLElement, ScientificTaskPanelPr
         </div>
         {(actions || onClose) && <div className="scientific-task-panel__actions">
           {actions}
-          {onClose && <IconButton type="button" kind="ghost" size="lg" label={closeLabel} onClick={onClose}><Close size={20} aria-hidden={true} /></IconButton>}
+          {onClose && <IconButton type="button" kind="ghost" size="lg" align="bottom-end" label={closeLabel} onClick={onClose}><Close size={20} aria-hidden={true} /></IconButton>}
         </div>}
       </div>
       <div className={joinClassNames("scientific-task-panel__body", bodyClassName)}>{children}</div>
