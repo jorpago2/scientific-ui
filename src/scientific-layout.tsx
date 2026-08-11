@@ -237,7 +237,10 @@ export function ScientificMetricGrid({ metrics, columns = 4, className, ...props
       {metrics.map((metric) => (
         <Column sm={4} md={4} lg={lg} key={metric.id} className="scientific-metric" data-status={metric.status ?? "neutral"}>
           <dt>{metric.label}</dt>
-          <dd><strong>{metric.value}</strong>{metric.unit && <span>{metric.unit}</span>}</dd>
+          <dd>
+            <strong className="scientific-metric__value">{metric.value}</strong>
+            {metric.unit && <span className="scientific-metric__unit">{metric.unit}</span>}
+          </dd>
           {metric.detail && <p>{metric.detail}</p>}
         </Column>
       ))}

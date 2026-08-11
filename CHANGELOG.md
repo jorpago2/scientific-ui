@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.6.4
+
+### Patch Changes
+
+- Preserve the intended 24 px metric-value hierarchy when applications provide values as nested React elements, while styling units independently.
+
 ## 0.6.3
 
 ### Patch Changes
