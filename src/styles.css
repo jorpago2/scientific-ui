@@ -90,7 +90,7 @@ header.scientific-header.scientific-app-header {
   border-radius: 0;
   color: var(--scientific-ui-header-mark-text);
   background: var(--scientific-ui-header-mark-background);
-  font-family: var(--scientific-ui-font-mono);
+  font-family: var(--scientific-ui-font-sans);
   font-size: var(--scientific-ui-label-font-size);
   font-weight: 600;
   line-height: 1;
@@ -270,7 +270,7 @@ header.scientific-header.scientific-app-header {
   border: 1px solid var(--cds-border-inverse, #8d8d8d);
   background: transparent;
   color: var(--cds-text-inverse, #ffffff);
-  font-family: var(--scientific-ui-font-mono);
+  font-family: var(--scientific-ui-font-sans);
   font-size: var(--scientific-ui-label-font-size);
 }
 
@@ -787,7 +787,7 @@ header.scientific-header.scientific-app-header {
   justify-content: flex-end;
   gap: var(--scientific-ui-spacing-04);
   color: var(--scientific-ui-text-secondary);
-  font-family: var(--scientific-ui-font-mono);
+  font-family: var(--scientific-ui-font-sans);
   font-size: var(--scientific-ui-code-font-size);
 }
 
@@ -836,7 +836,7 @@ header.scientific-header.scientific-app-header {
 .scientific-value,
 .scientific-coordinate,
 .scientific-identifier {
-  font-family: var(--scientific-ui-font-mono);
+  font-family: var(--scientific-ui-font-sans);
   font-variant-numeric: tabular-nums;
 }
 
@@ -845,7 +845,7 @@ header.scientific-header.scientific-app-header {
   inset-block-start: 2rem;
   inset-inline-end: var(--scientific-ui-spacing-05);
   color: var(--scientific-ui-text-secondary);
-  font-family: var(--scientific-ui-font-mono);
+  font-family: var(--scientific-ui-font-sans);
   font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
@@ -1323,7 +1323,7 @@ header.scientific-header.scientific-app-header {
 
 .scientific-field-row__label > :last-child {
   color: var(--cds-text-helper);
-  font-family: var(--scientific-ui-font-mono);
+  font-family: var(--scientific-ui-font-sans);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1472,7 +1472,7 @@ header.scientific-header.scientific-app-header {
   align-items: baseline;
   gap: var(--scientific-ui-spacing-02);
   margin: var(--scientific-ui-spacing-03) 0 0;
-  font-family: var(--scientific-ui-font-mono);
+  font-family: var(--scientific-ui-font-sans);
   font-variant-numeric: tabular-nums;
 }
 

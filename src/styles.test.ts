@@ -6,12 +6,13 @@ const styles = readFileSync(fileURLToPath(new URL("./styles.css", import.meta.ur
 const layout = readFileSync(fileURLToPath(new URL("./scientific-layout.tsx", import.meta.url)), "utf8");
 
 describe("scientific typography contract", () => {
-  it("uses the shared mono token for inputs, values, coordinates and identifiers", () => {
-    expect(styles).toMatch(/\.scientific-number-field input,[\s\S]*\.scientific-value,[\s\S]*\.scientific-coordinate,[\s\S]*\.scientific-identifier \{[\s\S]*font-family: var\(--scientific-ui-font-mono\);[\s\S]*font-variant-numeric: tabular-nums;/);
+  it("uses IBM Plex Sans for inputs, values, coordinates and identifiers", () => {
+    expect(styles).toMatch(/\.scientific-number-field input,[\s\S]*\.scientific-value,[\s\S]*\.scientific-coordinate,[\s\S]*\.scientific-identifier \{[\s\S]*font-family: var\(--scientific-ui-font-sans\);[\s\S]*font-variant-numeric: tabular-nums;/);
   });
 
-  it("uses mono tabular numerals for metric values", () => {
-    expect(styles).toMatch(/\.scientific-metric dd \{[\s\S]*font-family: var\(--scientific-ui-font-mono\);[\s\S]*font-variant-numeric: tabular-nums;/);
+  it("uses IBM Plex Sans with tabular numerals for metric values", () => {
+    expect(styles).toMatch(/\.scientific-metric dd \{[\s\S]*font-family: var\(--scientific-ui-font-sans\);[\s\S]*font-variant-numeric: tabular-nums;/);
+    expect(styles).not.toContain("var(--scientific-ui-font-mono)");
   });
 
   it("keeps nested metric values distinct from units", () => {

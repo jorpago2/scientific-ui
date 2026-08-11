@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.6.5
+
+### Patch Changes
+
+- Standardize every interface and scientific numeric role on IBM Plex Sans while retaining tabular numeral alignment.
+
 ## 0.6.4
 
 ### Patch Changes

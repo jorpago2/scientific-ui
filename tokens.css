@@ -4,7 +4,8 @@
  */
 :root {
   --scientific-ui-font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
-  --scientific-ui-font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  /* Compatibility alias: the interface uses IBM Plex Sans for every role. */
+  --scientific-ui-font-mono: var(--scientific-ui-font-sans);
   --scientific-ui-panel-inline-size: 24rem;
   --scientific-ui-rail-inline-size: 16rem;
   --scientific-ui-rail-compact-inline-size: 4rem;

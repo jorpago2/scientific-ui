@@ -6,7 +6,7 @@ This is the normative design system for the shared scientific workbench package.
 
 - Genre: modern-minimal technical workbench.
 - Theme: Carbon `g10`; custom UI colors are semantic aliases of `--cds-*` tokens.
-- Typography: IBM Plex Sans for interface text and IBM Plex Mono for scientific values.
+- Typography: IBM Plex Sans for all interface text and scientific values; numeric roles use tabular numerals.
 - Geometry: square Carbon surfaces and controls; no decorative shadows, pills or gradients.
 - Motion: only functional state transitions, with reduced-motion support.
 
