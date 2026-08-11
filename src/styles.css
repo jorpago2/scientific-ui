@@ -1121,6 +1121,12 @@ header.scientific-header.scientific-app-header {
   }
 }
 
+.scientific-status-bar.scientific-status-bar--embedded {
+  inline-size: 100%;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+}
+
 @media (pointer: coarse) {
   .scientific-workflow button,
   .scientific-inspector button,

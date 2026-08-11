@@ -434,11 +434,12 @@ export interface ScientificStatusBarProps extends HTMLAttributes<HTMLElement> {
   status: ScientificStatusDescriptor;
   metadata?: ReactNode;
   actions?: ReactNode;
+  embedded?: boolean;
 }
 
-export function ScientificStatusBar({ status, metadata, actions, className, ...props }: ScientificStatusBarProps) {
+export function ScientificStatusBar({ status, metadata, actions, embedded = false, className, ...props }: ScientificStatusBarProps) {
   return (
-    <footer className={joinClassNames("scientific-status-bar", className)} {...props}>
+    <footer className={joinClassNames("scientific-status-bar", embedded && "scientific-status-bar--embedded", className)} {...props}>
       <Grid fullWidth condensed>
         <Column sm={4} md={4} lg={8} className="scientific-status-bar__status"><ScientificStatus status={status} compact /></Column>
         <Column sm={4} md={4} lg={8} className="scientific-status-bar__metadata">{metadata}{actions}</Column>

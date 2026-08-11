@@ -206,9 +206,9 @@ export function ScientificRunControl({ execution, size = "md", className, ...pro
           helperText={`${Math.round(execution.progress)}%`}
         />
       )}
-      <span className="scientific-visually-hidden" role="status" aria-live={running ? "polite" : "off"}>
+      {running && <span className="scientific-visually-hidden" role="status" aria-live="polite">
         {execution.label}{execution.detail ? `: ${execution.detail}` : ""}
-      </span>
+      </span>}
       <ScientificCommandBar actions={actions} label="Simulation controls" size={size} />
     </div>
   );

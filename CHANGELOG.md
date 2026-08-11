@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.6.2
+
+### Patch Changes
+
+- Add an explicit embedded status-bar mode for stages that already account for responsive navigation, and avoid duplicate idle announcements in shared execution controls.
+
 ## 0.6.1
 
 ### Patch Changes
