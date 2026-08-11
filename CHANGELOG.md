@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.6.6
+
+### Patch Changes
+
+- Keep closed scientific task panels mounted while hiding them from layout and interaction, so DOM-backed scientific engines preserve their control contracts.
+
 ## 0.6.5
 
 ### Patch Changes

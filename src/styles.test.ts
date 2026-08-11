@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const styles = readFileSync(fileURLToPath(new URL("./styles.css", import.meta.url)), "utf8");
 const layout = readFileSync(fileURLToPath(new URL("./scientific-layout.tsx", import.meta.url)), "utf8");
+const components = readFileSync(fileURLToPath(new URL("./components.tsx", import.meta.url)), "utf8");
 
 describe("scientific typography contract", () => {
   it("uses IBM Plex Sans for inputs, values, coordinates and identifiers", () => {
@@ -20,5 +21,13 @@ describe("scientific typography contract", () => {
     expect(layout).toContain('className="scientific-metric__unit"');
     expect(styles).toMatch(/\.scientific-metric__value > span,[\s\S]*color: inherit;[\s\S]*font: inherit;/);
     expect(styles).not.toContain(".scientific-metric dd span");
+  });
+});
+
+describe("scientific workbench contract", () => {
+  it("keeps a closed task panel mounted but hidden for DOM-backed scientific engines", () => {
+    expect(components).toContain("{panel && (");
+    expect(components).toContain("hidden={!panelOpen}");
+    expect(components).not.toContain("{panelOpen && panel &&");
   });
 });

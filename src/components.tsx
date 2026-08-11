@@ -602,7 +602,17 @@ export function ScientificAppShell({ header, navigation, panel, children, inspec
       {header}
       {navigation}
       <Grid as="main" fullWidth condensed className="scientific-workbench">
-        {panelOpen && panel && <Column sm={4} md={8} lg={4} className="scientific-workbench__panel">{panel}</Column>}
+        {panel && (
+          <Column
+            sm={4}
+            md={8}
+            lg={4}
+            className="scientific-workbench__panel"
+            hidden={!panelOpen}
+          >
+            {panel}
+          </Column>
+        )}
         <Column sm={4} md={8} lg={panelOpen ? 12 : 16} className="scientific-workbench__stage">
           {children}
         </Column>
