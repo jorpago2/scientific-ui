@@ -6,6 +6,8 @@ Shared Carbon `g10` workbench components for the jorpago2 scientific web applica
 
 `ScientificToolRail` is the normative application navigation: the canonical 256 px Carbon `SideNav` from `lg`, with 32 px rows, 16 px padding and icons, 14 px semibold labels, and a 4 px selected indicator. Below `lg`, the same semantic `SideNav` is presented as a 56 px bottom bar. This mobile presentation is the sole documented shell exception.
 
+Pass `help={{ summary, shortcuts, action, footer }}` to `ScientificHeader` to render the canonical Carbon Help action at the far-right edge. The package owns its official icon, toggletip, `?` shortcut, Escape handling, responsive geometry and focus restoration; applications provide only workflow-specific content.
+
 ```tsx
 import { ScientificHeader, ScientificStatusBar } from "@jorpago2/scientific-ui";
 import "@jorpago2/scientific-ui/styles.css";

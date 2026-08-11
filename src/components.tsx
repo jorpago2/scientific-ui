@@ -18,12 +18,17 @@ import {
   SideNavLink,
   Switch,
   TextInput,
+  Toggletip,
+  ToggletipActions,
+  ToggletipButton,
+  ToggletipContent,
   preview__IconIndicator as IconIndicator,
 } from "@carbon/react";
-import { Close } from "@carbon/icons-react";
+import { Close, Help } from "@carbon/icons-react";
 import {
   forwardRef,
   useEffect,
+  useId,
   useRef,
   useState,
   type ChangeEvent,
@@ -57,11 +62,12 @@ export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   status?: ScientificStatusDescriptor;
   primaryAction?: ReactNode;
   secondaryActions?: ReactNode;
+  help?: ScientificHeaderHelpDescriptor;
   actionsLabel?: string;
   skipLink?: ReactNode;
 }
 
-export function ScientificHeader({ product, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
+export function ScientificHeader({ product, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, help, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
   return (
     <Header className={joinClassNames("scientific-header", "scientific-app-header", className)} {...props}>
       {skipLink}
@@ -78,8 +84,99 @@ export function ScientificHeader({ product, productMark, descriptor, href = "./"
       <HeaderGlobalBar className="scientific-header__actions scientific-app-header__actions" role="group" aria-label={actionsLabel}>
         {secondaryActions && <div className="scientific-header__secondary-actions">{secondaryActions}</div>}
         {primaryAction && <div className="scientific-header__primary-action">{primaryAction}</div>}
+        {help && <div className="scientific-header__help"><ScientificHeaderHelp {...help} /></div>}
       </HeaderGlobalBar>
     </Header>
+  );
+}
+
+export interface ScientificHeaderHelpShortcut {
+  keys: readonly string[];
+  description: ReactNode;
+}
+
+export interface ScientificHeaderHelpAction {
+  label: string;
+  onClick: () => void;
+}
+
+export interface ScientificHeaderHelpDescriptor {
+  id?: string;
+  label?: string;
+  title?: ReactNode;
+  summary: ReactNode;
+  shortcuts?: readonly ScientificHeaderHelpShortcut[];
+  action?: ScientificHeaderHelpAction;
+  footer?: ReactNode;
+}
+
+function isEditableHelpTarget(target: EventTarget | null) {
+  return target instanceof HTMLElement && (target.matches("input, select, textarea") || target.isContentEditable);
+}
+
+export function ScientificHeaderHelp({
+  id,
+  label = "Help",
+  title = "Quick workflow",
+  summary,
+  shortcuts = [],
+  action,
+  footer,
+}: ScientificHeaderHelpDescriptor) {
+  const generatedId = useId();
+  const buttonId = id ?? `scientific-header-help-${generatedId}`;
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const toggleHelp = (event: globalThis.KeyboardEvent) => {
+      if (event.repeat) return;
+      if (event.key === "Escape" && buttonRef.current?.getAttribute("aria-expanded") === "true") {
+        event.preventDefault();
+        buttonRef.current.click();
+        buttonRef.current.focus();
+        return;
+      }
+      if (event.defaultPrevented || event.key !== "?" || isEditableHelpTarget(event.target)) return;
+      event.preventDefault();
+      buttonRef.current?.click();
+    };
+    document.addEventListener("keydown", toggleHelp, true);
+    return () => document.removeEventListener("keydown", toggleHelp, true);
+  }, []);
+
+  return (
+    <Toggletip className="scientific-header-help" align="bottom-end" autoAlign>
+      <ToggletipButton
+        ref={buttonRef}
+        id={buttonId}
+        className="scientific-header-help__button"
+        label={label}
+        aria-keyshortcuts="?"
+      >
+        <Help size={20} aria-hidden={true} />
+      </ToggletipButton>
+      <ToggletipContent className="scientific-header-help__popover">
+        <div className="scientific-header-help__content">
+          <strong className="scientific-header-help__title">{title}</strong>
+          <p className="scientific-header-help__summary">{summary}</p>
+          <dl className="scientific-header-help__shortcuts">
+            {shortcuts.map((shortcut, index) => (
+              <div key={`${shortcut.keys.join("+")}-${index}`}>
+                <dt>{shortcut.keys.map((key) => <kbd key={key}>{key}</kbd>)}</dt>
+                <dd>{shortcut.description}</dd>
+              </div>
+            ))}
+            <div><dt><kbd>?</kbd></dt><dd>Toggle this help</dd></div>
+          </dl>
+          {action && <ToggletipActions><Button size="sm" kind="tertiary" onClick={() => {
+            buttonRef.current?.focus();
+            buttonRef.current?.click();
+            window.requestAnimationFrame(action.onClick);
+          }}>{action.label}</Button></ToggletipActions>}
+          {footer && <small className="scientific-header-help__footer">{footer}</small>}
+        </div>
+      </ToggletipContent>
+    </Toggletip>
   );
 }
 

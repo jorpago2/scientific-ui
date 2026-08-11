@@ -12,7 +12,7 @@ This is the normative design system for the shared scientific workbench package.
 
 ## Workbench structure
 
-Application pages use one product header, workflow navigation, one controlled task panel, a dominant scientific stage, an optional contextual inspector and a concise status bar. On mobile, workflow navigation moves to the bottom, every icon shares the exact horizontal center axis of its visible label, and an open task panel becomes the active workspace layer; no mini-preview or minimap is introduced.
+Application pages use one product header, workflow navigation, one controlled task panel, a dominant scientific stage, an optional contextual inspector and a concise status bar. Help is always the final action at the far right of the product header and uses the shared Carbon toggletip. On mobile, workflow navigation moves to the bottom, every icon shares the exact horizontal center axis of its visible label, and an open task panel becomes the active workspace layer; no mini-preview or minimap is introduced.
 
 The product header is 48 px high. Desktop workflow navigation is 256 px wide. The task panel is 360–384 px wide with a 72 px shared heading and one shared scrolling body. Application styles may position these regions but may not redefine their surface, type, spacing, border, active state or focus behavior.
 

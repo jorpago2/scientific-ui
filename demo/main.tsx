@@ -18,7 +18,7 @@ function Demo() {
     ? { state: "running" as const, label: "Simulation running", detail: "Solving deterministic fixture", progress: 42 }
     : { state: "ready" as const, label: "Ready", detail: "Inputs are valid" };
   return <GlobalTheme theme="g10"><ScientificAppShell
-    header={<ScientificHeader product="Scientific UI" context="Conformance fixture" status={status} secondaryActions={<Button ref={inspectorTriggerRef} kind="ghost" onClick={() => setInspectorOpen(true)}>Inspect</Button>} primaryAction={<Button onClick={() => setRunning((value) => !value)}>{running ? "Stop" : "Run model"}</Button>} />}
+    header={<ScientificHeader product="Scientific UI" context="Conformance fixture" status={status} secondaryActions={<Button ref={inspectorTriggerRef} kind="ghost" onClick={() => setInspectorOpen(true)}>Inspect</Button>} primaryAction={<Button onClick={() => setRunning((value) => !value)}>{running ? "Stop" : "Run model"}</Button>} help={{ summary: "Configure the fixture, run the model and inspect the deterministic result.", shortcuts: [{ keys: ["Ctrl/⌘", "Enter"], description: "Run model" }], action: { label: "Open documentation", onClick: () => { document.body.dataset.helpAction = "triggered"; } } }} />}
     navigation={<ScientificToolRail activeId={active} onChange={setActive} items={[
       { id: "configure", label: "Configure", icon: <FixtureIcon />, controlsId: "fixture-panel" },
       { id: "results", label: "Results", icon: <FixtureIcon />, controlsId: "fixture-panel" },

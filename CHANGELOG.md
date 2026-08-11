@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.5.14
+
+### Patch Changes
+
+- Add a canonical Carbon header Help action with shared content, keyboard behavior and terminal placement in the top bar.
+
 ## 0.5.13
 
 ### Patch Changes

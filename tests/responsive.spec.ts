@@ -128,11 +128,50 @@ test("application header follows Carbon UI shell geometry", async ({ page }) => 
   await expect(header).toHaveCSS("min-height", "48px");
   await expect(header).toHaveCSS("border-bottom-width", "1px");
   await page.setViewportSize({ width: 390, height: 844 });
-  const contextOffset = await page.locator(".scientific-header__context").evaluate((element) => {
-    const rect = element.getBoundingClientRect();
-    return Math.abs(rect.left + rect.width / 2 - window.innerWidth / 2);
+  const tracks = await header.evaluate((element) => {
+    const brand = element.querySelector(".scientific-header__brand")?.getBoundingClientRect();
+    const context = element.querySelector(".scientific-header__context")?.getBoundingClientRect();
+    const actions = element.querySelector(".scientific-header__actions")?.getBoundingClientRect();
+    return { brandRight: brand?.right ?? 0, contextLeft: context?.left ?? 0, contextRight: context?.right ?? 0, actionsLeft: actions?.left ?? 0 };
   });
-  expect(contextOffset).toBeLessThanOrEqual(1);
+  expect(tracks.contextLeft).toBeGreaterThanOrEqual(tracks.brandRight - 1);
+  expect(tracks.contextRight).toBeLessThanOrEqual(tracks.actionsLeft + 1);
+});
+
+test("header Help is the terminal Carbon action and supports keyboard toggling", async ({ page }) => {
+  await page.goto("/");
+  const header = page.locator(".scientific-header");
+  const help = header.getByRole("button", { name: "Help" });
+  for (const width of [320, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: width < 600 ? 844 : 900 });
+    await expect(help).toBeVisible();
+    const geometry = await header.evaluate((element) => {
+      const actions = element.querySelector(".scientific-header__actions")?.getBoundingClientRect();
+      const helpButton = element.querySelector(".scientific-header-help__button")?.getBoundingClientRect();
+      const lastAction = element.querySelector(".scientific-header__actions")?.lastElementChild;
+      return {
+        actionsRight: actions?.right ?? 0,
+        helpRight: helpButton?.right ?? 0,
+        helpSize: helpButton?.width ?? 0,
+        helpIsLast: lastAction?.classList.contains("scientific-header__help") ?? false,
+      };
+    });
+    expect(Math.abs(geometry.actionsRight - geometry.helpRight)).toBeLessThanOrEqual(1);
+    expect(geometry.helpSize).toBe(48);
+    expect(geometry.helpIsLast).toBe(true);
+  }
+
+  await help.click();
+  await expect(help).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByText("Configure the fixture, run the model and inspect the deterministic result.")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(help).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByText("Configure the fixture, run the model and inspect the deterministic result.")).toBeHidden();
+  await page.keyboard.press("?");
+  await expect(page.getByText("Configure the fixture, run the model and inspect the deterministic result.")).toBeVisible();
+  await page.getByRole("button", { name: "Open documentation" }).click();
+  await expect(page.locator("body")).toHaveAttribute("data-help-action", "triggered");
+  await expect(help).toHaveAttribute("aria-expanded", "false");
 });
 
 test("task panel owns consistent Carbon surface, heading and scrolling", async ({ page }) => {

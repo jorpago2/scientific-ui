@@ -173,7 +173,8 @@ header.scientific-header.scientific-app-header {
 }
 
 .scientific-header__secondary-actions,
-.scientific-header__primary-action {
+.scientific-header__primary-action,
+.scientific-header__help {
   display: flex;
   block-size: 100%;
   align-items: center;
@@ -187,7 +188,8 @@ header.scientific-header.scientific-app-header {
 }
 
 .scientific-header-action,
-.scientific-header__icon-action {
+.scientific-header__icon-action,
+.scientific-header-help__button {
   inline-size: var(--scientific-ui-header-block-size);
   min-inline-size: var(--scientific-ui-header-block-size);
   block-size: var(--scientific-ui-header-block-size);
@@ -195,6 +197,64 @@ header.scientific-header.scientific-app-header {
   padding: 0;
   align-items: center;
   justify-content: center;
+}
+
+.scientific-header-help {
+  display: flex;
+  block-size: 100%;
+  align-items: center;
+}
+
+.scientific-header-help__popover {
+  inline-size: min(22rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
+  max-inline-size: min(22rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
+}
+
+.scientific-header-help__content {
+  display: grid;
+  inline-size: 100%;
+  gap: var(--scientific-ui-spacing-03);
+  color: var(--cds-text-inverse, #ffffff);
+}
+
+.scientific-header-help__title,
+.scientific-header-help__summary,
+.scientific-header-help__shortcuts,
+.scientific-header-help__shortcuts dt,
+.scientific-header-help__shortcuts dd,
+.scientific-header-help__footer {
+  margin: 0;
+}
+
+.scientific-header-help__summary,
+.scientific-header-help__footer {
+  color: var(--cds-text-inverse, #ffffff);
+}
+
+.scientific-header-help__shortcuts {
+  display: grid;
+  gap: var(--scientific-ui-spacing-02);
+}
+
+.scientific-header-help__shortcuts > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, auto) minmax(0, 1fr);
+  gap: var(--scientific-ui-spacing-03);
+  align-items: center;
+}
+
+.scientific-header-help__shortcuts dt {
+  display: flex;
+  gap: var(--scientific-ui-spacing-02);
+}
+
+.scientific-header-help__shortcuts kbd {
+  padding: var(--scientific-ui-spacing-01) var(--scientific-ui-spacing-02);
+  border: 1px solid var(--cds-border-inverse, #8d8d8d);
+  background: transparent;
+  color: var(--cds-text-inverse, #ffffff);
+  font-family: var(--scientific-ui-font-mono);
+  font-size: var(--scientific-ui-label-font-size);
 }
 
 /* Canonical task panel. Applications retain only positioning adapters for the
@@ -519,14 +579,12 @@ header.scientific-header.scientific-app-header {
   }
 
   .scientific-header__context {
-    position: absolute;
-    inset-inline-start: 50%;
-    inline-size: min(28rem, calc(100% - 2 * var(--scientific-ui-header-block-size)));
+    position: static;
+    inline-size: 100%;
     max-inline-size: none;
-    justify-self: auto;
+    justify-self: stretch;
     justify-content: center;
     padding-inline: var(--scientific-ui-spacing-03);
-    transform: translateX(-50%);
   }
 
   .scientific-header__context-value {

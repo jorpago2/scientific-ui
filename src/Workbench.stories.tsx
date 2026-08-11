@@ -8,7 +8,7 @@ function WorkbenchExample({ status = { state: "modified", label: "Parameters mod
   const [activeId, setActiveId] = useState("configure");
   return (
     <ScientificAppShell
-      header={<ScientificHeader product="Scientific workbench" context="Example experiment" status={status} primaryAction={<Button>Run model</Button>} />}
+      header={<ScientificHeader product="Scientific workbench" context="Example experiment" status={status} primaryAction={<Button>Run model</Button>} help={{ summary: "Configure the example, run the model and inspect the result.", shortcuts: [{ keys: ["Ctrl/⌘", "Enter"], description: "Run model" }] }} />}
       navigation={<WorkflowNavigation activeId={activeId} onChange={setActiveId} items={[
         { id: "configure", label: "Configure", controlsId: "example-panel" },
         { id: "results", label: "Results", controlsId: "example-panel" },
