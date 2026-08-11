@@ -1,34 +1,118 @@
-import { Button, GlobalTheme } from "@carbon/react";
+import { Button } from "@carbon/react";
+import { ChartLine, Download, SettingsAdjust } from "@carbon/icons-react";
 import "./carbon.scss";
 import "../tokens.css";
 import "../src/styles.css";
 import "./demo.css";
 import { createRoot } from "react-dom/client";
 import { useRef, useState } from "react";
-import { InspectorPanel, ScientificAppShell, ScientificEmptyState, ScientificHeader, ScientificStatusBar, ScientificTaskPanel, ScientificToolRail } from "@jorpago2/scientific-ui";
-
-const FixtureIcon = () => <svg viewBox="0 0 16 16"><path d="M2 3h12v2H2zm0 4h12v2H2zm0 4h12v2H2z" /></svg>;
+import {
+  InspectorPanel,
+  ScientificAppShell,
+  ScientificHeader,
+  ScientificMetricGrid,
+  ScientificNumberField,
+  ScientificPanelSection,
+  ScientificParameterGroup,
+  ScientificProjectActions,
+  ScientificResultsLayout,
+  ScientificRunControl,
+  ScientificStatusBar,
+  ScientificTaskPanel,
+  ScientificToolRail,
+  ScientificUiProvider,
+  ScientificViewportToolbar,
+  useScientificNotifications,
+} from "@jorpago2/scientific-ui";
 
 function Demo() {
   const [active, setActive] = useState<string | null>("configure");
   const [running, setRunning] = useState(false);
+  const [parameter, setParameter] = useState<number | null>(1e-6);
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const inspectorTriggerRef = useRef<HTMLButtonElement>(null);
+  const { notify } = useScientificNotifications();
   const status = running
     ? { state: "running" as const, label: "Simulation running", detail: "Solving deterministic fixture", progress: 42 }
     : { state: "ready" as const, label: "Ready", detail: "Inputs are valid" };
-  return <GlobalTheme theme="g10"><ScientificAppShell
-    header={<ScientificHeader product="Scientific UI" context="Conformance fixture" status={status} secondaryActions={<Button ref={inspectorTriggerRef} kind="ghost" onClick={() => setInspectorOpen(true)}>Inspect</Button>} primaryAction={<Button onClick={() => setRunning((value) => !value)}>{running ? "Stop" : "Run model"}</Button>} help={{ summary: "Configure the fixture, run the model and inspect the deterministic result.", shortcuts: [{ keys: ["Ctrl/⌘", "Enter"], description: "Run model" }], action: { label: "Open documentation", onClick: () => { document.body.dataset.helpAction = "triggered"; } } }} />}
+
+  return <ScientificAppShell
+    header={<ScientificHeader
+      product="Scientific UI"
+      context="Conformance fixture"
+      status={status}
+      secondaryActions={<>
+        <ScientificProjectActions
+          onExport={() => notify({ kind: "success", title: "Export ready", subtitle: "fixture.json" })}
+          onCopyUrl={() => notify({ kind: "info", title: "URL copied" })}
+        />
+        <Button ref={inspectorTriggerRef} kind="ghost" onClick={() => setInspectorOpen(true)}>Inspect</Button>
+      </>}
+      primaryAction={<ScientificRunControl execution={{
+        ...status,
+        onRun: () => setRunning(true),
+        onStop: () => setRunning(false),
+        runLabel: "Run model",
+      }} />}
+      help={{
+        summary: "Configure the fixture, run the model and inspect the deterministic result.",
+        action: { label: "Open documentation", onClick: () => { document.body.dataset.helpAction = "triggered"; } },
+      }}
+    />}
     navigation={<ScientificToolRail activeId={active} onChange={setActive} items={[
-      { id: "configure", label: "Configure", icon: <FixtureIcon />, controlsId: "fixture-panel" },
-      { id: "results", label: "Results", icon: <FixtureIcon />, controlsId: "fixture-panel" },
-      { id: "export", label: "Export", icon: <FixtureIcon />, controlsId: "fixture-panel" },
+      { id: "configure", label: "Configure", icon: <SettingsAdjust />, controlsId: "fixture-panel" },
+      { id: "results", label: "Results", icon: <ChartLine />, controlsId: "fixture-panel" },
+      { id: "export", label: "Export", icon: <Download />, controlsId: "fixture-panel" },
     ]} />}
-    panel={active ? <ScientificTaskPanel id="fixture-panel" className="fixture-panel" title={active === "configure" ? "Configure" : active === "results" ? "Results" : "Export"} titleId="fixture-panel-title" eyebrow="Scientific workflow parameters and constraints" onClose={() => setActive(null)}><p>The panel remains readable at every Carbon breakpoint.</p></ScientificTaskPanel> : undefined}
+    panel={active ? <ScientificTaskPanel
+      id="fixture-panel"
+      className="fixture-panel"
+      title={active === "configure" ? "Configure" : active === "results" ? "Results" : "Export"}
+      titleId="fixture-panel-title"
+      eyebrow="Scientific workflow parameters and constraints"
+      onClose={() => setActive(null)}
+    >
+      <ScientificPanelSection title="Model parameters" description="The panel remains readable at every Carbon breakpoint.">
+        <ScientificParameterGroup columns={2}>
+          <ScientificNumberField id="fixture-length" labelText="Length" value={parameter ?? ""} unit="m" min={0} onValueChange={setParameter} />
+          <ScientificNumberField id="fixture-frequency" labelText="Frequency" value={2e14} unit="Hz" min={0} onValueChange={() => undefined} />
+        </ScientificParameterGroup>
+      </ScientificPanelSection>
+      <ScientificPanelSection title="Advanced checks" meta="Optional" collapsible defaultOpen={false}>
+        <p>Deterministic validation controls.</p>
+      </ScientificPanelSection>
+    </ScientificTaskPanel> : undefined}
     panelOpen={active !== null}
-    inspector={<InspectorPanel open={inspectorOpen} title="Result inspector" triggerRef={inspectorTriggerRef} onClose={() => setInspectorOpen(false)}><p>Carbon manages focus, Escape and return focus for this inspector.</p><Button data-modal-primary-focus onClick={() => setInspectorOpen(false)}>Apply</Button></InspectorPanel>}
+    inspector={<InspectorPanel open={inspectorOpen} title="Result inspector" triggerRef={inspectorTriggerRef} onClose={() => setInspectorOpen(false)}>
+      <p>Carbon manages focus, Escape and return focus for this inspector.</p>
+      <Button data-modal-primary-focus onClick={() => setInspectorOpen(false)}>Apply</Button>
+    </InspectorPanel>}
     statusBar={<ScientificStatusBar status={status} metadata="390–1440 px" />}
-  ><div className="fixture-stage"><ScientificEmptyState title="No result yet" description="Run the model to populate this scientific canvas." action={<Button size="sm" onClick={() => setRunning(true)}>Run model</Button>} /></div><ScientificTaskPanel id="hidden-fixture-panel" title="Hidden panel" hidden>Hidden content</ScientificTaskPanel></ScientificAppShell></GlobalTheme>;
+  >
+    <div className="fixture-stage">
+      <ScientificResultsLayout
+        title="Deterministic result"
+        description="Stable fixture used for responsive and accessibility conformance."
+        actions={<ScientificViewportToolbar
+          onZoomIn={() => undefined}
+          onZoomOut={() => undefined}
+          onFitWidth={() => undefined}
+          onFitSelection={() => undefined}
+          selectionAvailable
+          onFitAll={() => undefined}
+          onReset={() => undefined}
+        />}
+      >
+        <ScientificMetricGrid metrics={[
+          { id: "mesh", label: "Mesh cells", value: "360 × 240" },
+          { id: "cfl", label: "CFL", value: "0.50", status: "success" },
+          { id: "energy", label: "Energy", value: "1.00", unit: "a.u." },
+        ]} />
+      </ScientificResultsLayout>
+    </div>
+    <ScientificTaskPanel id="hidden-fixture-panel" title="Hidden panel" hidden>Hidden content</ScientificTaskPanel>
+  </ScientificAppShell>;
 }
 
-createRoot(document.getElementById("root")!).render(<Demo />);
+const theme = new URLSearchParams(window.location.search).get("theme") === "dark" ? "dark" : "light";
+createRoot(document.getElementById("root")!).render(<ScientificUiProvider theme={theme}><Demo /></ScientificUiProvider>);

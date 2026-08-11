@@ -39,6 +39,7 @@ import {
 } from "react";
 import type { IconButtonProps } from "@carbon/react";
 import { parseScientificNumber, validateScientificNumber } from "./number.js";
+import { useScientificShortcuts } from "./shortcuts.js";
 import type {
   ResultOption,
   ScientificState,
@@ -84,7 +85,7 @@ export function ScientificHeader({ product, productMark, descriptor, href = "./"
       <HeaderGlobalBar className="scientific-header__actions scientific-app-header__actions" role="group" aria-label={actionsLabel}>
         {secondaryActions && <div className="scientific-header__secondary-actions">{secondaryActions}</div>}
         {primaryAction && <div className="scientific-header__primary-action">{primaryAction}</div>}
-        {help && <div className="scientific-header__help"><ScientificHeaderHelp {...help} /></div>}
+        {help && <div className="scientific-header__help" data-scientific-header-terminal-action><ScientificHeaderHelp {...help} /></div>}
       </HeaderGlobalBar>
     </Header>
   );
@@ -123,6 +124,7 @@ export function ScientificHeaderHelp({
   action,
   footer,
 }: ScientificHeaderHelpDescriptor) {
+  const registeredShortcuts = useScientificShortcuts();
   const generatedId = useId();
   const buttonId = id ?? `scientific-header-help-${generatedId}`;
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -163,6 +165,12 @@ export function ScientificHeaderHelp({
             {shortcuts.map((shortcut, index) => (
               <div key={`${shortcut.keys.join("+")}-${index}`}>
                 <dt>{shortcut.keys.map((key) => <kbd key={key}>{key}</kbd>)}</dt>
+                <dd>{shortcut.description}</dd>
+              </div>
+            ))}
+            {registeredShortcuts.map((shortcut) => (
+              <div key={shortcut.id}>
+                <dt>{(shortcut.displayKeys ?? [shortcut.shortcut]).map((key) => <kbd key={key}>{key}</kbd>)}</dt>
                 <dd>{shortcut.description}</dd>
               </div>
             ))}
@@ -400,6 +408,7 @@ export function ScientificStatus({ status, compact, className, ...props }: Scien
     "needs-input": "not-started",
     ready: "normal",
     running: "in-progress",
+    paused: "pending",
     "up-to-date": "succeeded",
     modified: "pending",
     validated: "succeeded",

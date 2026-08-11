@@ -21,10 +21,44 @@ Task panels use `ScientificTaskPanel`: a Carbon `Layer` surface with a 72 px hea
 
 Themes must be supplied by Carbon (`GlobalTheme` or `Theme`). Shared CSS consumes the resulting semantic `--cds-*` values and never selects internal `.cds--*` classes.
 
+## Composition APIs
+
+Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g100` to the complete document, including portaled menus and modals, and installs one shortcut registry and one notification surface.
+
+- `ScientificCommandBar` owns visible/overflow action priority and can respond to either the viewport or its containing result region.
+- `ScientificRunControl` presents run, pause, resume, stop, progress and live execution state without owning a solver.
+- `ScientificPanelSection`, `ScientificParameterGroup`, `ScientificFieldRow` and `ScientificPanelFooter` define panel rhythm and responsive form composition.
+- `ScientificResultsLayout`, `ScientificResultsToolbar`, `ScientificMetricGrid` and `ScientificLegend` define result hierarchy while charts remain local.
+- `ScientificViewportToolbar` exposes zoom and fit callbacks with official Carbon icons. It never introduces a minimap or mini-preview.
+- `ScientificProjectActions` and `ExportReceipt` provide reproducibility actions and explicit export feedback.
+
+Application code should pass descriptors and callbacks. It must not wrap every Carbon primitive or move scientific state into this package.
+
+```tsx
+import {
+  ScientificRunControl,
+  ScientificUiProvider,
+  ScientificViewportToolbar,
+} from "@jorpago2/scientific-ui";
+
+root.render(
+  <ScientificUiProvider theme="system">
+    <App />
+  </ScientificUiProvider>,
+);
+```
+
+Actions with a `shortcut` register automatically and appear in the shared header Help. Use `useScientificShortcut` for application-specific commands and `useScientificNotifications` for transient Carbon notifications.
+
+## CSS ownership
+
+Run `pnpm check:conformance` in this package. Consumer CI can call `node node_modules/@jorpago2/scientific-ui/scripts/check-conformance.mjs src` to reject internal Carbon selectors, `!important` and local overrides of shared shell geometry. Domain colors remain allowed only in scientific rendering code.
+
 ## Commands
 
 - `pnpm build` emits ESM, declarations and the shared stylesheet.
-- `pnpm test` validates scientific number parsing.
+- `pnpm test` validates number parsing and keyboard contracts.
+- `pnpm check:conformance` validates CSS ownership.
 - `pnpm test:ui` checks responsive behavior and accessibility.
 - `pnpm storybook` opens the component catalogue.
 

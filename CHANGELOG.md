@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.6.0
+
+### Minor Changes
+
+- Add descriptor-driven commands, execution controls, panel and result composition, viewport and project actions, complete theme/notification providers, central keyboard shortcuts and CSS conformance checks. Make the canonical Carbon Help control an invariant 48 px terminal header action at every responsive width.
+
 ## 0.5.14
 
 ### Patch Changes

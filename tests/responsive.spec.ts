@@ -232,3 +232,44 @@ test("tablet panels occupy the full workbench without a preview row", async ({ p
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(796);
   expect(Math.abs(((await panel.boundingBox())?.height ?? 0) - ((await workbench.boundingBox())?.height ?? 0))).toBeLessThanOrEqual(1);
 });
+
+test("shared commands collapse into Carbon overflow without global overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.locator("#fixture-panel").getByRole("button", { name: "Close panel" }).click();
+  const viewport = page.getByRole("group", { name: "Viewport controls" });
+  await expect(viewport.getByRole("button", { name: "Fit all" })).toBeVisible();
+  await expect(viewport.getByRole("button", { name: "Zoom in" })).toBeHidden();
+  const overflow = viewport.getByRole("button", { name: "More actions" });
+  await expect(overflow).toBeVisible();
+  await overflow.click();
+  await expect(page.getByRole("menuitem", { name: "Zoom in" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+});
+
+test("registered commands appear in Help and execute from one shortcut registry", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Help" }).click();
+  await expect(page.locator(".scientific-header-help__popover").getByText("Run model", { exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.keyboard.press("Control+Enter");
+  await expect(page.getByText("Simulation running").first()).toBeVisible();
+});
+
+test("theme provider applies Carbon g100 to the complete workbench", async ({ page }) => {
+  await page.goto("/?theme=dark");
+  const theme = page.locator(".scientific-theme");
+  await expect(theme).toHaveAttribute("data-scientific-theme", "g100");
+  const colors = await theme.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    panel: getComputedStyle(document.querySelector(".scientific-task-panel")!).backgroundColor,
+  }));
+  expect(colors.background).not.toBe("rgba(0, 0, 0, 0)");
+  expect(colors.panel).not.toBe("rgba(0, 0, 0, 0)");
+  await page.getByRole("group", { name: "Viewport controls" }).getByRole("button", { name: "More actions" }).click();
+  const floatingBackground = await page.evaluate(() => {
+    const menu = document.querySelector<HTMLElement>('[role="menu"]');
+    return menu ? getComputedStyle(menu).backgroundColor : null;
+  });
+  expect(floatingBackground).toBe(colors.panel);
+});

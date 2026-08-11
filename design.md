@@ -20,6 +20,18 @@ The product header is 48 px high. Desktop workflow navigation is 256 px wide. Th
 
 Domain colors are allowed only for data series, material identity, device regions, field maps and geometry. Every meaning must also be available through text, shape, pattern or position.
 
+## Command and content contracts
+
+Actions are ordered primary, visible secondary, then overflow. Collapse decisions belong to `ScientificCommandBar`; applications do not hide buttons with local media queries. Result and canvas toolbars respond to their available container width because a stage can be narrow even at a desktop viewport.
+
+Task-panel content uses shared sections, parameter groups and footers. One-column groups are the default; two-column groups are reserved for short, directly comparable quantities. Labels remain visible, units align with values and helper/error text stays attached to its field.
+
+Execution is communicated with text and icon through the shared state machine. `running`, `paused`, `modified`, `up-to-date`, warning and failure states never depend on color alone. Project export/import controls use the shared action hierarchy and successful exports produce an explicit receipt or notification.
+
+Results use a title, optional status/switcher, contextual toolbar, scientific content and optional details region. Rendering engines and scientific palettes remain local. Viewport commands are Zoom in/out, Fit width, Fit selection, Fit all and Reset; mini-previews and minimaps are not part of the system.
+
+The application root uses `ScientificUiProvider`. Theme selection must affect portaled Carbon overlays as well as the visible workbench. Registered keyboard commands are discoverable in Header Help and are dispatched by a single provider.
+
 ## Conformance
 
 All components and consumers are verified at 320, 375, 414, 768, 1024 and 1440 CSS pixels. Page-level horizontal overflow, inaccessible focus, two-line action labels and controls smaller than 44 px on coarse pointers are release blockers.
