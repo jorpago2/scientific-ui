@@ -832,12 +832,21 @@ header.scientific-header.scientific-app-header {
   position: relative;
 }
 
+.scientific-number-field input,
+.scientific-value,
+.scientific-coordinate,
+.scientific-identifier {
+  font-family: var(--scientific-ui-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
 .scientific-number-field__unit {
   position: absolute;
   inset-block-start: 2rem;
   inset-inline-end: var(--scientific-ui-spacing-05);
   color: var(--scientific-ui-text-secondary);
   font-family: var(--scientific-ui-font-mono);
+  font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
 
@@ -1315,6 +1324,7 @@ header.scientific-header.scientific-app-header {
 .scientific-field-row__label > :last-child {
   color: var(--cds-text-helper);
   font-family: var(--scientific-ui-font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .scientific-field-row__control {
@@ -1462,6 +1472,8 @@ header.scientific-header.scientific-app-header {
   align-items: baseline;
   gap: var(--scientific-ui-spacing-02);
   margin: var(--scientific-ui-spacing-03) 0 0;
+  font-family: var(--scientific-ui-font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .scientific-metric dd strong {

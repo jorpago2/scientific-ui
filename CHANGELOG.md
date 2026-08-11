@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.6.3
+
+### Patch Changes
+
+- Apply IBM Plex Mono and tabular numerals to shared scientific values, metric readouts, number inputs, units, coordinates and identifiers.
+
 ## 0.6.2
 
 ### Patch Changes

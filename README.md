@@ -21,6 +21,8 @@ Task panels use `ScientificTaskPanel`: a Carbon `Layer` surface with a 72 px hea
 
 Themes must be supplied by Carbon (`GlobalTheme` or `Theme`). Shared CSS consumes the resulting semantic `--cds-*` values and never selects internal `.cds--*` classes.
 
+Scientific values use IBM Plex Mono with tabular numerals. `ScientificNumberField`, `ScientificMetricGrid`, units and status metadata apply it automatically; use `scientific-value`, `scientific-coordinate` or `scientific-identifier` for local readouts that remain outside shared components.
+
 ## Composition APIs
 
 Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g100` to the complete document, including portaled menus and modals, and installs one shortcut registry and one notification surface.
