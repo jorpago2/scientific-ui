@@ -802,6 +802,10 @@ header.scientific-header.scientific-app-header {
   background: var(--scientific-ui-layer);
 }
 
+.scientific-empty-state[hidden] {
+  display: none;
+}
+
 .scientific-empty-state h2,
 .scientific-empty-state p {
   margin-block-start: 0;

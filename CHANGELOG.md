@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.6.1
+
+### Patch Changes
+
+- Ensure shared empty states honour the native `hidden` contract when scientific results replace them.
+
 ## 0.6.0
 
 ### Minor Changes
