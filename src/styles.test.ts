@@ -38,4 +38,11 @@ describe("scientific workbench contract", () => {
     expect(styles).toMatch(/\.scientific-header__context a,[\s\S]*min-inline-size: var\(--scientific-ui-target-size\);/);
     expect(styles).toMatch(/@media \(max-width: 25\.875rem\)[\s\S]*\.scientific-header__primary-action \.scientific-command-bar__label[\s\S]*display: none;/);
   });
+
+  it("preserves Carbon tab and content-switcher heights on touch viewports", () => {
+    expect(styles).toContain('.scientific-task-panel button:not([role="tab"])');
+    expect(styles).toContain('.scientific-inspector button:not([role="tab"])');
+    expect(styles).toContain('.scientific-workbench button:not([role="tab"])');
+    expect(styles).not.toContain("  .scientific-result-switcher button,");
+  });
 });

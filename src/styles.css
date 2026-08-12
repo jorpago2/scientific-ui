@@ -709,11 +709,10 @@ header.scientific-header.scientific-app-header {
     margin: 0;
   }
 
-  .scientific-task-panel button,
+  .scientific-task-panel button:not([role="tab"]),
   .scientific-task-panel a[role="button"],
-  .scientific-inspector button,
-  .scientific-result-switcher button,
-  .scientific-workbench button,
+  .scientific-inspector button:not([role="tab"]),
+  .scientific-workbench button:not([role="tab"]),
   .scientific-workbench a[role="button"] {
     min-inline-size: var(--scientific-ui-target-size);
     min-block-size: var(--scientific-ui-target-size);
@@ -1158,9 +1157,8 @@ header.scientific-header.scientific-app-header {
 }
 
 @media (pointer: coarse) {
-  .scientific-workflow button,
-  .scientific-inspector button,
-  .scientific-result-switcher button {
+  .scientific-workflow button:not([role="tab"]),
+  .scientific-inspector button:not([role="tab"]) {
     min-block-size: var(--scientific-ui-target-size);
   }
 }

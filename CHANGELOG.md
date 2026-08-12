@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.7.1
+
+### Patch Changes
+
+- Preserve Carbon-defined tab and content-switcher heights on mobile and coarse-pointer viewports instead of stretching their buttons beyond their parent container.
+
 ## 0.7.0
 
 ### Minor Changes
