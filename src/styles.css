@@ -733,7 +733,7 @@ header.scientific-header.scientific-app-header {
 }
 
 @media (max-width: 25.875rem) {
-  .scientific-header__status,
+  .scientific-header .scientific-header__status,
   .scientific-header__primary-action .scientific-command-bar__label,
   .scientific-header__primary-action .scientific-command-bar__short-label {
     display: none;
