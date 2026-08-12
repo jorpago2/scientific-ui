@@ -97,6 +97,34 @@ export interface ScientificMetricDescriptor {
   status?: "neutral" | "success" | "warning" | "error";
 }
 
+/**
+ * Evidence state for a preflight or validation check. `passed` means that one
+ * check passed; it never implies that the complete result is validated.
+ */
+export type ScientificCheckState =
+  | "not-run"
+  | "ready"
+  | "running"
+  | "passed"
+  | "warning"
+  | "failed"
+  | "not-applicable";
+
+export interface ScientificCheckDescriptor {
+  id: string;
+  label: ReactNode;
+  state: ScientificCheckState;
+  detail?: ReactNode;
+  value?: ReactNode;
+}
+
+export interface ScientificProvenanceItem {
+  id: string;
+  label: ReactNode;
+  value: ReactNode;
+  detail?: ReactNode;
+}
+
 export interface ScientificLegendItem {
   id: string;
   label: ReactNode;

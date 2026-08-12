@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.7.0
+
+### Minor Changes
+
+- Add shared scientific preflight, validation, model-scope, provenance, and reproducibility patterns so applications can distinguish calculation state from scientific evidence.
+
 ## 0.6.6
 
 ### Patch Changes

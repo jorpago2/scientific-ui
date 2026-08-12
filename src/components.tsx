@@ -231,9 +231,23 @@ export interface ScientificTaskPanelProps extends Omit<HTMLAttributes<HTMLElemen
   bodyClassName?: string;
 }
 
-export const ScientificTaskPanel = forwardRef<HTMLElement, ScientificTaskPanelProps>(function ScientificTaskPanel({ title, titleId, eyebrow = "Configuration", actions, footer, onClose, closeLabel = "Close panel", bodyClassName, children, className, ...props }, ref) {
+export const ScientificTaskPanel = forwardRef<HTMLElement, ScientificTaskPanelProps>(function ScientificTaskPanel({ title, titleId, eyebrow = "Configuration", actions, footer, onClose, closeLabel = "Close panel", bodyClassName, children, className, onKeyDown, ...props }, ref) {
   return (
-    <Layer ref={ref} as="aside" withBackground className={joinClassNames("scientific-task-panel", "scientific-task-panel--managed", className)} aria-labelledby={titleId} {...props}>
+    <Layer
+      ref={ref}
+      as="aside"
+      withBackground
+      className={joinClassNames("scientific-task-panel", "scientific-task-panel--managed", className)}
+      aria-labelledby={titleId}
+      {...props}
+      onKeyDown={(event: ReactKeyboardEvent<HTMLElement>) => {
+        onKeyDown?.(event);
+        if (!event.defaultPrevented && event.key === "Escape" && onClose) {
+          event.stopPropagation();
+          onClose();
+        }
+      }}
+    >
       <div className="scientific-task-panel__header">
         <div className="scientific-task-panel__heading">
           {eyebrow && <p>{eyebrow}</p>}

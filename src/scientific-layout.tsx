@@ -19,8 +19,10 @@ import { ScientificCommandBar } from "./actions.js";
 import { ScientificStatus } from "./components.js";
 import type {
   ScientificActionDescriptor,
+  ScientificCheckDescriptor,
   ScientificLegendItem,
   ScientificMetricDescriptor,
+  ScientificProvenanceItem,
   ScientificStatusDescriptor,
 } from "./types.js";
 
@@ -266,4 +268,144 @@ export function ScientificLegend({ items, label = "Legend", className, ...props 
       ))}
     </ul>
   );
+}
+
+function scientificCheckStatus(check: ScientificCheckDescriptor): ScientificStatusDescriptor {
+  const state = {
+    "not-run": "needs-input",
+    ready: "ready",
+    running: "running",
+    passed: "validated",
+    warning: "warning",
+    failed: "failed",
+    "not-applicable": "up-to-date",
+  }[check.state] as ScientificStatusDescriptor["state"];
+  const suffix = {
+    "not-run": "Not run",
+    ready: "Ready",
+    running: "Running",
+    passed: "Passed",
+    warning: "Warning",
+    failed: "Failed",
+    "not-applicable": "Not applicable",
+  }[check.state];
+  return { state, label: `${typeof check.label === "string" ? check.label : "Check"}: ${suffix}` };
+}
+
+export interface ScientificEvidenceSummaryProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  title: ReactNode;
+  description?: ReactNode;
+  status: ScientificStatusDescriptor;
+  checks: readonly ScientificCheckDescriptor[];
+  action?: ReactNode;
+}
+
+/** A compact, evidence-first summary for preflight and validation surfaces. */
+export function ScientificEvidenceSummary({
+  title,
+  description,
+  status,
+  checks,
+  action,
+  className,
+  ...props
+}: ScientificEvidenceSummaryProps) {
+  const titleId = useId();
+  return (
+    <Layer as="section" withBackground className={joinClassNames("scientific-evidence-summary", className)} aria-labelledby={titleId} {...props}>
+      <div className="scientific-evidence-summary__header">
+        <div>
+          <h3 id={titleId}>{title}</h3>
+          {description && <p>{description}</p>}
+        </div>
+        <ScientificStatus status={status} compact />
+      </div>
+      <ul className="scientific-evidence-summary__checks">
+        {checks.map((check) => (
+          <li key={check.id} data-state={check.state}>
+            <div className="scientific-evidence-summary__check-heading">
+              <strong>{check.label}</strong>
+              <ScientificStatus status={scientificCheckStatus(check)} compact />
+            </div>
+            {check.value && <div className="scientific-evidence-summary__value">{check.value}</div>}
+            {check.detail && <p>{check.detail}</p>}
+          </li>
+        ))}
+      </ul>
+      {action && <div className="scientific-evidence-summary__action">{action}</div>}
+    </Layer>
+  );
+}
+
+export type ScientificPreflightSummaryProps = Omit<ScientificEvidenceSummaryProps, "title"> & { title?: ReactNode };
+
+export function ScientificPreflightSummary({ title = "Numerical preflight", ...props }: ScientificPreflightSummaryProps) {
+  return <ScientificEvidenceSummary title={title} {...props} />;
+}
+
+export type ScientificValidationSummaryProps = Omit<ScientificEvidenceSummaryProps, "title"> & { title?: ReactNode };
+
+export function ScientificValidationSummary({ title = "Scientific validation", ...props }: ScientificValidationSummaryProps) {
+  return <ScientificEvidenceSummary title={title} {...props} />;
+}
+
+export interface ScientificModelScopeProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  title?: ReactNode;
+  model: ReactNode;
+  assumptions?: readonly ReactNode[];
+  limits?: readonly ReactNode[];
+  reference?: ReactNode;
+}
+
+export function ScientificModelScope({
+  title = "Model scope",
+  model,
+  assumptions = [],
+  limits = [],
+  reference,
+  className,
+  ...props
+}: ScientificModelScopeProps) {
+  const titleId = useId();
+  return (
+    <Layer as="section" withBackground className={joinClassNames("scientific-model-scope", className)} aria-labelledby={titleId} {...props}>
+      <h3 id={titleId}>{title}</h3>
+      <p className="scientific-model-scope__model">{model}</p>
+      <Grid fullWidth narrow className="scientific-model-scope__grid">
+        {assumptions.length > 0 && <Column sm={4} md={4} lg={8}>
+          <h4>Assumptions</h4>
+          <ul>{assumptions.map((item, index) => <li key={index}>{item}</li>)}</ul>
+        </Column>}
+        {limits.length > 0 && <Column sm={4} md={4} lg={8}>
+          <h4>Interpretation limits</h4>
+          <ul>{limits.map((item, index) => <li key={index}>{item}</li>)}</ul>
+        </Column>}
+      </Grid>
+      {reference && <div className="scientific-model-scope__reference">{reference}</div>}
+    </Layer>
+  );
+}
+
+export interface ScientificResultProvenanceProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  title?: ReactNode;
+  items: readonly ScientificProvenanceItem[];
+  status?: ScientificStatusDescriptor;
+}
+
+export function ScientificResultProvenance({ title = "Result provenance", items, status, className, ...props }: ScientificResultProvenanceProps) {
+  const titleId = useId();
+  return (
+    <section className={joinClassNames("scientific-result-provenance", className)} aria-labelledby={titleId} {...props}>
+      <div className="scientific-result-provenance__header"><h3 id={titleId}>{title}</h3>{status && <ScientificStatus status={status} compact />}</div>
+      <dl>
+        {items.map((item) => <div key={item.id}><dt>{item.label}</dt><dd>{item.value}{item.detail && <small>{item.detail}</small>}</dd></div>)}
+      </dl>
+    </section>
+  );
+}
+
+export type ScientificReproducibilityManifestProps = ScientificResultProvenanceProps;
+
+export function ScientificReproducibilityManifest({ title = "Reproducibility", ...props }: ScientificReproducibilityManifestProps) {
+  return <ScientificResultProvenance title={title} {...props} />;
 }

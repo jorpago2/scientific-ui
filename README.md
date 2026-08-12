@@ -34,6 +34,14 @@ Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g10
 - `ScientificStatusBar` is a root workbench footer by default; pass `embedded` only when the owning stage already accounts for responsive navigation in a legacy adapter.
 - `ScientificViewportToolbar` exposes zoom and fit callbacks with official Carbon icons. It never introduces a minimap or mini-preview.
 - `ScientificProjectActions` and `ExportReceipt` provide reproducibility actions and explicit export feedback.
+- `ScientificPreflightSummary` reports whether inputs, discretization and stability are ready for execution.
+- `ScientificValidationSummary` reports independent convergence, conservation and reference checks; a completed solver is not automatically validated.
+- `ScientificModelScope` keeps assumptions and interpretation limits next to the scientific result.
+- `ScientificResultProvenance` and `ScientificReproducibilityManifest` bind a result to its solver, inputs, mesh and generation context.
+
+Evidence-heavy views may import from `@jorpago2/scientific-ui/scientific-layout` so secondary review panels can be loaded on demand without increasing the initial application bundle.
+
+Input validity, execution, result freshness, numerical convergence, scientific validation and project save state are separate contracts. `up-to-date` means that a result corresponds to current inputs; use `validated` only after all applicable evidence checks have passed.
 
 Application code should pass descriptors and callbacks. It must not wrap every Carbon primitive or move scientific state into this package.
 
