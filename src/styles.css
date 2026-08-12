@@ -612,6 +612,12 @@ header.scientific-header.scientific-app-header {
     flex: 0 0 auto;
   }
 
+  .scientific-header__context a,
+  .scientific-header__context button {
+    min-inline-size: var(--scientific-ui-target-size);
+    min-block-size: var(--scientific-ui-target-size);
+  }
+
   .scientific-tool-rail.scientific-tool-rail {
     position: fixed;
     z-index: 6500;
@@ -723,6 +729,21 @@ header.scientific-header.scientific-app-header {
   .scientific-header__field select,
   .scientific-header__field textarea {
     min-block-size: var(--scientific-ui-target-size);
+  }
+}
+
+@media (max-width: 25.875rem) {
+  .scientific-header__status,
+  .scientific-header__primary-action .scientific-command-bar__label,
+  .scientific-header__primary-action .scientific-command-bar__short-label {
+    display: none;
+  }
+
+  .scientific-header__primary-action .scientific-command-bar__action {
+    inline-size: var(--scientific-ui-header-block-size);
+    min-inline-size: var(--scientific-ui-header-block-size);
+    padding: 0;
+    justify-content: center;
   }
 }
 

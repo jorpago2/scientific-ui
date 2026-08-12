@@ -98,6 +98,7 @@ export function ScientificCommandBar({
             renderIcon={Icon}
             disabled={action.disabled}
             title={action.disabled ? action.disabledReason : undefined}
+            aria-label={action.label}
             aria-pressed={action.pressed}
             aria-keyshortcuts={action.shortcut}
             data-collapse-at={action.collapseAt ?? "never"}
