@@ -43,6 +43,7 @@ Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g10
 - `ScientificRunControl` presents run, pause, resume, stop, progress and live execution state without owning a solver.
 - `ScientificPanelSection`, `ScientificParameterGroup`, `ScientificFieldRow` and `ScientificPanelFooter` define panel rhythm and responsive form composition.
 - `ScientificResultsLayout`, `ScientificResultsToolbar`, `ScientificMetricGrid` and `ScientificLegend` define result hierarchy while charts remain local.
+- `ScientificOutcomeSummary` is the canonical post-operation handoff: current/stale state, one scientific conclusion, key quantities and the next actions. It does not equate solver completion with validation.
 - `ScientificStatusBar` is a root workbench footer by default; pass `embedded` only when the owning stage already accounts for responsive navigation in a legacy adapter.
 - `ScientificViewportToolbar` exposes zoom and fit callbacks with official Carbon icons. It never introduces a minimap or mini-preview.
 - `ScientificProjectActions` and `ExportReceipt` provide reproducibility actions and explicit export feedback.

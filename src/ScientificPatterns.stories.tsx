@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   ScientificMetricGrid,
   ScientificModelScope,
+  ScientificOutcomeSummary,
   ScientificPanelFooter,
   ScientificPanelSection,
   ScientificParameterGroup,
@@ -28,6 +29,24 @@ function PatternCatalogue({ dark = false }: { dark?: boolean }) {
         </ScientificParameterGroup>
         <ScientificPanelFooter summary="Inputs are valid"><Button kind="secondary">Validate</Button><Button>Apply</Button></ScientificPanelFooter>
       </ScientificPanelSection>
+      <ScientificOutcomeSummary
+        title="Latest solver outcome"
+        status={state === "running"
+          ? { state: "running", label: "Solving", progress: 38, detail: "Assembling the eigenproblem" }
+          : state === "paused"
+            ? { state: "modified", label: "Paused result", detail: "Resume to produce a current result" }
+            : { state: "up-to-date", label: "Result current" }}
+        summary="The fundamental guided mode is available. Review numerical evidence before treating the result as validated."
+        metrics={[
+          { id: "neff-outcome", label: "Effective index", value: "2.4381" },
+          { id: "residual-outcome", label: "Relative residual", value: "2.1e-8" },
+          { id: "mesh-outcome", label: "Mesh", value: "320 Ã— 240", unit: "cells" },
+        ]}
+        actions={[
+          { id: "validate", label: "Review validation", emphasis: "primary", onClick: () => undefined },
+          { id: "export", label: "Export result", emphasis: "secondary", collapseAt: "sm", onClick: () => undefined },
+        ]}
+      />
       <ScientificResultsLayout title="Results" description="Presentation is shared; scientific rendering remains local." actions={<ScientificViewportToolbar onZoomIn={() => undefined} onZoomOut={() => undefined} onFitWidth={() => undefined} onFitSelection={() => undefined} onFitAll={() => undefined} onReset={() => undefined} />}>
         <ScientificMetricGrid metrics={[{ id: "neff", label: "Effective index", value: "2.4381", status: "success" }, { id: "loss", label: "Loss", value: "0.021", unit: "dB/cm" }, { id: "modes", label: "Modes", value: 4 }]} />
         <ScientificPreflightSummary

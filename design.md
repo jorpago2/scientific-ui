@@ -30,6 +30,8 @@ Execution is communicated with text and icon through the shared state machine. `
 
 Results use a title, optional status/switcher, contextual toolbar, scientific content and optional details region. Rendering engines and scientific palettes remain local. Viewport commands are Zoom in/out, Fit width, Fit selection, Fit all and Reset; mini-previews and minimaps are not part of the system.
 
+After an operation, `ScientificOutcomeSummary` is the first visible result surface. It states what happened, whether the result matches current inputs, the few quantities needed for first interpretation and the available next actions. Successful execution, scientific validation and export remain independent states; applications must not replace this handoff with an undifferentiated success toast or force users to hunt through tabs for the primary result.
+
 The application root uses `ScientificUiProvider`. Theme selection must affect portaled Carbon overlays as well as the visible workbench. Registered keyboard commands are discoverable in Header Help and are dispatched by a single provider.
 
 ## Conformance

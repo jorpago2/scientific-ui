@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.12.0
+
+### Minor Changes
+
+- Add `ScientificOutcomeSummary` as the shared post-operation handoff for current, stale, running, warning and failed scientific results.
+
 ## 0.11.0
 
 ### Minor Changes

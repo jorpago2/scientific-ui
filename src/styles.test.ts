@@ -54,6 +54,16 @@ describe("scientific workbench contract", () => {
     expect(plots).toContain('window.addEventListener("scientific-ui:theme-applied", update)');
   });
 
+  it("defines one Carbon-grid post-operation handoff for every scientific app", () => {
+    expect(layout).toContain("export function ScientificOutcomeSummary");
+    expect(layout).toContain('sm={4}');
+    expect(layout).toContain('md={hasActions ? 5 : 8}');
+    expect(layout).toContain('lg={hasActions ? 11 : 16}');
+    expect(layout).toContain('label="Outcome actions"');
+    expect(styles).toContain(".scientific-outcome-summary");
+    expect(styles).toContain('.scientific-outcome-summary[data-state="modified"]');
+  });
+
   it("keeps the shared theme action before the terminal help action", () => {
     expect(components.indexOf("scientific-header__theme")).toBeLessThan(components.indexOf("scientific-header__help"));
     expect(theme).toContain("ScientificThemeToggle");

@@ -13,6 +13,7 @@ import {
   useState,
   type CSSProperties,
   type HTMLAttributes,
+  type Ref,
   type ReactNode,
 } from "react";
 import { ScientificCommandBar } from "./actions.js";
@@ -225,6 +226,76 @@ export interface ScientificResultsToolbarProps extends HTMLAttributes<HTMLDivEle
 
 export function ScientificResultsToolbar({ actions, label = "Result actions", className, ...props }: ScientificResultsToolbarProps) {
   return <ScientificCommandBar actions={actions} label={label} size="sm" responsiveTo="container" className={joinClassNames("scientific-results-toolbar", className)} {...props} />;
+}
+
+export interface ScientificOutcomeSummaryProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  title: ReactNode;
+  status: ScientificStatusDescriptor;
+  summary?: ReactNode;
+  metrics?: readonly ScientificMetricDescriptor[];
+  actions?: readonly ScientificActionDescriptor[];
+  headingLevel?: 2 | 3;
+  headingRef?: Ref<HTMLHeadingElement>;
+}
+
+/**
+ * Canonical post-operation handoff. It answers what happened, whether the
+ * result is current, which quantities matter first and what the user can do
+ * next without conflating successful execution with scientific validation.
+ */
+export function ScientificOutcomeSummary({
+  title,
+  status,
+  summary,
+  metrics = [],
+  actions = [],
+  headingLevel = 2,
+  headingRef,
+  className,
+  ...props
+}: ScientificOutcomeSummaryProps) {
+  const titleId = useId();
+  const hasActions = actions.length > 0;
+  return (
+    <Layer
+      as="section"
+      withBackground
+      className={joinClassNames("scientific-outcome-summary", className)}
+      data-state={status.state}
+      aria-labelledby={titleId}
+      {...props}
+    >
+      <Grid fullWidth className="scientific-outcome-summary__grid">
+        <Column
+          sm={4}
+          md={hasActions ? 5 : 8}
+          lg={hasActions ? 11 : 16}
+          className="scientific-outcome-summary__copy-column"
+        >
+          <div className="scientific-outcome-summary__heading">
+            {createElement(`h${headingLevel}`, { id: titleId, ref: headingRef, tabIndex: headingRef ? -1 : undefined }, title)}
+            <ScientificStatus status={status} />
+          </div>
+          {summary && <p className="scientific-outcome-summary__summary">{summary}</p>}
+        </Column>
+        {hasActions && (
+          <Column sm={4} md={3} lg={5} className="scientific-outcome-summary__action-column">
+            <ScientificCommandBar
+              actions={actions}
+              label="Outcome actions"
+              responsiveTo="container"
+              className="scientific-outcome-summary__actions"
+            />
+          </Column>
+        )}
+      </Grid>
+      {metrics.length > 0 && (
+        <div className="scientific-outcome-summary__metrics">
+          <ScientificMetricGrid metrics={metrics} columns={metrics.length <= 2 ? 2 : metrics.length === 3 ? 3 : 4} />
+        </div>
+      )}
+    </Layer>
+  );
 }
 
 export interface ScientificMetricGridProps extends HTMLAttributes<HTMLDListElement> {
