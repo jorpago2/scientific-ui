@@ -1,5 +1,12 @@
 # @jorpago2/scientific-ui
 
+## 0.11.0
+
+### Minor Changes
+
+- Add a persistent system-aware Carbon `g10`/`g100` theme controller and the canonical header theme action.
+- Keep Help as the final header action while applying dark mode to application chrome, overlays and scientific content.
+
 ## 0.10.0
 
 ### Minor Changes

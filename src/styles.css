@@ -182,6 +182,7 @@ header.scientific-header.scientific-app-header {
 
 .scientific-header__secondary-actions,
 .scientific-header__primary-action,
+.scientific-header__theme,
 .scientific-header__help {
   display: flex;
   block-size: 100%;
@@ -199,8 +200,14 @@ header.scientific-header.scientific-app-header {
   order: 2;
 }
 
-.scientific-header__help {
+.scientific-header__theme {
   order: 3;
+  flex: 0 0 var(--scientific-ui-header-block-size);
+  inline-size: var(--scientific-ui-header-block-size);
+}
+
+.scientific-header__help {
+  order: 4;
   flex: 0 0 var(--scientific-ui-header-block-size);
   inline-size: var(--scientific-ui-header-block-size);
 }
@@ -214,6 +221,7 @@ header.scientific-header.scientific-app-header {
 
 .scientific-header-action,
 .scientific-header__icon-action,
+.scientific-theme-toggle,
 .scientific-header-help__button {
   inline-size: var(--scientific-ui-header-block-size);
   min-inline-size: var(--scientific-ui-header-block-size);
@@ -379,9 +387,13 @@ header.scientific-header.scientific-app-header {
 }
 
 .scientific-task-panel__body {
+  display: grid;
   min-block-size: 0;
   min-inline-size: 0;
   flex: 1 1 auto;
+  align-content: start;
+  grid-auto-rows: max-content;
+  gap: var(--scientific-ui-spacing-05);
   overflow: auto;
   overscroll-behavior: contain;
   padding-block: var(--scientific-ui-spacing-05);
@@ -974,7 +986,17 @@ body.scientific-plot-fullscreen-open {
 }
 
 .scientific-status__indicator {
+  min-inline-size: 0;
+  max-inline-size: 100%;
   flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.scientific-status__indicator > :last-child {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .scientific-status__content {
@@ -1887,6 +1909,7 @@ body.scientific-plot-fullscreen-open {
 /* Theme and transient feedback --------------------------------------------- */
 
 .scientific-theme {
+  isolation: isolate;
   min-block-size: 100%;
   color: var(--cds-text-primary);
   background: var(--cds-background);

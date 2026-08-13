@@ -18,6 +18,8 @@ Shared Carbon `g10` workbench components for the jorpago2 scientific web applica
 
 Pass `help={{ summary, shortcuts, action, footer }}` to `ScientificHeader` to render the canonical Carbon Help action at the far-right edge. The package owns its official icon, toggletip, `?` shortcut, Escape handling, responsive geometry and focus restoration; applications provide only workflow-specific content.
 
+`ScientificUiProvider` follows the operating-system theme by default, persists an explicit user choice and makes `ScientificHeader` render the canonical Carbon theme action immediately before Help. Use `useScientificTheme()` when a local canvas or rendering engine must react to the resolved `g10`/`g100` theme.
+
 ```tsx
 import { ScientificHeader, ScientificStatusBar } from "@jorpago2/scientific-ui";
 import "@jorpago2/scientific-ui/styles.css";

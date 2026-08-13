@@ -1,4 +1,4 @@
-import { useId, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useId, useState, type CSSProperties, type ReactNode } from "react";
 
 export const SCIENTIFIC_PLOT_FONT = '"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif';
 
@@ -107,6 +107,23 @@ export function readScientificPlotTheme(element?: Element): ScientificPlotTheme 
     textSecondary: cssValue(style, "--cds-text-secondary", FALLBACK_THEME.textSecondary),
     focus: cssValue(style, "--cds-focus", FALLBACK_THEME.focus),
   };
+}
+
+/**
+ * Reactive Carbon plot tokens. Plot renderers draw colors into SVG/canvas and
+ * therefore cannot rely on CSS inheritance when the application theme changes.
+ */
+export function useScientificPlotTheme(element?: Element | null): ScientificPlotTheme {
+  const [theme, setTheme] = useState<ScientificPlotTheme>(() => readScientificPlotTheme(element ?? undefined));
+
+  useEffect(() => {
+    const update = () => setTheme(readScientificPlotTheme(element ?? undefined));
+    update();
+    window.addEventListener("scientific-ui:theme-applied", update);
+    return () => window.removeEventListener("scientific-ui:theme-applied", update);
+  }, [element]);
+
+  return theme;
 }
 
 export function createScientificPlotlyAxis(

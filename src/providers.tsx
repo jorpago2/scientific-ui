@@ -13,11 +13,11 @@ export interface ScientificUiProviderProps {
 /** Recommended root provider for theme, shortcuts and transient feedback. */
 export function ScientificUiProvider({
   children,
-  theme = "light",
+  theme,
   notificationTimeout,
 }: ScientificUiProviderProps) {
   return (
-    <ScientificThemeProvider preference={theme}>
+    <ScientificThemeProvider {...(theme === undefined ? {} : { preference: theme })}>
       <ScientificShortcutProvider>
         <ScientificNotificationProvider defaultTimeout={notificationTimeout}>
           {children}

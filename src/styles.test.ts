@@ -5,6 +5,9 @@ import { describe, expect, it } from "vitest";
 const styles = readFileSync(fileURLToPath(new URL("./styles.css", import.meta.url)), "utf8");
 const layout = readFileSync(fileURLToPath(new URL("./scientific-layout.tsx", import.meta.url)), "utf8");
 const components = readFileSync(fileURLToPath(new URL("./components.tsx", import.meta.url)), "utf8");
+const plots = readFileSync(fileURLToPath(new URL("./plots.tsx", import.meta.url)), "utf8");
+const theme = readFileSync(fileURLToPath(new URL("./theme.tsx", import.meta.url)), "utf8");
+const providers = readFileSync(fileURLToPath(new URL("./providers.tsx", import.meta.url)), "utf8");
 
 describe("scientific typography contract", () => {
   it("uses IBM Plex Sans for inputs, values, coordinates and identifiers", () => {
@@ -44,5 +47,18 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain('.scientific-inspector button:not([role="tab"])');
     expect(styles).toContain('.scientific-workbench button:not([role="tab"])');
     expect(styles).not.toContain("  .scientific-result-switcher button,");
+  });
+
+  it("owns panel rhythm and plot theme synchronization centrally", () => {
+    expect(styles).toMatch(/\.scientific-task-panel__body \{[\s\S]*display: grid;[\s\S]*gap: var\(--scientific-ui-spacing-05\);/);
+    expect(plots).toContain('window.addEventListener("scientific-ui:theme-applied", update)');
+  });
+
+  it("keeps the shared theme action before the terminal help action", () => {
+    expect(components.indexOf("scientific-header__theme")).toBeLessThan(components.indexOf("scientific-header__help"));
+    expect(theme).toContain("ScientificThemeToggle");
+    expect(theme).toContain('data-scientific-theme={resolvedTheme}');
+    expect(providers).toContain('theme === undefined ? {} : { preference: theme }');
+    expect(providers).not.toContain('theme = "system"');
   });
 });

@@ -41,6 +41,7 @@ import type { IconButtonProps } from "@carbon/react";
 import { parseScientificNumber, validateScientificNumber } from "./number.js";
 import { useScientificShortcuts } from "./shortcuts.js";
 import { ScientificProductMark, type ScientificProductIcon } from "./product-mark.js";
+import { ScientificThemeToggle } from "./theme.js";
 import type {
   ResultOption,
   ScientificState,
@@ -66,11 +67,12 @@ export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   primaryAction?: ReactNode;
   secondaryActions?: ReactNode;
   help?: ScientificHeaderHelpDescriptor;
+  showThemeToggle?: boolean;
   actionsLabel?: string;
   skipLink?: ReactNode;
 }
 
-export function ScientificHeader({ product, productIcon, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, help, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
+export function ScientificHeader({ product, productIcon, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, help, showThemeToggle = true, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
   return (
     <Header className={joinClassNames("scientific-header", "scientific-app-header", className)} {...props}>
       {skipLink}
@@ -87,6 +89,7 @@ export function ScientificHeader({ product, productIcon, productMark, descriptor
       <HeaderGlobalBar className="scientific-header__actions scientific-app-header__actions" role="group" aria-label={actionsLabel}>
         {secondaryActions && <div className="scientific-header__secondary-actions">{secondaryActions}</div>}
         {primaryAction && <div className="scientific-header__primary-action">{primaryAction}</div>}
+        {showThemeToggle && <div className="scientific-header__theme"><ScientificThemeToggle /></div>}
         {help && <div className="scientific-header__help" data-scientific-header-terminal-action><ScientificHeaderHelp {...help} /></div>}
       </HeaderGlobalBar>
     </Header>
