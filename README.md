@@ -2,6 +2,8 @@
 
 ## Scientific plots
 
+Use `SCIENTIFIC_PLOT_LINE_WIDTHS` for trace hierarchy: `primary` (4 px), `emphasis` (5 px), `secondary` (3 px), and `reference` (2 px). Scientific meaning should also remain identifiable through colour, dash patterns, markers and labels.
+
 `ScientificPlotFrame` owns plot title, description, legend, actions, status and responsive composition. Plot engines remain local. Plotly consumers use `createScientificPlotlyLayout`, `createScientificPlotlyConfig` and `prepareScientificPlotlyToolbar` so IBM Plex Sans, Carbon theme tokens, export, reset, fullscreen and keyboard behavior stay identical across applications.
 
 Scientific series colours and axis semantics remain application-owned because they encode physical quantities. Canvas simulations, GDS previews and React Flow diagrams are not forced into the Plotly contract.

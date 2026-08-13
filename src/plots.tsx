@@ -2,6 +2,14 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 
 export const SCIENTIFIC_PLOT_FONT = '"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif';
 
+/** Semantic stroke widths for scientific data and plot annotations, in CSS pixels. */
+export const SCIENTIFIC_PLOT_LINE_WIDTHS = {
+  reference: 2,
+  secondary: 3,
+  primary: 4,
+  emphasis: 5,
+} as const;
+
 export interface ScientificPlotTheme {
   background: string;
   layer: string;

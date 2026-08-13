@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.8.1
+
+### Patch Changes
+
+- Add semantic scientific plot line-width tokens with stronger 4 px primary and 5 px emphasized data traces.
+
 ## 0.8.0
 
 ### Minor Changes

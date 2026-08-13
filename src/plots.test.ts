@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   SCIENTIFIC_PLOT_FONT,
+  SCIENTIFIC_PLOT_LINE_WIDTHS,
   createScientificPlotlyAxis,
   createScientificPlotlyConfig,
   createScientificPlotlyLayout,
@@ -18,6 +19,10 @@ const theme: ScientificPlotTheme = {
 };
 
 describe("scientific Plotly contract", () => {
+  it("provides a shared visual hierarchy for scientific traces", () => {
+    expect(SCIENTIFIC_PLOT_LINE_WIDTHS).toEqual({ reference: 2, secondary: 3, primary: 4, emphasis: 5 });
+  });
+
   it("uses IBM Plex Sans and merges scientific axis overrides", () => {
     const layout = createScientificPlotlyLayout({
       theme,
