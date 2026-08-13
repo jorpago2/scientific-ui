@@ -417,6 +417,201 @@ header.scientific-header.scientific-app-header {
   gap: var(--scientific-ui-spacing-03);
 }
 
+/* Shared scientific plot composition. Plot engines keep data transforms and
+ * scientific colour encodings; the design system owns chrome and interaction. */
+.scientific-plot-frame {
+  min-inline-size: 0;
+  overflow: hidden;
+  border-block-start: 1px solid var(--scientific-ui-border);
+  background: var(--scientific-ui-layer);
+  color: var(--scientific-ui-text);
+}
+
+.scientific-plot-frame__header {
+  display: flex;
+  min-inline-size: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--scientific-ui-spacing-05);
+  padding: var(--scientific-ui-spacing-05);
+  border-block-end: 1px solid var(--scientific-ui-border);
+}
+
+.scientific-plot-frame__heading {
+  min-inline-size: 0;
+}
+
+.scientific-plot-frame__heading h2,
+.scientific-plot-frame__eyebrow,
+.scientific-plot-frame__description {
+  margin: 0;
+}
+
+.scientific-plot-frame__heading h2 {
+  font-size: var(--scientific-ui-heading-compact-font-size);
+  font-weight: 600;
+  line-height: var(--scientific-ui-heading-compact-line-height);
+}
+
+.scientific-plot-frame__eyebrow {
+  color: var(--scientific-ui-text-helper);
+  font-size: var(--scientific-ui-label-font-size);
+  font-weight: 600;
+  line-height: var(--scientific-ui-label-line-height);
+}
+
+.scientific-plot-frame__description,
+.scientific-plot-frame__meta {
+  margin-block-start: var(--scientific-ui-spacing-02);
+  color: var(--scientific-ui-text-secondary);
+  font-size: var(--scientific-ui-body-compact-font-size);
+  line-height: var(--scientific-ui-body-compact-line-height);
+}
+
+.scientific-plot-frame__surface {
+  position: relative;
+  min-inline-size: 0;
+  min-block-size: 18rem;
+  overflow: hidden;
+  background: var(--scientific-ui-background);
+}
+
+.scientific-plot-surface {
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: 18rem;
+  background: var(--scientific-ui-background);
+  touch-action: manipulation;
+}
+
+.scientific-plot-legend {
+  display: flex;
+  min-inline-size: 0;
+  flex-wrap: wrap;
+  gap: var(--scientific-ui-spacing-03) var(--scientific-ui-spacing-05);
+  margin: 0;
+  padding: 0;
+  color: var(--scientific-ui-text-secondary);
+  font-size: var(--scientific-ui-label-font-size);
+  line-height: var(--scientific-ui-label-line-height);
+  list-style: none;
+}
+
+.scientific-plot-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--scientific-ui-spacing-02);
+  white-space: nowrap;
+}
+
+.scientific-plot-legend__swatch {
+  display: inline-block;
+  inline-size: 1.25rem;
+  block-size: 0.125rem;
+  flex: 0 0 auto;
+  background: var(--scientific-plot-series-color);
+}
+
+.scientific-plot-legend__swatch--dash {
+  block-size: 0;
+  border-block-start: 0.125rem dashed var(--scientific-plot-series-color);
+  background: transparent;
+}
+
+.scientific-plot-legend__swatch--dot {
+  inline-size: 0.375rem;
+  block-size: 0.375rem;
+  border-radius: 50%;
+  box-shadow: 0.5rem 0 0 var(--scientific-plot-series-color);
+}
+
+.scientific-plot-frame__footer {
+  display: flex;
+  min-block-size: var(--scientific-ui-target-size);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--scientific-ui-spacing-03);
+  padding-inline-start: var(--scientific-ui-spacing-05);
+  border-block-start: 1px solid var(--scientific-ui-border);
+}
+
+.scientific-plot-frame__meta {
+  margin: 0;
+}
+
+.scientific-plot-frame__actions {
+  display: flex;
+  align-items: center;
+}
+
+.scientific-plot-surface .modebar {
+  display: flex;
+  max-inline-size: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  opacity: 1;
+}
+
+.scientific-plot-surface .modebar-group {
+  display: contents;
+}
+
+.scientific-plot-surface .modebar-btn {
+  display: inline-grid;
+  inline-size: 2rem;
+  min-inline-size: 2rem;
+  block-size: 2rem;
+  min-block-size: 2rem;
+  place-items: center;
+  padding: 0;
+}
+
+.scientific-plot-surface .modebar-btn svg {
+  position: static;
+}
+
+.scientific-plot-surface .modebar-btn:focus-visible {
+  outline: 2px solid var(--scientific-ui-focus);
+  outline-offset: -2px;
+}
+
+body.scientific-plot-fullscreen-open {
+  overflow: hidden;
+}
+
+.scientific-plot-surface.scientific-plot-fullscreen {
+  position: fixed;
+  z-index: 7000;
+  inset: 0;
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: var(--scientific-ui-spacing-05);
+  background: var(--scientific-ui-background);
+}
+
+@media (max-width: 41.99rem) {
+  .scientific-plot-frame__header,
+  .scientific-plot-frame__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .scientific-plot-frame__actions {
+    align-self: flex-end;
+  }
+}
+
+@media (pointer: coarse), (max-width: 41.99rem) {
+  .scientific-plot-surface .modebar-btn {
+    inline-size: var(--scientific-ui-target-size);
+    min-inline-size: var(--scientific-ui-target-size);
+    block-size: var(--scientific-ui-target-size);
+    min-block-size: var(--scientific-ui-target-size);
+  }
+}
+
 .scientific-status-surface {
   min-block-size: var(--scientific-ui-status-block-size);
   border-block-start: 1px solid var(--scientific-ui-border);

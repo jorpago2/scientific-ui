@@ -2,6 +2,7 @@ export * from "./components.js";
 export * from "./actions.js";
 export * from "./notifications.js";
 export * from "./number.js";
+export * from "./plots.js";
 export * from "./project-actions.js";
 export * from "./providers.js";
 export * from "./scientific-layout.js";

@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## Scientific plots
+
+`ScientificPlotFrame` owns plot title, description, legend, actions, status and responsive composition. Plot engines remain local. Plotly consumers use `createScientificPlotlyLayout`, `createScientificPlotlyConfig` and `prepareScientificPlotlyToolbar` so IBM Plex Sans, Carbon theme tokens, export, reset, fullscreen and keyboard behavior stay identical across applications.
+
+Scientific series colours and axis semantics remain application-owned because they encode physical quantities. Canvas simulations, GDS previews and React Flow diagrams are not forced into the Plotly contract.
+
 Shared Carbon `g10` workbench components for the jorpago2 scientific web applications. The package owns interface structure, navigation, responsive behavior and scientific-result status; consuming applications retain all domain state and numerical logic.
 
 `ScientificHeader`, `ScientificTaskPanel`, `ScientificToolRail`, `InspectorPanel` and `ScientificStatus` compose Carbon React's `Header`, `Layer`, `SideNav`, `ComposedModal` and `IconIndicator` primitives. Carbon owns their semantics, focus behavior and visual states; the package adds only scientific workflow state and responsive composition.

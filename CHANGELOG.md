@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.8.0
+
+### Minor Changes
+
+- Add a shared scientific plot frame and Plotly interaction, theme, export, responsive toolbar, fullscreen and accessibility contract.
+
 ## 0.7.1
 
 ### Patch Changes
