@@ -26,11 +26,15 @@ Actions are ordered primary, visible secondary, then overflow. Collapse decision
 
 Task-panel content uses shared sections, parameter groups and footers. One-column groups are the default; two-column groups are reserved for short, directly comparable quantities. Labels remain visible, units align with values and helper/error text stays attached to its field.
 
+Scientific values use one copy-friendly formatter: standard notation in the normal engineering range, compact `e` notation at very small or large magnitudes, no grouped thousands and no negative zero. Field errors remain adjacent to their input; summaries link back to and focus the affected control.
+
 Execution is communicated with text and icon through the shared state machine. `running`, `paused`, `modified`, `up-to-date`, warning and failure states never depend on color alone. Project export/import controls use the shared action hierarchy and successful exports produce an explicit receipt or notification.
 
 Results use a title, optional status/switcher, contextual toolbar, scientific content and optional details region. Rendering engines and scientific palettes remain local. Viewport commands are Zoom in/out, Fit width, Fit selection, Fit all and Reset; mini-previews and minimaps are not part of the system.
 
 After an operation, `ScientificOutcomeSummary` is the first visible result surface. It states what happened, whether the result matches current inputs, the few quantities needed for first interpretation and the available next actions. Successful execution, scientific validation and export remain independent states; applications must not replace this handoff with an undifferentiated success toast or force users to hunt through tabs for the primary result.
+
+Reproducible examples follow one explicit sequence: load the example, allow the user to inspect the inputs, then run it. Completion reveals and focuses the primary outcome; initial page load never moves focus automatically.
 
 The application root uses `ScientificUiProvider`. Theme selection must affect portaled Carbon overlays as well as the visible workbench. Registered keyboard commands are discoverable in Header Help and are dispatched by a single provider.
 

@@ -1,5 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { parseScientificNumber, validateScientificNumber } from "./number.js";
+import { formatScientificValue, parseScientificNumber, validateScientificNumber } from "./number.js";
+
+describe("formatScientificValue", () => {
+  it("uses one deterministic notation contract", () => {
+    expect(formatScientificValue(-0)).toBe("0");
+    expect(formatScientificValue(2.438123)).toBe("2.438");
+    expect(formatScientificValue(2.1e-8)).toBe("2.1e-8");
+    expect(formatScientificValue(12_500)).toBe("1.25e4");
+  });
+
+  it("supports explicit scientific and standard notation", () => {
+    expect(formatScientificValue(1250, { notation: "scientific", significantDigits: 3 })).toBe("1.25e3");
+    expect(formatScientificValue(0.012345, { notation: "standard", significantDigits: 3 })).toBe("0.0123");
+    expect(formatScientificValue(Number.NaN)).toBe("—");
+  });
+});
 
 describe("parseScientificNumber", () => {
   it("accepts decimal and scientific notation", () => {

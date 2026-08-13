@@ -37,6 +37,8 @@ export interface ValidationMessage {
   title: string;
   detail?: string;
   severity: "info" | "success" | "warning" | "error";
+  targetId?: string;
+  actionLabel?: string;
 }
 
 export interface ResultOption {
@@ -95,6 +97,12 @@ export interface ScientificMetricDescriptor {
   unit?: ReactNode;
   detail?: ReactNode;
   status?: "neutral" | "success" | "warning" | "error";
+  format?: {
+    notation?: "auto" | "standard" | "scientific";
+    significantDigits?: number;
+    scientificBelow?: number;
+    scientificAbove?: number;
+  };
 }
 
 /**

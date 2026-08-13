@@ -6,8 +6,7 @@ import {
   ScientificModelScope,
   ScientificOutcomeSummary,
   ScientificPanelFooter,
-  ScientificPanelSection,
-  ScientificParameterGroup,
+  ScientificParameterSection,
   ScientificPreflightSummary,
   ScientificProjectActions,
   ScientificResultProvenance,
@@ -22,13 +21,11 @@ function PatternCatalogue({ dark = false }: { dark?: boolean }) {
   const [state, setState] = useState<"ready" | "running" | "paused">("ready");
   return <ScientificUiProvider theme={dark ? "dark" : "light"}>
     <main style={{ minHeight: "100vh", padding: "1rem" }}>
-      <ScientificPanelSection title="Simulation" description="Shared parameter hierarchy and responsive action placement." actions={<ScientificRunControl execution={{ state, label: state, progress: state === "running" ? 38 : undefined, onRun: () => setState("running"), onPause: () => setState("paused"), onStop: () => setState("ready") }} />}>
-        <ScientificParameterGroup columns={2}>
+      <ScientificParameterSection title="Simulation" description="Shared parameter hierarchy and responsive action placement." columns={2} actions={<ScientificRunControl execution={{ state, label: state, progress: state === "running" ? 38 : undefined, onRun: () => setState("running"), onPause: () => setState("paused"), onStop: () => setState("ready") }} />}>
           <Slider id="mesh" labelText="Mesh density" min={8} max={80} value={32} hideTextInput />
           <Slider id="duration" labelText="Duration" min={1} max={100} value={20} hideTextInput />
-        </ScientificParameterGroup>
         <ScientificPanelFooter summary="Inputs are valid"><Button kind="secondary">Validate</Button><Button>Apply</Button></ScientificPanelFooter>
-      </ScientificPanelSection>
+      </ScientificParameterSection>
       <ScientificOutcomeSummary
         title="Latest solver outcome"
         status={state === "running"
@@ -38,8 +35,8 @@ function PatternCatalogue({ dark = false }: { dark?: boolean }) {
             : { state: "up-to-date", label: "Result current" }}
         summary="The fundamental guided mode is available. Review numerical evidence before treating the result as validated."
         metrics={[
-          { id: "neff-outcome", label: "Effective index", value: "2.4381" },
-          { id: "residual-outcome", label: "Relative residual", value: "2.1e-8" },
+          { id: "neff-outcome", label: "Effective index", value: 2.4381, format: { significantDigits: 5 } },
+          { id: "residual-outcome", label: "Relative residual", value: 2.1e-8 },
           { id: "mesh-outcome", label: "Mesh", value: "320 Ã— 240", unit: "cells" },
         ]}
         actions={[

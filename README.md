@@ -41,7 +41,7 @@ Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g10
 
 - `ScientificCommandBar` owns visible/overflow action priority and can respond to either the viewport or its containing result region.
 - `ScientificRunControl` presents run, pause, resume, stop, progress and live execution state without owning a solver.
-- `ScientificPanelSection`, `ScientificParameterGroup`, `ScientificFieldRow` and `ScientificPanelFooter` define panel rhythm and responsive form composition.
+- `ScientificParameterSection`, `ScientificParameterGroup`, `ScientificFieldRow` and `ScientificPanelFooter` define panel rhythm and full-width responsive form composition.
 - `ScientificResultsLayout`, `ScientificResultsToolbar`, `ScientificMetricGrid` and `ScientificLegend` define result hierarchy while charts remain local.
 - `ScientificOutcomeSummary` is the canonical post-operation handoff: current/stale state, one scientific conclusion, key quantities and the next actions. It does not equate solver completion with validation.
 - `ScientificStatusBar` is a root workbench footer by default; pass `embedded` only when the owning stage already accounts for responsive navigation in a legacy adapter.
@@ -51,6 +51,10 @@ Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g10
 - `ScientificValidationSummary` reports independent convergence, conservation and reference checks; a completed solver is not automatically validated.
 - `ScientificModelScope` keeps assumptions and interpretation limits next to the scientific result.
 - `ScientificResultProvenance` and `ScientificReproducibilityManifest` bind a result to its solver, inputs, mesh and generation context.
+- `ScientificNumberField` and `formatScientificValue` provide one decimal/scientific-notation policy for editable and read-only quantities.
+- `ValidationSummary` keeps errors adjacent to fields and can move focus from a summary issue to its `targetId`.
+- `ScientificExampleWorkflow` makes loading a reproducible example and running it two explicit actions.
+- `useScientificResultTransition` reveals and focuses the primary outcome after a completed operation without stealing focus on initial render.
 
 Evidence-heavy views may import from `@jorpago2/scientific-ui/scientific-layout` so secondary review panels can be loaded on demand without increasing the initial application bundle.
 

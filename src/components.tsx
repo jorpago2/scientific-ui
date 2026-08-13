@@ -38,7 +38,7 @@ import {
   type RefObject,
 } from "react";
 import type { IconButtonProps } from "@carbon/react";
-import { parseScientificNumber, validateScientificNumber } from "./number.js";
+import { formatScientificValue, parseScientificNumber, validateScientificNumber } from "./number.js";
 import { useScientificShortcuts } from "./shortcuts.js";
 import { ScientificProductMark, type ScientificProductIcon } from "./product-mark.js";
 import { ScientificThemeToggle } from "./theme.js";
@@ -487,15 +487,30 @@ export interface ValidationSummaryProps {
   messages: ValidationMessage[];
   heading?: string;
   className?: string;
+  onNavigate?: (targetId: string) => void;
 }
 
-export function ValidationSummary({ messages, heading = "Validation", className }: ValidationSummaryProps) {
+function navigateToScientificField(targetId: string) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  target.scrollIntoView({ block: "center", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  const focusTarget = target.matches("input, select, textarea, button, [tabindex]")
+    ? target
+    : target.querySelector<HTMLElement>("input, select, textarea, button, [tabindex]");
+  focusTarget?.focus({ preventScroll: true });
+}
+
+export function ValidationSummary({ messages, heading = "Validation", className, onNavigate = navigateToScientificField }: ValidationSummaryProps) {
   if (messages.length === 0) return null;
   return (
     <section className={joinClassNames("scientific-validation", className)} aria-label={heading}>
-      {messages.map((message) => (
-        <InlineNotification key={message.id} kind={message.severity} title={message.title} subtitle={message.detail} hideCloseButton lowContrast />
-      ))}
+      {messages.map((message) => {
+        const targetId = message.targetId;
+        return <div className="scientific-validation__issue" key={message.id}>
+          <InlineNotification kind={message.severity} title={message.title} subtitle={message.detail} hideCloseButton lowContrast />
+          {targetId && <Button kind="ghost" size="sm" type="button" onClick={() => onNavigate(targetId)}>{message.actionLabel ?? "Review field"}</Button>}
+        </div>;
+      })}
     </section>
   );
 }
@@ -512,26 +527,26 @@ export interface ScientificNumberFieldProps {
   disabled?: boolean;
   required?: boolean;
   className?: string;
+  invalidText?: ReactNode;
+  onValidationChange?: (message: string | null) => void;
 }
 
 function formatScientificInputValue(value: number | string): string {
-  if (typeof value !== "number" || !Number.isFinite(value) || value === 0) return String(value);
-  const magnitude = Math.abs(value);
-  return magnitude >= 1e6 || magnitude < 1e-4
-    ? value.toExponential().replace(/\.0+(?=e)/, "").replace(/(\.\d*?)0+(?=e)/, "$1")
-    : String(value);
+  return typeof value === "number" ? formatScientificValue(value, { significantDigits: 8, scientificBelow: 1e-4, scientificAbove: 1e6 }) : String(value);
 }
 
 export const ScientificNumberField = forwardRef<unknown, ScientificNumberFieldProps>(function ScientificNumberField({
-  id, labelText, value, onValueChange, min, max, unit, helperText, disabled, required, className,
+  id, labelText, value, onValueChange, min, max, unit, helperText, disabled, required, className, invalidText, onValidationChange,
 }, ref) {
   const [rawValue, setRawValue] = useState(formatScientificInputValue(value));
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
+  const touched = useRef(false);
 
   useEffect(() => setRawValue(formatScientificInputValue(value)), [value]);
   const commit = (nextRawValue: string) => {
     const error = validateScientificNumber(nextRawValue, { min, max });
     setValidationMessage(error);
+    onValidationChange?.(error);
     const parsedValue = error ? null : parseScientificNumber(nextRawValue);
     if (parsedValue !== null) setRawValue(formatScientificInputValue(parsedValue));
     onValueChange(parsedValue, nextRawValue);
@@ -544,24 +559,62 @@ export const ScientificNumberField = forwardRef<unknown, ScientificNumberFieldPr
         id={id}
         type="text"
         inputMode="decimal"
-        labelText={labelText}
+        labelText={<>{labelText}{unit && <span className="scientific-visually-hidden"> in {unit}</span>}</>}
         value={rawValue}
         disabled={disabled}
         required={required}
         helperText={helperText}
-        invalid={Boolean(validationMessage)}
-        invalidText={validationMessage ?? undefined}
+        invalid={Boolean(invalidText ?? validationMessage)}
+        invalidText={invalidText ?? validationMessage ?? undefined}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          setRawValue(event.target.value);
-          if (validationMessage) setValidationMessage(null);
+          const nextValue = event.target.value;
+          setRawValue(nextValue);
+          if (touched.current) {
+            const error = validateScientificNumber(nextValue, { min, max });
+            setValidationMessage(error);
+            onValidationChange?.(error);
+          }
         }}
-        onBlur={() => commit(rawValue)}
+        onBlur={() => { touched.current = true; commit(rawValue); }}
         onKeyDown={(event) => { if (event.key === "Enter") commit(rawValue); }}
       />
       {unit && <span className="scientific-number-field__unit" aria-hidden="true">{unit}</span>}
     </div>
   );
 });
+
+export interface ScientificExampleWorkflowProps {
+  loaded: boolean;
+  onLoad: () => void;
+  onRun: () => void;
+  busy?: boolean;
+  runDisabled?: boolean;
+  loadLabel?: string;
+  runLabel?: string;
+  description?: ReactNode;
+  className?: string;
+}
+
+/** Predictable two-step entry into every scientific application. */
+export function ScientificExampleWorkflow({
+  loaded,
+  onLoad,
+  onRun,
+  busy = false,
+  runDisabled = false,
+  loadLabel = "Load example",
+  runLabel = "Run",
+  description = "Load a reproducible example, inspect its inputs, then run it explicitly.",
+  className,
+}: ScientificExampleWorkflowProps) {
+  return <section className={joinClassNames("scientific-example-workflow", className)} aria-label="Example workflow">
+    <p>{description}</p>
+    <div className="scientific-example-workflow__actions">
+      <Button kind="secondary" size="md" type="button" disabled={busy} onClick={onLoad}>{loaded ? "Reload example" : loadLabel}</Button>
+      <Button kind="primary" size="md" type="button" disabled={!loaded || busy || runDisabled} onClick={onRun}>{busy ? "Running…" : runLabel}</Button>
+    </div>
+  </section>;
+}
 
 export interface ExportReceiptProps {
   fileName: string;

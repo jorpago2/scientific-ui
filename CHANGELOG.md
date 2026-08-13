@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.13.0
+
+### Minor Changes
+
+- Standardize parameter-section width, scientific number formatting, field-linked validation, reproducible example entry and post-run result focus.
+
 ## 0.12.0
 
 ### Minor Changes

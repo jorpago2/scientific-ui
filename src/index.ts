@@ -10,4 +10,5 @@ export * from "./scientific-layout.js";
 export * from "./shortcuts.js";
 export * from "./theme.js";
 export * from "./viewport.js";
+export * from "./workflow.js";
 export type * from "./types.js";

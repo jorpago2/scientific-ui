@@ -5,6 +5,7 @@ import {
   ExportReceipt,
   InspectorPanel,
   ResultSwitcher,
+  ScientificExampleWorkflow,
   ScientificNumberField,
   ScientificStatus,
   ValidationSummary,
@@ -14,12 +15,14 @@ function ComponentCatalogue() {
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const [resultView, setResultView] = useState("field");
   const [value, setValue] = useState<number | null>(1e16);
+  const [exampleLoaded, setExampleLoaded] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   return <main style={{ display: "grid", gap: "1.5rem", padding: "1rem", maxWidth: "48rem" }}>
     <h1>Scientific interface components</h1>
     <ScientificStatus status={{ state: "validated", label: "Validated", detail: "All numerical checks passed." }} />
     <ScientificNumberField id="carrier-density" labelText="Carrier density" value={value ?? ""} unit="cm⁻³" min={0} onValueChange={setValue} helperText="Scientific notation is accepted." />
-    <ValidationSummary messages={[{ id: "mesh", severity: "warning", title: "Mesh requires review", detail: "Refine the active region before publication-quality export." }]} />
+    <ValidationSummary messages={[{ id: "mesh", severity: "warning", title: "Mesh requires review", detail: "Refine the active region before publication-quality export.", targetId: "carrier-density" }]} />
+    <ScientificExampleWorkflow loaded={exampleLoaded} onLoad={() => setExampleLoaded(true)} onRun={() => undefined} />
     <ResultSwitcher activeId={resultView} onChange={setResultView} options={[{ id: "field", label: "Field" }, { id: "spectrum", label: "Spectrum" }]} />
     <ExportReceipt fileName="result.csv" format="CSV" destination="Downloads" />
     <Button ref={triggerRef} onClick={() => setInspectorOpen(true)}>Open inspector</Button>

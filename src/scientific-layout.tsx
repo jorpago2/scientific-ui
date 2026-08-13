@@ -18,6 +18,7 @@ import {
 } from "react";
 import { ScientificCommandBar } from "./actions.js";
 import { ScientificStatus } from "./components.js";
+import { formatScientificValue } from "./number.js";
 import type {
   ScientificActionDescriptor,
   ScientificCheckDescriptor,
@@ -116,7 +117,7 @@ export function ScientificParameterGroup({
   const content = (
     <Grid fullWidth narrow className="scientific-parameter-group__grid">
       {Children.toArray(children).map((child, index) => (
-        <Column key={index} sm={4} md={columns === 2 ? 4 : 8} lg={columns === 2 ? 2 : 4}>
+        <Column key={index} sm={4} md={columns === 2 ? 4 : 8} lg={columns === 2 ? 8 : 16}>
           {child}
         </Column>
       ))}
@@ -128,6 +129,17 @@ export function ScientificParameterGroup({
       {description && <p className="scientific-parameter-group__description">{description}</p>}
       {content}
     </div>
+  );
+}
+
+export type ScientificParameterSectionProps = ScientificPanelSectionProps & Pick<ScientificParameterGroupProps, "columns" | "legend">;
+
+/** One canonical composition for headings, descriptions and scientific fields. */
+export function ScientificParameterSection({ columns = 1, legend, children, ...props }: ScientificParameterSectionProps) {
+  return (
+    <ScientificPanelSection {...props}>
+      <ScientificParameterGroup columns={columns} legend={legend}>{children}</ScientificParameterGroup>
+    </ScientificPanelSection>
   );
 }
 
@@ -311,7 +323,7 @@ export function ScientificMetricGrid({ metrics, columns = 4, className, ...props
         <Column sm={4} md={4} lg={lg} key={metric.id} className="scientific-metric" data-status={metric.status ?? "neutral"}>
           <dt>{metric.label}</dt>
           <dd>
-            <strong className="scientific-metric__value">{metric.value}</strong>
+            <strong className="scientific-metric__value">{typeof metric.value === "number" ? formatScientificValue(metric.value, metric.format) : metric.value}</strong>
             {metric.unit && <span className="scientific-metric__unit">{metric.unit}</span>}
           </dd>
           {metric.detail && <p>{metric.detail}</p>}

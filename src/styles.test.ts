@@ -8,6 +8,7 @@ const components = readFileSync(fileURLToPath(new URL("./components.tsx", import
 const plots = readFileSync(fileURLToPath(new URL("./plots.tsx", import.meta.url)), "utf8");
 const theme = readFileSync(fileURLToPath(new URL("./theme.tsx", import.meta.url)), "utf8");
 const providers = readFileSync(fileURLToPath(new URL("./providers.tsx", import.meta.url)), "utf8");
+const workflow = readFileSync(fileURLToPath(new URL("./workflow.ts", import.meta.url)), "utf8");
 
 describe("scientific typography contract", () => {
   it("uses IBM Plex Sans for inputs, values, coordinates and identifiers", () => {
@@ -52,6 +53,15 @@ describe("scientific workbench contract", () => {
   it("owns panel rhythm and plot theme synchronization centrally", () => {
     expect(styles).toMatch(/\.scientific-task-panel__body \{[\s\S]*display: grid;[\s\S]*gap: var\(--scientific-ui-spacing-05\);/);
     expect(plots).toContain('window.addEventListener("scientific-ui:theme-applied", update)');
+  });
+
+  it("gives panel fields the full Carbon grid width and standardizes handoff behavior", () => {
+    expect(layout).toContain('lg={columns === 2 ? 8 : 16}');
+    expect(layout).toContain("export function ScientificParameterSection");
+    expect(components).toContain("export function ScientificExampleWorkflow");
+    expect(components).toContain("target.scrollIntoView");
+    expect(workflow).toContain("export function useScientificResultTransition");
+    expect(workflow).toContain('prior.state === "running"');
   });
 
   it("defines one Carbon-grid post-operation handoff for every scientific app", () => {
