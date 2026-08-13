@@ -9,6 +9,7 @@ const plots = readFileSync(fileURLToPath(new URL("./plots.tsx", import.meta.url)
 const theme = readFileSync(fileURLToPath(new URL("./theme.tsx", import.meta.url)), "utf8");
 const providers = readFileSync(fileURLToPath(new URL("./providers.tsx", import.meta.url)), "utf8");
 const workflow = readFileSync(fileURLToPath(new URL("./workflow.ts", import.meta.url)), "utf8");
+const autosave = readFileSync(fileURLToPath(new URL("./autosave.ts", import.meta.url)), "utf8");
 
 describe("scientific typography contract", () => {
   it("uses IBM Plex Sans for inputs, values, coordinates and identifiers", () => {
@@ -82,5 +83,14 @@ describe("scientific workbench contract", () => {
     expect(theme).toContain('window.addEventListener("storage", synchronizeStoredTheme)');
     expect(providers).toContain('theme === undefined ? {} : { preference: theme }');
     expect(providers).not.toContain('theme = "system"');
+  });
+
+  it("provides versioned recovery without overwriting an unread draft", () => {
+    expect(components).toContain("export function ScientificRecoveryNotice");
+    expect(components).toContain("Restore session");
+    expect(components).toContain("export function ScientificAutosaveStatus");
+    expect(autosave).toContain('SCIENTIFIC_AUTOSAVE_FORMAT = "scientific-ui/autosave@1"');
+    expect(autosave).toContain("!decisionMade.current || recovery");
+    expect(styles).toContain(".scientific-recovery-notice");
   });
 });

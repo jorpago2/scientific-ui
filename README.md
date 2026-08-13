@@ -55,6 +55,7 @@ Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g10
 - `ValidationSummary` keeps errors adjacent to fields and can move focus from a summary issue to its `targetId`.
 - `ScientificExampleWorkflow` makes loading a reproducible example and running it two explicit actions.
 - `useScientificResultTransition` reveals and focuses the primary outcome after a completed operation without stealing focus on initial render.
+- `useScientificAutosave`, `ScientificRecoveryNotice` and `ScientificAutosaveStatus` provide versioned, size-limited local recovery without overwriting an unread draft or persisting scientific results by default.
 
 Evidence-heavy views may import from `@jorpago2/scientific-ui/scientific-layout` so secondary review panels can be loaded on demand without increasing the initial application bundle.
 

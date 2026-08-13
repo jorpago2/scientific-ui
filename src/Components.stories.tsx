@@ -7,6 +7,7 @@ import {
   ResultSwitcher,
   ScientificExampleWorkflow,
   ScientificNumberField,
+  ScientificRecoveryNotice,
   ScientificStatus,
   ValidationSummary,
 } from "./components";
@@ -23,6 +24,7 @@ function ComponentCatalogue() {
     <ScientificNumberField id="carrier-density" labelText="Carrier density" value={value ?? ""} unit="cm⁻³" min={0} onValueChange={setValue} helperText="Scientific notation is accepted." />
     <ValidationSummary messages={[{ id: "mesh", severity: "warning", title: "Mesh requires review", detail: "Refine the active region before publication-quality export.", targetId: "carrier-density" }]} />
     <ScientificExampleWorkflow loaded={exampleLoaded} onLoad={() => setExampleLoaded(true)} onRun={() => undefined} />
+    <ScientificRecoveryNotice savedAt={new Date().toISOString()} onRestore={() => undefined} onDiscard={() => undefined} />
     <ResultSwitcher activeId={resultView} onChange={setResultView} options={[{ id: "field", label: "Field" }, { id: "spectrum", label: "Spectrum" }]} />
     <ExportReceipt fileName="result.csv" format="CSV" destination="Downloads" />
     <Button ref={triggerRef} onClick={() => setInspectorOpen(true)}>Open inspector</Button>

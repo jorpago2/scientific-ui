@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.14.0
+
+### Minor Changes
+
+- Add versioned, size-limited local autosave utilities, an accessible recovery notice, and a shared local-save status.
+
 ## 0.13.0
 
 ### Minor Changes

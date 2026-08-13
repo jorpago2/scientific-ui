@@ -2056,6 +2056,28 @@ body.scientific-plot-fullscreen-open {
   pointer-events: auto;
 }
 
+.scientific-recovery-notice {
+  position: fixed;
+  z-index: 8500;
+  inset-block-start: calc(var(--scientific-ui-header-block-size) + var(--scientific-ui-spacing-03));
+  inset-inline-end: var(--scientific-ui-spacing-03);
+  inline-size: min(28rem, calc(100vw - 2rem));
+}
+
+.scientific-autosave-status {
+  color: var(--cds-text-secondary);
+  font-size: var(--scientific-ui-label-font-size);
+  line-height: var(--scientific-ui-label-line-height);
+}
+
+@media (max-width: 41.99rem) {
+  .scientific-recovery-notice {
+    inset-inline: var(--scientific-ui-spacing-03);
+    inline-size: auto;
+  }
+
+}
+
 @media (max-width: 81.99rem) {
   .scientific-command-bar__action[data-collapse-at="lg"] { display: none; }
   .scientific-command-bar[data-overflow-lg="true"] > .scientific-command-bar__overflow { display: flex; }

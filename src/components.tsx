@@ -1,4 +1,5 @@
 import {
+  ActionableNotification,
   Button,
   Column,
   ComposedModal,
@@ -456,6 +457,60 @@ export interface ScientificStatusBarProps extends HTMLAttributes<HTMLElement> {
   embedded?: boolean;
 }
 
+export interface ScientificRecoveryNoticeProps extends HTMLAttributes<HTMLElement> {
+  savedAt: string;
+  onRestore: () => void;
+  onDiscard: () => void;
+  title?: string;
+  description?: string;
+}
+
+function formatRecoveryTime(savedAt: string) {
+  const date = new Date(savedAt);
+  return Number.isFinite(date.getTime())
+    ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(date)
+    : "an earlier visit";
+}
+
+export function ScientificRecoveryNotice({
+  savedAt,
+  onRestore,
+  onDiscard,
+  title = "Previous session available",
+  description,
+  className,
+  ...props
+}: ScientificRecoveryNoticeProps) {
+  const detail = description ?? `Saved locally ${formatRecoveryTime(savedAt)}. Restore the saved inputs and configuration, or discard this draft.`;
+  return <aside className={joinClassNames("scientific-recovery-notice", className)} aria-label="Session recovery" {...props}>
+    <ActionableNotification
+      kind="info"
+      title={title}
+      subtitle={detail}
+      actionButtonLabel="Restore session"
+      onActionButtonClick={onRestore}
+      onCloseButtonClick={onDiscard}
+      closeOnEscape
+      aria-label="Discard saved session"
+      lowContrast
+    />
+  </aside>;
+}
+
+export interface ScientificAutosaveStatusProps extends HTMLAttributes<HTMLSpanElement> {
+  status: "idle" | "saving" | "saved" | "unavailable" | "error";
+  savedAt?: string | null;
+}
+
+export function ScientificAutosaveStatus({ status, savedAt, className, ...props }: ScientificAutosaveStatusProps) {
+  const label = status === "saving" ? "Saving locallyâ€¦"
+    : status === "saved" ? `Saved locally${savedAt ? ` ${formatRecoveryTime(savedAt)}` : ""}`
+      : status === "unavailable" ? "Local saving unavailable"
+        : status === "error" ? "Local saving failed"
+          : "Local saving ready";
+  return <span className={joinClassNames("scientific-autosave-status", className)} role="status" aria-live="polite" aria-atomic="true" {...props}>{label}</span>;
+}
+
 export function ScientificStatusBar({ status, metadata, actions, embedded = false, className, ...props }: ScientificStatusBarProps) {
   return (
     <footer className={joinClassNames("scientific-status-bar", embedded && "scientific-status-bar--embedded", className)} {...props}>
@@ -657,6 +712,7 @@ export function ResultSwitcher({ options, activeId, onChange, label = "Result vi
 export interface ScientificAppShellProps {
   header: ReactNode;
   navigation: ReactNode;
+  recovery?: ReactNode;
   panel?: ReactNode;
   children: ReactNode;
   inspector?: ReactNode;
@@ -665,7 +721,7 @@ export interface ScientificAppShellProps {
   className?: string;
 }
 
-export function ScientificAppShell({ header, navigation, panel, children, inspector, statusBar, panelOpen = Boolean(panel), className }: ScientificAppShellProps) {
+export function ScientificAppShell({ header, navigation, recovery, panel, children, inspector, statusBar, panelOpen = Boolean(panel), className }: ScientificAppShellProps) {
   return (
     <div
       className={joinClassNames("scientific-app-shell", className)}
@@ -673,6 +729,7 @@ export function ScientificAppShell({ header, navigation, panel, children, inspec
     >
       {header}
       {navigation}
+      {recovery}
       <Grid as="main" fullWidth condensed className="scientific-workbench">
         {panel && (
           <Column
