@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
@@ -10,6 +10,7 @@ function run(command, args) {
   });
 }
 
+await rm("dist", { recursive: true, force: true });
 await run(process.execPath, [fileURLToPath(new URL("../node_modules/typescript/bin/tsc", import.meta.url)), "-p", "tsconfig.json"]);
 await mkdir("dist", { recursive: true });
 const [tokens, styles] = await Promise.all([

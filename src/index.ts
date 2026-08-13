@@ -4,6 +4,7 @@ export * from "./notifications.js";
 export * from "./number.js";
 export * from "./plots.js";
 export * from "./project-actions.js";
+export * from "./product-mark.js";
 export * from "./providers.js";
 export * from "./scientific-layout.js";
 export * from "./shortcuts.js";

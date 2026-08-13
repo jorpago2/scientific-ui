@@ -40,6 +40,7 @@ import {
 import type { IconButtonProps } from "@carbon/react";
 import { parseScientificNumber, validateScientificNumber } from "./number.js";
 import { useScientificShortcuts } from "./shortcuts.js";
+import { ScientificProductMark, type ScientificProductIcon } from "./product-mark.js";
 import type {
   ResultOption,
   ScientificState,
@@ -54,6 +55,7 @@ function joinClassNames(...classNames: Array<string | undefined | false>) {
 
 export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   product: string;
+  productIcon?: ScientificProductIcon;
   productMark?: ReactNode;
   descriptor?: ReactNode;
   href?: string;
@@ -68,12 +70,12 @@ export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   skipLink?: ReactNode;
 }
 
-export function ScientificHeader({ product, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, help, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
+export function ScientificHeader({ product, productIcon, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, help, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
   return (
     <Header className={joinClassNames("scientific-header", "scientific-app-header", className)} {...props}>
       {skipLink}
       <HeaderName className="scientific-header__brand scientific-app-header__brand" href={href} prefix="" aria-label={product}>
-        <span className="scientific-header__brand-mark scientific-app-header__brand-mark" aria-hidden="true">{productMark ?? product.slice(0, 1)}</span>
+        <span className="scientific-header__brand-mark scientific-app-header__brand-mark" aria-hidden="true">{productIcon ? <ScientificProductMark product={productIcon} /> : productMark ?? product.slice(0, 1)}</span>
         <span className="scientific-header__brand-copy"><strong>{product}</strong>{descriptor && <small>{descriptor}</small>}</span>
       </HeaderName>
       {(contextLabel || context || contextDetail || status) && <div className="scientific-header__context scientific-app-header__context">

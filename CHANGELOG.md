@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.9.0
+
+### Minor Changes
+
+- Add a unified vector product-mark family for the eight scientific applications and integrate it with `ScientificHeader`.
+
 ## 0.8.1
 
 ### Patch Changes

@@ -1,5 +1,7 @@
 # @jorpago2/scientific-ui
 
+`ScientificHeader` accepts a `productIcon` from the shared eight-application mark family. Each mark uses the same 32-unit grid, 2-unit stroke, monochrome Carbon header treatment and compact 22 px rendering, while its motif identifies the scientific workflow.
+
 ## Scientific plots
 
 Use `SCIENTIFIC_PLOT_LINE_WIDTHS` for trace hierarchy: `primary` (4 px), `emphasis` (5 px), `secondary` (3 px), and `reference` (2 px). Scientific meaning should also remain identifiable through colour, dash patterns, markers and labels.
