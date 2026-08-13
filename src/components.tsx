@@ -503,7 +503,7 @@ export interface ScientificAutosaveStatusProps extends HTMLAttributes<HTMLSpanEl
 }
 
 export function ScientificAutosaveStatus({ status, savedAt, className, ...props }: ScientificAutosaveStatusProps) {
-  const label = status === "saving" ? "Saving locallyâ€¦"
+  const label = status === "saving" ? "Saving locally…"
     : status === "saved" ? `Saved locally${savedAt ? ` ${formatRecoveryTime(savedAt)}` : ""}`
       : status === "unavailable" ? "Local saving unavailable"
         : status === "error" ? "Local saving failed"

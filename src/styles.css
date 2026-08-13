@@ -1852,6 +1852,18 @@ body.scientific-plot-fullscreen-open {
   line-height: 1.75rem;
 }
 
+@media (max-width: 41.99rem) {
+  .scientific-metric {
+    min-block-size: 5.5rem;
+    padding: var(--scientific-ui-spacing-04);
+  }
+
+  .scientific-metric__value {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
+}
+
 .scientific-metric__value > span,
 .scientific-metric__value > output {
   color: inherit;

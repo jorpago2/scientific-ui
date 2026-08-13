@@ -320,7 +320,7 @@ export function ScientificMetricGrid({ metrics, columns = 4, className, ...props
   return (
     <Grid as="dl" fullWidth narrow className={joinClassNames("scientific-metric-grid", className)} {...props}>
       {metrics.map((metric) => (
-        <Column sm={4} md={4} lg={lg} key={metric.id} className="scientific-metric" data-status={metric.status ?? "neutral"}>
+        <Column sm={2} md={4} lg={lg} key={metric.id} className="scientific-metric" data-status={metric.status ?? "neutral"}>
           <dt>{metric.label}</dt>
           <dd>
             <strong className="scientific-metric__value">{typeof metric.value === "number" ? formatScientificValue(metric.value, metric.format) : metric.value}</strong>

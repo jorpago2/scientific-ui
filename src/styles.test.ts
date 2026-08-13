@@ -21,6 +21,11 @@ describe("scientific typography contract", () => {
     expect(styles).not.toContain("var(--scientific-ui-font-mono)");
   });
 
+  it("keeps mobile result metrics compact and scannable", () => {
+    expect(layout).toContain('<Column sm={2} md={4} lg={lg}');
+    expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-metric \{[\s\S]*min-block-size: 5\.5rem;/);
+  });
+
   it("keeps nested metric values distinct from units", () => {
     expect(layout).toContain('className="scientific-metric__value"');
     expect(layout).toContain('className="scientific-metric__unit"');

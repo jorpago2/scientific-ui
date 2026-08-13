@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.14.1
+
+### Patch Changes
+
+- Compact scientific metric grids into two columns on small screens and correct the local-save progress label.
+
 ## 0.14.0
 
 ### Minor Changes
