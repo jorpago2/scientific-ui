@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.10.0
+
+### Minor Changes
+
+- Redesign the eight product marks from a shared generative identity direction, with stronger silhouettes and normalized optical weight for the 22 px header context.
+
 ## 0.9.0
 
 ### Minor Changes

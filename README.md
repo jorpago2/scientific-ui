@@ -1,6 +1,6 @@
 # @jorpago2/scientific-ui
 
-`ScientificHeader` accepts a `productIcon` from the shared eight-application mark family. Each mark uses the same 32-unit grid, 2-unit stroke, monochrome Carbon header treatment and compact 22 px rendering, while its motif identifies the scientific workflow.
+`ScientificHeader` accepts a `productIcon` from the shared eight-application mark family. The AI-directed identity is normalized as production SVG on a common 32-unit grid, with consistent optical weight, monochrome Carbon header treatment and compact 22 px rendering.
 
 ## Scientific plots
 

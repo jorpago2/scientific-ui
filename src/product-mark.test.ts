@@ -12,7 +12,7 @@ describe("ScientificProductMark", () => {
   it.each(products)("renders the %s mark with the shared geometry", (product) => {
     const markup = renderToStaticMarkup(createElement(ScientificProductMark, { product }));
     expect(markup).toContain('viewBox="0 0 32 32"');
-    expect(markup).toContain('stroke-width="2"');
+    expect(markup).toContain('stroke-width="2.25"');
     expect(markup).toContain('aria-hidden="true"');
   });
 });
