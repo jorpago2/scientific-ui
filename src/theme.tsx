@@ -63,7 +63,10 @@ export function ScientificThemeProvider({
   className,
   ...props
 }: ScientificThemeProviderProps) {
-  const [internalPreference, setInternalPreference] = useState<ScientificThemePreference>(defaultPreference);
+  const [internalPreference, setInternalPreference] = useState<ScientificThemePreference>(() => {
+    if (controlledPreference !== undefined || typeof window === "undefined") return defaultPreference;
+    return normalizeThemePreference(window.localStorage.getItem(storageKey)) ?? defaultPreference;
+  });
   const preference = controlledPreference ?? internalPreference;
   const prefersDark = usePrefersDarkScheme();
   const isDark = preference === "dark" || preference === "g100" || (preference === "system" && prefersDark);
@@ -81,9 +84,18 @@ export function ScientificThemeProvider({
       const nextPreference = normalizeThemePreference((event as CustomEvent<{ preference?: unknown }>).detail?.preference);
       if (nextPreference) setInternalPreference(nextPreference);
     };
+    const synchronizeStoredTheme = (event: StorageEvent) => {
+      if (event.key !== storageKey) return;
+      const nextPreference = normalizeThemePreference(event.newValue);
+      setInternalPreference(nextPreference ?? defaultPreference);
+    };
     window.addEventListener(SCIENTIFIC_THEME_EVENT, synchronizeTheme);
-    return () => window.removeEventListener(SCIENTIFIC_THEME_EVENT, synchronizeTheme);
-  }, [controlledPreference]);
+    window.addEventListener("storage", synchronizeStoredTheme);
+    return () => {
+      window.removeEventListener(SCIENTIFIC_THEME_EVENT, synchronizeTheme);
+      window.removeEventListener("storage", synchronizeStoredTheme);
+    };
+  }, [controlledPreference, defaultPreference, storageKey]);
 
   const setPreference = (nextPreference: ScientificThemePreference) => {
     if (controlledPreference === undefined) setInternalPreference(nextPreference);

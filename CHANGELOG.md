@@ -6,6 +6,7 @@
 
 - Add a persistent system-aware Carbon `g10`/`g100` theme controller and the canonical header theme action.
 - Keep Help as the final header action while applying dark mode to application chrome, overlays and scientific content.
+- Apply stored preferences during initialization to avoid a light-theme flash and synchronize changes across browser tabs.
 
 ## 0.10.0
 

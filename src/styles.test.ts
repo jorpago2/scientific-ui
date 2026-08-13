@@ -58,6 +58,8 @@ describe("scientific workbench contract", () => {
     expect(components.indexOf("scientific-header__theme")).toBeLessThan(components.indexOf("scientific-header__help"));
     expect(theme).toContain("ScientificThemeToggle");
     expect(theme).toContain('data-scientific-theme={resolvedTheme}');
+    expect(theme).toContain('normalizeThemePreference(window.localStorage.getItem(storageKey)) ?? defaultPreference');
+    expect(theme).toContain('window.addEventListener("storage", synchronizeStoredTheme)');
     expect(providers).toContain('theme === undefined ? {} : { preference: theme }');
     expect(providers).not.toContain('theme = "system"');
   });
