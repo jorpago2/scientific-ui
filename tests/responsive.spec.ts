@@ -218,6 +218,23 @@ test("mobile panels use the safe workspace above bottom navigation", async ({ pa
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(676);
 });
 
+test("long scientific results remain scrollable inside the workbench stage", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.locator("#fixture-panel").getByRole("button", { name: "Close panel" }).click();
+
+  const stage = page.locator(".scientific-workbench__stage");
+  await stage.evaluate((element) => {
+    const longResult = document.createElement("div");
+    longResult.style.blockSize = "1800px";
+    longResult.textContent = "Long scientific result";
+    element.append(longResult);
+  });
+  await expect(stage).toHaveCSS("overflow-y", "auto");
+  await stage.evaluate((element) => element.scrollTo({ top: 600 }));
+  expect(await stage.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+});
+
 test("tablet panels occupy the full workbench without a preview row", async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/");

@@ -34,7 +34,19 @@ export function useScientificResultTransition({
       const result = resultRef.current;
       if (!result) return;
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      result.scrollIntoView({ block: "start", behavior: reducedMotion ? "auto" : "smooth" });
+      const stage = result.closest<HTMLElement>(".scientific-workbench__stage");
+      const resultBounds = result.getBoundingClientRect();
+      const stageBounds = stage?.getBoundingClientRect();
+      const resultStartsInView = Boolean(
+        stageBounds
+        && resultBounds.top >= stageBounds.top
+        && resultBounds.top < stageBounds.bottom,
+      );
+      // Preserve the surrounding heading when the outcome is already visible.
+      // Scrolling is only useful when the completed result is outside the stage.
+      if (!resultStartsInView) {
+        result.scrollIntoView({ block: "nearest", behavior: reducedMotion ? "auto" : "smooth" });
+      }
       result.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(frame);

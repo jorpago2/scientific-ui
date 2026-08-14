@@ -659,6 +659,9 @@ body.scientific-plot-fullscreen-open {
 .scientific-workbench__stage {
   position: relative;
   min-block-size: 22rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   background: var(--scientific-ui-background);
 }
 
@@ -1951,7 +1954,7 @@ body.scientific-plot-fullscreen-open {
 
 .scientific-evidence-summary__checks {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
   gap: 1px;
   margin: var(--scientific-ui-spacing-05) 0 0;
   padding: 0;

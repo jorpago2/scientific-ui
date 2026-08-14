@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.14.5
+
+### Patch Changes
+
+- Keep long scientific stages scrollable, preserve surrounding result context when focusing a completed run and balance evidence grids at medium widths.
+
 ## 0.14.4
 
 ### Patch Changes
