@@ -281,7 +281,9 @@ test("shared commands collapse into Carbon overflow without global overflow", as
 test("registered commands appear in Help and execute from one shortcut registry", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Help" }).click();
-  await expect(page.locator(".scientific-header-help__popover").getByText("Run model", { exact: true })).toBeVisible();
+  const runShortcut = page.locator(".scientific-header-help__popover").getByText("Run model", { exact: true });
+  await expect(runShortcut).toBeVisible();
+  await expect(runShortcut).toHaveCount(1);
   await page.keyboard.press("Escape");
   await page.keyboard.press("Control+Enter");
   await expect(page.getByText("Simulation running").first()).toBeVisible();

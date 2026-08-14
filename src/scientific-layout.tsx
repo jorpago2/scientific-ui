@@ -193,6 +193,42 @@ export interface ScientificResultsLayoutProps extends Omit<HTMLAttributes<HTMLEl
   details?: ReactNode;
 }
 
+export interface ScientificStageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+  title: ReactNode;
+  description?: ReactNode;
+  status?: ScientificStatusDescriptor;
+  actions?: ReactNode;
+  titleId?: string;
+}
+
+/** Carbon-grid heading shared by overview, validation and other stage views. */
+export function ScientificStageHeader({
+  title,
+  description,
+  status,
+  actions,
+  titleId,
+  className,
+  ...props
+}: ScientificStageHeaderProps) {
+  const generatedId = useId();
+  const headingId = titleId ?? `scientific-stage-${generatedId.replace(/:/g, "")}`;
+  return (
+    <header className={joinClassNames("scientific-stage-header", className)} {...props}>
+      <Grid fullWidth>
+        <Column sm={4} md={8} lg={16} className="scientific-stage-header__column">
+          <div className="scientific-stage-header__heading">
+            <h2 id={headingId}>{title}</h2>
+            {description && <p>{description}</p>}
+            {status && <ScientificStatus status={status} compact />}
+          </div>
+          {actions && <div className="scientific-stage-header__actions">{actions}</div>}
+        </Column>
+      </Grid>
+    </header>
+  );
+}
+
 export function ScientificResultsLayout({
   title,
   description,

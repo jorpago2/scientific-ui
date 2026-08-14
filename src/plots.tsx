@@ -88,6 +88,7 @@ const FULLSCREEN_ICON = {
 };
 
 let fullscreenPlot: PlotElement | null = null;
+let fullscreenFrame: HTMLElement | null = null;
 let fullscreenSnapshot: { width: string; height: string; focus: HTMLElement | null } | null = null;
 
 function cssValue(style: CSSStyleDeclaration, name: string, fallback: string): string {
@@ -179,12 +180,15 @@ function requestPlotResize(plot: PlotElement): void {
 export function closeScientificPlotFullscreen(): void {
   if (!fullscreenPlot || !fullscreenSnapshot) return;
   const plot = fullscreenPlot;
+  const frame = fullscreenFrame;
   const snapshot = fullscreenSnapshot;
   fullscreenPlot = null;
+  fullscreenFrame = null;
   fullscreenSnapshot = null;
   plot.style.width = snapshot.width;
   plot.style.height = snapshot.height;
   plot.classList.remove("scientific-plot-fullscreen");
+  frame?.classList.remove("scientific-plot-frame--fullscreen");
   plot.ownerDocument.body.classList.remove("scientific-plot-fullscreen-open");
   plot.ownerDocument.removeEventListener("keydown", closeFullscreenOnEscape);
   requestPlotResize(plot);
@@ -202,6 +206,7 @@ export function toggleScientificPlotFullscreen(plot: PlotElement): void {
   }
   closeScientificPlotFullscreen();
   fullscreenPlot = plot;
+  fullscreenFrame = plot.closest<HTMLElement>(".scientific-plot-frame");
   fullscreenSnapshot = {
     width: plot.style.width,
     height: plot.style.height,
@@ -210,6 +215,7 @@ export function toggleScientificPlotFullscreen(plot: PlotElement): void {
   plot.style.width = "100%";
   plot.style.height = "100%";
   plot.classList.add("scientific-plot-fullscreen");
+  fullscreenFrame?.classList.add("scientific-plot-frame--fullscreen");
   plot.ownerDocument.body.classList.add("scientific-plot-fullscreen-open");
   plot.ownerDocument.addEventListener("keydown", closeFullscreenOnEscape);
   requestPlotResize(plot);
@@ -245,17 +251,39 @@ export function createScientificPlotlyConfig(options: ScientificPlotlyConfigOpti
 
 /** Repairs Plotly's generated toolbar so every command is keyboard reachable. */
 export function prepareScientificPlotlyToolbar(plot: Element): void {
-  for (const button of plot.querySelectorAll<HTMLElement>(".modebar-btn")) {
+  const modebar = plot.querySelector<HTMLElement>(".modebar");
+  if (!modebar) return;
+  const normalizeIcons = () => {
+    for (const path of modebar.querySelectorAll<SVGPathElement>(".modebar-btn svg path")) {
+      path.style.removeProperty("fill");
+    }
+  };
+  modebar.setAttribute("role", "toolbar");
+  modebar.setAttribute("aria-label", "Plot controls");
+  normalizeIcons();
+  for (const button of modebar.querySelectorAll<HTMLElement>(".modebar-btn")) {
     button.tabIndex = 0;
     button.setAttribute("role", "button");
     if (button.dataset.scientificKeyboardReady === "true") continue;
     button.dataset.scientificKeyboardReady = "true";
+    button.addEventListener("click", () => {
+      plot.ownerDocument.defaultView?.requestAnimationFrame(normalizeIcons);
+    });
     button.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
       event.preventDefault();
       button.click();
     });
   }
+  const surface = plot.closest<HTMLElement>(".scientific-plot-frame__surface");
+  if (!surface) return;
+  let toolbar = surface.querySelector<HTMLElement>(":scope > .scientific-plot-frame__toolbar");
+  if (!toolbar) {
+    toolbar = plot.ownerDocument.createElement("div");
+    toolbar.className = "scientific-plot-frame__toolbar";
+    surface.prepend(toolbar);
+  }
+  toolbar.replaceChildren(modebar);
 }
 
 export function ScientificPlotFrame({

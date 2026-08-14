@@ -1,5 +1,14 @@
 # @jorpago2/scientific-ui
 
+## 0.14.7
+
+### Patch Changes
+
+- Track invalid numeric drafts independently from committed scientific values so applications can block execution reliably and reset fields deterministically.
+- Deduplicate registered Help shortcuts and style programmatic result focus without exposing the browser's native section outline.
+- Move Plotly controls into a dedicated toolbar outside the data region and preserve plot context in fullscreen mode.
+- Add a Carbon-grid stage header, align compact metric values and give long desktop product names sufficient room.
+
 ## 0.14.6
 
 ### Patch Changes

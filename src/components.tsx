@@ -121,6 +121,10 @@ function isEditableHelpTarget(target: EventTarget | null) {
   return target instanceof HTMLElement && (target.matches("input, select, textarea") || target.isContentEditable);
 }
 
+function scientificHelpShortcutKey(keys: readonly string[]) {
+  return keys.map((key) => key.trim().toLowerCase().replace("mod", "ctrl/⌘")).join("+");
+}
+
 export function ScientificHeaderHelp({
   id,
   label = "Help",
@@ -131,6 +135,11 @@ export function ScientificHeaderHelp({
   footer,
 }: ScientificHeaderHelpDescriptor) {
   const registeredShortcuts = useScientificShortcuts();
+  const displayedShortcuts = [...shortcuts, ...registeredShortcuts.map((shortcut) => ({
+    keys: shortcut.displayKeys ?? [shortcut.shortcut],
+    description: shortcut.description,
+  }))].filter((shortcut, index, all) => all.findIndex((candidate) =>
+    scientificHelpShortcutKey(candidate.keys) === scientificHelpShortcutKey(shortcut.keys)) === index);
   const generatedId = useId();
   const buttonId = id ?? `scientific-header-help-${generatedId}`;
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -168,15 +177,9 @@ export function ScientificHeaderHelp({
           <strong className="scientific-header-help__title">{title}</strong>
           <p className="scientific-header-help__summary">{summary}</p>
           <dl className="scientific-header-help__shortcuts">
-            {shortcuts.map((shortcut, index) => (
+            {displayedShortcuts.map((shortcut, index) => (
               <div key={`${shortcut.keys.join("+")}-${index}`}>
                 <dt>{shortcut.keys.map((key) => <kbd key={key}>{key}</kbd>)}</dt>
-                <dd>{shortcut.description}</dd>
-              </div>
-            ))}
-            {registeredShortcuts.map((shortcut) => (
-              <div key={shortcut.id}>
-                <dt>{(shortcut.displayKeys ?? [shortcut.shortcut]).map((key) => <kbd key={key}>{key}</kbd>)}</dt>
                 <dd>{shortcut.description}</dd>
               </div>
             ))}
@@ -584,6 +587,7 @@ export interface ScientificNumberFieldProps {
   className?: string;
   invalidText?: ReactNode;
   onValidationChange?: (message: string | null) => void;
+  revision?: string | number;
 }
 
 function formatScientificInputValue(value: number | string): string {
@@ -591,13 +595,21 @@ function formatScientificInputValue(value: number | string): string {
 }
 
 export const ScientificNumberField = forwardRef<unknown, ScientificNumberFieldProps>(function ScientificNumberField({
-  id, labelText, value, onValueChange, min, max, unit, helperText, disabled, required, className, invalidText, onValidationChange,
+  id, labelText, value, onValueChange, min, max, unit, helperText, disabled, required, className, invalidText, onValidationChange, revision,
 }, ref) {
   const [rawValue, setRawValue] = useState(formatScientificInputValue(value));
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const touched = useRef(false);
+  const validationCallbackRef = useRef(onValidationChange);
 
-  useEffect(() => setRawValue(formatScientificInputValue(value)), [value]);
+  useEffect(() => { validationCallbackRef.current = onValidationChange; }, [onValidationChange]);
+
+  useEffect(() => {
+    setRawValue(formatScientificInputValue(value));
+    setValidationMessage(null);
+    touched.current = false;
+    validationCallbackRef.current?.(null);
+  }, [revision, value]);
   const commit = (nextRawValue: string) => {
     const error = validateScientificNumber(nextRawValue, { min, max });
     setValidationMessage(error);

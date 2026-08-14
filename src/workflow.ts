@@ -47,6 +47,7 @@ export function useScientificResultTransition({
       if (!resultStartsInView) {
         result.scrollIntoView({ block: "nearest", behavior: reducedMotion ? "auto" : "smooth" });
       }
+      result.dataset.scientificResultFocusTarget = "true";
       result.focus({ preventScroll: true });
     });
     return () => window.cancelAnimationFrame(frame);

@@ -60,7 +60,7 @@ header.scientific-header.scientific-app-header {
   background: var(--scientific-ui-header-background);
 }
 
-.scientific-header__brand {
+a.scientific-header__brand.scientific-app-header__brand {
   display: flex;
   inline-size: var(--scientific-ui-rail-inline-size);
   min-inline-size: 0;
@@ -107,8 +107,12 @@ header.scientific-header.scientific-app-header {
 .scientific-header__brand-copy {
   display: grid;
   min-inline-size: 0;
-  padding-inline: var(--scientific-ui-spacing-05);
+  padding-inline: var(--scientific-ui-spacing-04);
   line-height: 1;
+}
+
+[data-scientific-result-focus-target]:focus {
+  outline: 0;
 }
 
 .scientific-header__brand-copy strong,
@@ -499,6 +503,21 @@ header.scientific-header.scientific-app-header {
   background: var(--scientific-ui-background);
 }
 
+.scientific-plot-frame__toolbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-block-size: 2rem;
+  align-items: center;
+  justify-content: flex-end;
+  border-block-end: 1px solid var(--scientific-ui-border);
+  background: var(--scientific-ui-layer);
+}
+
+.scientific-plot-frame__toolbar:empty {
+  display: none;
+}
+
 .scientific-plot-surface {
   display: block;
   inline-size: 100%;
@@ -568,19 +587,22 @@ header.scientific-header.scientific-app-header {
   align-items: center;
 }
 
-.scientific-plot-surface .modebar {
+.scientific-plot-frame__toolbar .modebar {
+  position: static;
   display: flex;
   max-inline-size: 100%;
   flex-wrap: wrap;
   justify-content: flex-end;
+  background: transparent;
   opacity: 1;
 }
 
-.scientific-plot-surface .modebar-group {
+.scientific-plot-frame__toolbar .modebar-group {
   display: contents;
 }
 
-.scientific-plot-surface .modebar-btn {
+.scientific-plot-frame__toolbar .modebar-btn {
+  position: relative;
   display: inline-grid;
   inline-size: 2rem;
   min-inline-size: 2rem;
@@ -588,13 +610,51 @@ header.scientific-header.scientific-app-header {
   min-block-size: 2rem;
   place-items: center;
   padding: 0;
+  color: var(--cds-icon-primary);
+  background: transparent;
 }
 
-.scientific-plot-surface .modebar-btn svg {
+.scientific-plot-frame__toolbar .modebar-btn[data-title]::after {
+  position: absolute;
+  z-index: 3;
+  inset-block-start: calc(100% + var(--scientific-ui-spacing-02));
+  inset-inline-end: 0;
+  display: block;
+  padding: var(--scientific-ui-spacing-02) var(--scientific-ui-spacing-03);
+  background: var(--cds-background-inverse);
+  color: var(--cds-text-inverse);
+  content: attr(data-title);
+  font-family: var(--scientific-ui-font-sans);
+  font-size: var(--scientific-ui-label-font-size);
+  line-height: var(--scientific-ui-label-line-height);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.scientific-plot-frame__toolbar .modebar-btn[data-title]:hover::after,
+.scientific-plot-frame__toolbar .modebar-btn[data-title]:focus-visible::after {
+  opacity: 1;
+}
+
+.scientific-plot-frame__toolbar .modebar-btn:hover {
+  background: var(--cds-layer-hover-01);
+}
+
+.scientific-plot-frame__toolbar .modebar-btn.active {
+  color: var(--cds-icon-on-color);
+  background: var(--cds-button-primary);
+}
+
+.scientific-plot-frame__toolbar .modebar-btn svg {
   position: static;
 }
 
-.scientific-plot-surface .modebar-btn:focus-visible {
+.scientific-plot-frame__toolbar .modebar-btn svg path {
+  fill: currentColor;
+}
+
+.scientific-plot-frame__toolbar .modebar-btn:focus-visible {
   outline: 2px solid var(--scientific-ui-focus);
   outline-offset: -2px;
 }
@@ -603,15 +663,26 @@ body.scientific-plot-fullscreen-open {
   overflow: hidden;
 }
 
-.scientific-plot-surface.scientific-plot-fullscreen {
+.scientific-plot-frame--fullscreen {
   position: fixed;
   z-index: 7000;
   inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   box-sizing: border-box;
   inline-size: 100%;
   block-size: 100%;
-  padding: var(--scientific-ui-spacing-05);
   background: var(--scientific-ui-background);
+}
+
+.scientific-plot-frame--fullscreen .scientific-plot-frame__surface {
+  display: grid;
+  min-block-size: 0;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.scientific-plot-frame--fullscreen .scientific-plot-surface.scientific-plot-fullscreen {
+  min-block-size: 0;
 }
 
 @media (max-width: 41.99rem) {
@@ -627,7 +698,11 @@ body.scientific-plot-fullscreen-open {
 }
 
 @media (pointer: coarse), (max-width: 41.99rem) {
-  .scientific-plot-surface .modebar-btn {
+  .scientific-plot-frame__toolbar {
+    min-block-size: var(--scientific-ui-target-size);
+  }
+
+  .scientific-plot-frame__toolbar .modebar-btn {
     inline-size: var(--scientific-ui-target-size);
     min-inline-size: var(--scientific-ui-target-size);
     block-size: var(--scientific-ui-target-size);
@@ -1745,6 +1820,53 @@ body.scientific-plot-fullscreen-open {
   padding-block: var(--scientific-ui-spacing-05);
 }
 
+.scientific-stage-header {
+  border-block-end: 1px solid var(--cds-border-subtle-01);
+  background: var(--cds-background);
+}
+
+.scientific-stage-header__column {
+  display: flex;
+  min-inline-size: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--scientific-ui-spacing-05);
+  padding-block: var(--scientific-ui-spacing-05);
+}
+
+.scientific-stage-header__heading {
+  min-inline-size: 0;
+}
+
+.scientific-stage-header__heading h2,
+.scientific-stage-header__heading p {
+  margin: 0;
+}
+
+.scientific-stage-header__heading h2 {
+  overflow-wrap: anywhere;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.scientific-stage-header__heading p {
+  max-inline-size: 68ch;
+  margin-block-start: var(--scientific-ui-spacing-03);
+  color: var(--cds-text-secondary);
+  line-height: 1.5;
+}
+
+.scientific-stage-header__heading .scientific-status {
+  margin-block-start: var(--scientific-ui-spacing-03);
+}
+
+.scientific-stage-header__actions {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+}
+
 .scientific-results-layout__content-row {
   min-inline-size: 0;
 }
@@ -1842,7 +1964,10 @@ body.scientific-plot-fullscreen-open {
 }
 
 .scientific-metric {
+  display: grid;
   min-block-size: 7rem;
+  grid-template-rows: auto auto 1fr;
+  align-content: start;
   padding: var(--scientific-ui-spacing-05);
   border-block-start: 1px solid var(--cds-border-subtle-01);
   background: var(--cds-layer-02);
@@ -1877,7 +2002,13 @@ body.scientific-plot-fullscreen-open {
 @media (max-width: 41.99rem) {
   .scientific-metric {
     min-block-size: 5.5rem;
+    grid-template-rows: minmax(calc(2 * var(--scientific-ui-label-line-height)), auto) auto 1fr;
     padding: var(--scientific-ui-spacing-04);
+  }
+
+  .scientific-stage-header__column {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .scientific-metric__value {

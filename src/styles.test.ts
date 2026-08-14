@@ -24,6 +24,7 @@ describe("scientific typography contract", () => {
   it("keeps mobile result metrics compact and scannable", () => {
     expect(layout).toContain('<Column sm={2} md={4} lg={lg}');
     expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-metric \{[\s\S]*min-block-size: 5\.5rem;/);
+    expect(styles).toContain("grid-template-rows: minmax(calc(2 * var(--scientific-ui-label-line-height)), auto) auto 1fr");
   });
 
   it("keeps nested metric values distinct from units", () => {
@@ -47,6 +48,7 @@ describe("scientific workbench contract", () => {
     expect(actions).toContain('aria-label={action.label}');
     expect(styles).toMatch(/\.scientific-header__context a,[\s\S]*min-inline-size: var\(--scientific-ui-target-size\);/);
     expect(styles).toMatch(/@media \(max-width: 25\.875rem\)[\s\S]*\.scientific-header__primary-action \.scientific-command-bar__label[\s\S]*display: none;/);
+    expect(styles).toContain("a.scientific-header__brand.scientific-app-header__brand");
   });
 
   it("preserves Carbon tab and content-switcher heights on touch viewports", () => {
@@ -59,6 +61,11 @@ describe("scientific workbench contract", () => {
   it("owns panel rhythm and plot theme synchronization centrally", () => {
     expect(styles).toMatch(/\.scientific-task-panel__body \{[\s\S]*display: grid;[\s\S]*gap: var\(--scientific-ui-spacing-05\);/);
     expect(plots).toContain('window.addEventListener("scientific-ui:theme-applied", update)');
+    expect(plots).toContain('toolbar.className = "scientific-plot-frame__toolbar"');
+    expect(styles).toContain(".scientific-plot-frame__toolbar .modebar");
+    expect(styles).toContain(".scientific-plot-frame__toolbar .modebar-btn svg path");
+    expect(styles).toContain('.scientific-plot-frame__toolbar .modebar-btn[data-title]::after');
+    expect(styles).not.toContain(".scientific-plot-surface .modebar {");
   });
 
   it("gives panel fields the full Carbon grid width and standardizes handoff behavior", () => {
@@ -68,6 +75,9 @@ describe("scientific workbench contract", () => {
     expect(components).toContain("target.scrollIntoView");
     expect(workflow).toContain("export function useScientificResultTransition");
     expect(workflow).toContain('prior.state === "running"');
+    expect(workflow).toContain('result.dataset.scientificResultFocusTarget = "true"');
+    expect(styles).toContain("[data-scientific-result-focus-target]:focus");
+    expect(layout).toContain("export function ScientificStageHeader");
   });
 
   it("defines one Carbon-grid post-operation handoff for every scientific app", () => {
