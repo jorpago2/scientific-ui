@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.14.2
+
+### Patch Changes
+
+- Stabilize container-responsive command bars so narrow mobile panels do not enter repeated measurement and render cycles.
+
 ## 0.14.1
 
 ### Patch Changes

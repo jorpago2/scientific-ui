@@ -45,7 +45,10 @@ export function ScientificCommandBar({
   useEffect(() => {
     const container = containerRef.current?.parentElement;
     if (responsiveTo !== "container" || !container || typeof ResizeObserver === "undefined") return undefined;
-    const observer = new ResizeObserver(([entry]) => setAvailableWidth(entry?.contentRect.width ?? null));
+    const observer = new ResizeObserver(([entry]) => {
+      const measuredWidth = Math.floor(entry?.contentRect.width ?? 0);
+      setAvailableWidth((currentWidth) => currentWidth === measuredWidth ? currentWidth : measuredWidth);
+    });
     observer.observe(container);
     return () => observer.disconnect();
   }, [responsiveTo]);
