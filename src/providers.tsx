@@ -7,6 +7,7 @@ import type { ScientificThemePreference } from "./types.js";
 export interface ScientificUiProviderProps {
   children: ReactNode;
   theme?: ScientificThemePreference;
+  themeStorageKey?: string;
   notificationTimeout?: number;
 }
 
@@ -14,10 +15,14 @@ export interface ScientificUiProviderProps {
 export function ScientificUiProvider({
   children,
   theme,
+  themeStorageKey,
   notificationTimeout,
 }: ScientificUiProviderProps) {
   return (
-    <ScientificThemeProvider {...(theme === undefined ? {} : { preference: theme })}>
+    <ScientificThemeProvider
+      {...(theme === undefined ? {} : { preference: theme })}
+      {...(themeStorageKey === undefined ? {} : { storageKey: themeStorageKey })}
+    >
       <ScientificShortcutProvider>
         <ScientificNotificationProvider defaultTimeout={notificationTimeout}>
           {children}

@@ -89,6 +89,7 @@ describe("scientific workbench contract", () => {
     expect(theme).not.toContain('defaultPreference = "system"');
     expect(theme).toContain('window.addEventListener("storage", synchronizeStoredTheme)');
     expect(providers).toContain('theme === undefined ? {} : { preference: theme }');
+    expect(providers).toContain('themeStorageKey === undefined ? {} : { storageKey: themeStorageKey }');
     expect(providers).not.toContain('theme = "system"');
   });
 

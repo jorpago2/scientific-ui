@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.14.4
+
+### Patch Changes
+
+- Allow applications to share their existing theme storage key with `ScientificUiProvider`, preventing mixed application and Carbon themes.
+
 ## 0.14.3
 
 ### Patch Changes
