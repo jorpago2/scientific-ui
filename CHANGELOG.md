@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.14.6
+
+### Patch Changes
+
+- Give managed task panels and result stages a single, touch-friendly vertical scroll owner.
+
 ## 0.14.5
 
 ### Patch Changes

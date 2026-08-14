@@ -192,6 +192,17 @@ test("task panel owns consistent Carbon surface, heading and scrolling", async (
   expect(Math.abs(((await panel.boundingBox())?.width ?? 0) - 390)).toBeLessThanOrEqual(2);
   expect(Math.round((await heading.evaluate((element) => element.getBoundingClientRect().height)))).toBe(72);
   await expect(page.locator("#hidden-fixture-panel")).toBeHidden();
+  await body.evaluate((element) => {
+    const longConfiguration = document.createElement("div");
+    longConfiguration.style.blockSize = "1200px";
+    longConfiguration.textContent = "Long configuration";
+    element.append(longConfiguration);
+  });
+  await body.hover();
+  await page.mouse.wheel(0, 500);
+  await page.waitForTimeout(100);
+  expect(await body.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+  expect(await page.locator(".scientific-workbench__panel").evaluate((element) => element.scrollTop)).toBe(0);
   const close = panel.getByRole("button", { name: "Close panel" });
   await close.click();
   await expect(panel).toBeHidden();
@@ -227,11 +238,14 @@ test("long scientific results remain scrollable inside the workbench stage", asy
   await stage.evaluate((element) => {
     const longResult = document.createElement("div");
     longResult.style.blockSize = "1800px";
+    longResult.className = "scientific-plot-surface";
     longResult.textContent = "Long scientific result";
     element.append(longResult);
   });
   await expect(stage).toHaveCSS("overflow-y", "auto");
-  await stage.evaluate((element) => element.scrollTo({ top: 600 }));
+  await stage.locator(".scientific-plot-surface").hover();
+  await page.mouse.wheel(0, 600);
+  await page.waitForTimeout(100);
   expect(await stage.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
 });
 

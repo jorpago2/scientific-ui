@@ -394,8 +394,11 @@ header.scientific-header.scientific-app-header {
   align-content: start;
   grid-auto-rows: max-content;
   gap: var(--scientific-ui-spacing-05);
-  overflow: auto;
-  overscroll-behavior: contain;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y pinch-zoom;
   padding-block: var(--scientific-ui-spacing-05);
   padding-inline: clamp(
     var(--scientific-ui-spacing-05),
@@ -656,11 +659,27 @@ body.scientific-plot-fullscreen-open {
   overflow: auto;
 }
 
+/* A managed task panel owns its vertical scroll. Keeping the Carbon grid
+ * column static avoids two competing scroll containers on touch devices. */
+.scientific-workbench__panel:has(.scientific-task-panel--managed) {
+  overflow: hidden;
+}
+
+.scientific-workbench__panel:has(.scientific-task-panel--managed) > * {
+  min-block-size: 0;
+  block-size: 100%;
+}
+
 .scientific-workbench__stage {
   position: relative;
-  min-block-size: 22rem;
-  overflow: auto;
-  overscroll-behavior: contain;
+  min-block-size: 0;
+  block-size: 100%;
+  max-block-size: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y pinch-zoom;
   scrollbar-gutter: stable;
   background: var(--scientific-ui-background);
 }
