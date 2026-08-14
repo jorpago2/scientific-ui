@@ -85,6 +85,8 @@ describe("scientific workbench contract", () => {
     expect(theme).toContain("ScientificThemeToggle");
     expect(theme).toContain('data-scientific-theme={resolvedTheme}');
     expect(theme).toContain('normalizeThemePreference(window.localStorage.getItem(storageKey)) ?? defaultPreference');
+    expect(theme).toContain('defaultPreference = "light"');
+    expect(theme).not.toContain('defaultPreference = "system"');
     expect(theme).toContain('window.addEventListener("storage", synchronizeStoredTheme)');
     expect(providers).toContain('theme === undefined ? {} : { preference: theme }');
     expect(providers).not.toContain('theme = "system"');

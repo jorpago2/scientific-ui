@@ -56,7 +56,7 @@ function CarbonContrastIcon() {
 /** Applies one complete Carbon theme to chrome, panels and application content. */
 export function ScientificThemeProvider({
   preference: controlledPreference,
-  defaultPreference = "system",
+  defaultPreference = "light",
   storageKey = DEFAULT_THEME_STORAGE_KEY,
   onPreferenceChange,
   children,

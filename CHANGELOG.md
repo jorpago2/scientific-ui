@@ -1,5 +1,11 @@
 # @jorpago2/scientific-ui
 
+## 0.14.3
+
+### Patch Changes
+
+- Use the Carbon light theme by default on first visit while preserving an explicitly stored theme preference.
+
 ## 0.14.2
 
 ### Patch Changes
