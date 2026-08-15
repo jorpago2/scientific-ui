@@ -1,5 +1,13 @@
 # @jorpago2/scientific-ui
 
+## 0.14.9
+
+### Patch Changes
+
+- Add compact evidence summaries for visual preflight strips without repeated explanatory copy.
+- Remove unnecessary minimum height from result metrics and center run labels with their Carbon icons.
+- Let Plotly derive its height from the rendered scientific surface unless a caller provides an explicit height.
+
 ## 0.14.8
 
 ### Patch Changes

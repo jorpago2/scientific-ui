@@ -23,8 +23,8 @@ describe("scientific typography contract", () => {
 
   it("keeps mobile result metrics compact and scannable", () => {
     expect(layout).toContain('<Column sm={2} md={4} lg={lg}');
-    expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-metric \{[\s\S]*min-block-size: 5\.5rem;/);
-    expect(styles).toContain("grid-template-rows: minmax(calc(2 * var(--scientific-ui-label-line-height)), auto) auto 1fr");
+    expect(styles).toMatch(/\.scientific-metric \{[\s\S]*min-block-size: 5\.5rem;[\s\S]*grid-template-rows: auto auto;/);
+    expect(styles).toContain("grid-template-rows: minmax(calc(2 * var(--scientific-ui-label-line-height)), auto) auto");
   });
 
   it("keeps nested metric values distinct from units", () => {
@@ -87,6 +87,14 @@ describe("scientific workbench contract", () => {
     expect(styles).toMatch(/\.scientific-evidence-summary__checks \{[\s\S]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/);
     expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-evidence-summary__checks \{[\s\S]*grid-template-columns: minmax\(0, 1fr\);/);
     expect(styles).not.toContain("repeat(auto-fit, minmax(min(100%, 16rem), 1fr))");
+    expect(layout).toContain('data-density={compact ? "compact" : "regular"}');
+    expect(layout).toContain('iconOnly={compact}');
+    expect(styles).toContain('.scientific-evidence-summary[data-density="compact"]');
+  });
+
+  it("centers run labels with their Carbon icons", () => {
+    expect(styles).toMatch(/\.scientific-run-control \.scientific-command-bar__action \{[\s\S]*grid-template-columns: auto auto;[\s\S]*justify-content: center;/);
+    expect(styles).toContain(".scientific-run-control .scientific-command-bar__action > svg");
   });
 
   it("defines one Carbon-grid post-operation handoff for every scientific app", () => {

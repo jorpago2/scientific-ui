@@ -158,7 +158,7 @@ export function createScientificPlotlyLayout(options: ScientificPlotlyLayoutOpti
 
   return {
     autosize: true,
-    height: options.height ?? 360,
+    ...(options.height === undefined ? {} : { height: options.height }),
     margin: { l: 64, r: 24, t: 56, b: 56, ...options.margin },
     hovermode: options.hovermode ?? "x unified",
     dragmode: options.dragmode ?? "pan",

@@ -1096,6 +1096,11 @@ body.scientific-plot-fullscreen-open {
   white-space: nowrap;
 }
 
+.scientific-status--icon-only .scientific-status__indicator {
+  font-size: 0;
+  line-height: 0;
+}
+
 .scientific-status__content {
   display: flex;
   min-inline-size: 0;
@@ -1582,6 +1587,20 @@ body.scientific-plot-fullscreen-open {
   inline-size: clamp(7rem, 16vw, 12rem);
 }
 
+.scientific-run-control .scientific-command-bar__action {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--scientific-ui-spacing-04);
+  padding-inline: var(--scientific-ui-spacing-05);
+}
+
+.scientific-run-control .scientific-command-bar__action > svg {
+  position: static;
+  margin: 0;
+}
+
 /* Panel composition --------------------------------------------------------- */
 
 .scientific-panel-section {
@@ -1970,8 +1989,8 @@ body.scientific-plot-fullscreen-open {
 
 .scientific-metric {
   display: grid;
-  min-block-size: 7rem;
-  grid-template-rows: auto auto 1fr;
+  min-block-size: 5.5rem;
+  grid-template-rows: auto auto;
   align-content: start;
   padding: var(--scientific-ui-spacing-05);
   border-block-start: 1px solid var(--cds-border-subtle-01);
@@ -2013,7 +2032,7 @@ body.scientific-plot-fullscreen-open {
 
   .scientific-metric {
     min-block-size: 5.5rem;
-    grid-template-rows: minmax(calc(2 * var(--scientific-ui-label-line-height)), auto) auto 1fr;
+    grid-template-rows: minmax(calc(2 * var(--scientific-ui-label-line-height)), auto) auto;
     padding: var(--scientific-ui-spacing-04);
   }
 
@@ -2121,6 +2140,30 @@ body.scientific-plot-fullscreen-open {
   padding: 0;
   background: var(--cds-border-subtle-01);
   list-style: none;
+}
+
+.scientific-evidence-summary[data-density="compact"] {
+  padding: var(--scientific-ui-spacing-04);
+}
+
+.scientific-evidence-summary[data-density="compact"] .scientific-evidence-summary__checks {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-block-start: var(--scientific-ui-spacing-04);
+}
+
+.scientific-evidence-summary[data-density="compact"] .scientific-evidence-summary__checks > li {
+  min-block-size: 4.5rem;
+  padding: var(--scientific-ui-spacing-04);
+}
+
+.scientific-evidence-summary[data-density="compact"] .scientific-evidence-summary__check-heading {
+  align-items: center;
+}
+
+.scientific-evidence-summary[data-density="compact"] .scientific-evidence-summary__value {
+  margin-block-start: var(--scientific-ui-spacing-03);
+  font-size: 1rem;
+  line-height: 1.25rem;
 }
 
 .scientific-evidence-summary__checks > li {
@@ -2341,5 +2384,9 @@ body.scientific-plot-fullscreen-open {
 
   .scientific-evidence-summary__checks {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scientific-evidence-summary[data-density="compact"] .scientific-evidence-summary__checks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

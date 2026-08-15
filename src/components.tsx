@@ -422,9 +422,10 @@ export function InspectorPanel({ open, title, onClose, triggerRef, children, cla
 export interface ScientificStatusProps extends HTMLAttributes<HTMLDivElement> {
   status: ScientificStatusDescriptor;
   compact?: boolean;
+  iconOnly?: boolean;
 }
 
-export function ScientificStatus({ status, compact, className, ...props }: ScientificStatusProps) {
+export function ScientificStatus({ status, compact, iconOnly = false, className, ...props }: ScientificStatusProps) {
   const live = status.state === "running" ? "polite" : status.state === "failed" ? "assertive" : "off";
   const progress = status.progress === undefined ? undefined : Math.max(0, Math.min(100, status.progress));
   const indicatorKind = {
@@ -439,7 +440,7 @@ export function ScientificStatus({ status, compact, className, ...props }: Scien
     failed: "failed",
   }[status.state] as "not-started" | "normal" | "in-progress" | "succeeded" | "pending" | "caution-minor" | "failed";
   return (
-    <div className={joinClassNames("scientific-status", compact && "scientific-status--compact", className)} data-state={status.state} role="status" aria-live={live} aria-atomic="true" {...props}>
+    <div className={joinClassNames("scientific-status", compact && "scientific-status--compact", iconOnly && "scientific-status--icon-only", className)} data-state={status.state} role="status" aria-live={live} aria-atomic="true" {...props}>
       <IconIndicator className="scientific-status__indicator" kind={indicatorKind} label={status.label} size={16} />
       <span className="scientific-status__content">
         {!compact && status.detail && <span>{status.detail}</span>}

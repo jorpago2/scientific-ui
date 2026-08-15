@@ -39,6 +39,8 @@ describe("scientific Plotly contract", () => {
     });
     expect(layout.xaxis).toMatchObject({ title: { text: "Wavelength (µm)" }, type: "log", gridcolor: "silver" });
     expect(layout.yaxis).toMatchObject({ title: { text: "Effective index" }, linecolor: "dimgray" });
+    expect(layout).not.toHaveProperty("height");
+    expect(createScientificPlotlyLayout({ theme, height: 420 })).toMatchObject({ height: 420 });
   });
 
   it("keeps export, reset and fullscreen behavior consistent", () => {

@@ -417,6 +417,7 @@ export interface ScientificEvidenceSummaryProps extends Omit<HTMLAttributes<HTML
   status: ScientificStatusDescriptor;
   checks: readonly ScientificCheckDescriptor[];
   action?: ReactNode;
+  compact?: boolean;
 }
 
 /** A compact, evidence-first summary for preflight and validation surfaces. */
@@ -426,12 +427,13 @@ export function ScientificEvidenceSummary({
   status,
   checks,
   action,
+  compact = false,
   className,
   ...props
 }: ScientificEvidenceSummaryProps) {
   const titleId = useId();
   return (
-    <Layer as="section" withBackground className={joinClassNames("scientific-evidence-summary", className)} aria-labelledby={titleId} {...props}>
+    <Layer as="section" withBackground className={joinClassNames("scientific-evidence-summary", className)} data-density={compact ? "compact" : "regular"} aria-labelledby={titleId} {...props}>
       <div className="scientific-evidence-summary__header">
         <div>
           <h3 id={titleId}>{title}</h3>
@@ -444,10 +446,10 @@ export function ScientificEvidenceSummary({
           <li key={check.id} data-state={check.state}>
             <div className="scientific-evidence-summary__check-heading">
               <strong>{check.label}</strong>
-              <ScientificStatus status={scientificCheckStatus(check)} compact />
+              <ScientificStatus status={scientificCheckStatus(check)} compact iconOnly={compact} />
             </div>
             {check.value && <div className="scientific-evidence-summary__value">{check.value}</div>}
-            {check.detail && <p>{check.detail}</p>}
+            {!compact && check.detail && <p>{check.detail}</p>}
           </li>
         ))}
       </ul>
