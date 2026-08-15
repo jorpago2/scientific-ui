@@ -306,3 +306,32 @@ test("theme provider applies Carbon g100 to the complete workbench", async ({ pa
   });
   expect(floatingBackground).toBe(colors.panel);
 });
+
+test("theme remains usable when browser storage is blocked", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      get() { throw new DOMException("Blocked by test policy", "SecurityError"); },
+    });
+  });
+  await page.goto("/?theme=dark");
+  await expect(page.getByRole("link", { name: "Scientific UI" })).toBeVisible();
+  await expect(page.locator(".scientific-theme")).toHaveAttribute("data-scientific-theme", "g100");
+});
+
+for (const width of [320, 390, 768, 1024]) {
+  test(`recovery notice does not intercept panel close at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width <= 390 ? 844 : 900 });
+    await page.goto("/?recovery=1");
+    const close = page.locator("#fixture-panel").getByRole("button", { name: "Close panel" });
+    const receivesPointer = await close.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      const hit = document.elementFromPoint(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
+      return hit === element || Boolean(hit && element.contains(hit));
+    });
+    expect(receivesPointer).toBe(true);
+    await close.click();
+    await expect(page.locator("#fixture-panel")).toBeHidden();
+    await expect(page.getByRole("complementary", { name: "Session recovery" })).toBeVisible();
+  });
+}

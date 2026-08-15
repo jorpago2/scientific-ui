@@ -15,6 +15,7 @@ import {
   ScientificPanelSection,
   ScientificParameterGroup,
   ScientificProjectActions,
+  ScientificRecoveryNotice,
   ScientificResultsLayout,
   ScientificRunControl,
   ScientificStatusBar,
@@ -32,6 +33,7 @@ function Demo() {
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const inspectorTriggerRef = useRef<HTMLButtonElement>(null);
   const { notify } = useScientificNotifications();
+  const showRecovery = new URLSearchParams(window.location.search).has("recovery");
   const status = running
     ? { state: "running" as const, label: "Simulation running", detail: "Solving deterministic fixture", progress: 42 }
     : { state: "ready" as const, label: "Ready", detail: "Inputs are valid" };
@@ -64,6 +66,7 @@ function Demo() {
       { id: "results", label: "Results", icon: <ChartLine />, controlsId: "fixture-panel" },
       { id: "export", label: "Export", icon: <Download />, controlsId: "fixture-panel" },
     ]} />}
+    recovery={showRecovery ? <ScientificRecoveryNotice savedAt="2026-08-15T10:00:00.000Z" onRestore={() => undefined} onDiscard={() => undefined} /> : undefined}
     panel={active ? <ScientificTaskPanel
       id="fixture-panel"
       className="fixture-panel"

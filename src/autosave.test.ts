@@ -29,6 +29,7 @@ describe("scientific autosave", () => {
     const versioned = serializeScientificAutosave({ wavelength: 1.55 }, 2);
     expect(parseScientificAutosave(versioned, 1)).toBeNull();
     expect(parseScientificAutosave(versioned, 2, (value): value is { wavelength: number } => Boolean(value) && typeof value === "object" && (value as { wavelength?: unknown }).wavelength === 2)).toBeNull();
+    expect(parseScientificAutosave(`{\"data\":\"${"x".repeat(100)}\"}`, 1, undefined, 20)).toBeNull();
   });
 
   it("limits draft size and clears safely", () => {

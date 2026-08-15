@@ -44,6 +44,24 @@ function normalizeThemePreference(value: unknown): ScientificThemePreference | n
     : null;
 }
 
+function readThemePreference(storageKey: string): ScientificThemePreference | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return normalizeThemePreference(window.localStorage.getItem(storageKey));
+  } catch {
+    return null;
+  }
+}
+
+function writeThemePreference(storageKey: string, preference: ScientificThemePreference): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(storageKey, preference);
+  } catch {
+    // Storage may be unavailable in private or policy-restricted contexts.
+  }
+}
+
 /** Carbon Contrast glyph (Apache-2.0), kept inline to avoid a separate icon chunk. */
 function CarbonContrastIcon() {
   return (
@@ -65,7 +83,7 @@ export function ScientificThemeProvider({
 }: ScientificThemeProviderProps) {
   const [internalPreference, setInternalPreference] = useState<ScientificThemePreference>(() => {
     if (controlledPreference !== undefined || typeof window === "undefined") return defaultPreference;
-    return normalizeThemePreference(window.localStorage.getItem(storageKey)) ?? defaultPreference;
+    return readThemePreference(storageKey) ?? defaultPreference;
   });
   const preference = controlledPreference ?? internalPreference;
   const prefersDark = usePrefersDarkScheme();
@@ -74,7 +92,7 @@ export function ScientificThemeProvider({
 
   useEffect(() => {
     if (controlledPreference !== undefined || typeof window === "undefined") return;
-    const storedPreference = normalizeThemePreference(window.localStorage.getItem(storageKey));
+    const storedPreference = readThemePreference(storageKey);
     if (storedPreference) setInternalPreference(storedPreference);
   }, [controlledPreference, storageKey]);
 
@@ -101,7 +119,7 @@ export function ScientificThemeProvider({
     if (controlledPreference === undefined) setInternalPreference(nextPreference);
     onPreferenceChange?.(nextPreference);
     if (typeof window !== "undefined") {
-      window.localStorage.setItem(storageKey, nextPreference);
+      writeThemePreference(storageKey, nextPreference);
       window.dispatchEvent(new CustomEvent(SCIENTIFIC_THEME_EVENT, {
         detail: { preference: nextPreference },
       }));

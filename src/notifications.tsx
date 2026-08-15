@@ -27,10 +27,18 @@ export interface ScientificNotificationProviderProps {
 export function ScientificNotificationProvider({ children, defaultTimeout = 6000 }: ScientificNotificationProviderProps) {
   const [notifications, setNotifications] = useState<ScientificNotificationDescriptor[]>([]);
   const counter = useRef(0);
+  const timers = useRef(new Map<string, number>());
   const dismiss = useCallback((id: string) => {
+    const timer = timers.current.get(id);
+    if (timer !== undefined) window.clearTimeout(timer);
+    timers.current.delete(id);
     setNotifications((current) => current.filter((notification) => notification.id !== id));
   }, []);
-  const clear = useCallback(() => setNotifications([]), []);
+  const clear = useCallback(() => {
+    timers.current.forEach((timer) => window.clearTimeout(timer));
+    timers.current.clear();
+    setNotifications([]);
+  }, []);
   const notify = useCallback((notification: Omit<ScientificNotificationDescriptor, "id"> & { id?: string }) => {
     const id = notification.id ?? `scientific-notification-${++counter.current}`;
     setNotifications((current) => [...current.filter((item) => item.id !== id), { ...notification, id }]);
@@ -38,11 +46,23 @@ export function ScientificNotificationProvider({ children, defaultTimeout = 6000
   }, []);
 
   useEffect(() => {
-    const timers = notifications
-      .filter((notification) => (notification.timeout ?? defaultTimeout) > 0)
-      .map((notification) => window.setTimeout(() => dismiss(notification.id), notification.timeout ?? defaultTimeout));
-    return () => timers.forEach(window.clearTimeout);
+    const activeIds = new Set(notifications.map((notification) => notification.id));
+    timers.current.forEach((timer, id) => {
+      if (activeIds.has(id)) return;
+      window.clearTimeout(timer);
+      timers.current.delete(id);
+    });
+    notifications.forEach((notification) => {
+      const timeout = notification.timeout ?? defaultTimeout;
+      if (timeout <= 0 || timers.current.has(notification.id)) return;
+      timers.current.set(notification.id, window.setTimeout(() => dismiss(notification.id), timeout));
+    });
   }, [defaultTimeout, dismiss, notifications]);
+
+  useEffect(() => () => {
+    timers.current.forEach((timer) => window.clearTimeout(timer));
+    timers.current.clear();
+  }, []);
 
   const api = useMemo(() => ({ notify, dismiss, clear }), [clear, dismiss, notify]);
   return (

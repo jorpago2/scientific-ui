@@ -64,7 +64,8 @@ export function serializeScientificAutosave<T>(data: T, schemaVersion = 1, saved
   return serialized;
 }
 
-export function parseScientificAutosave<T>(serialized: string, schemaVersion = 1, validate?: (value: unknown) => value is T): ScientificAutosaveEnvelope<T> | null {
+export function parseScientificAutosave<T>(serialized: string, schemaVersion = 1, validate?: (value: unknown) => value is T, maxBytes = 1_500_000): ScientificAutosaveEnvelope<T> | null {
+  if (serializedByteLength(serialized) > maxBytes) return null;
   let value: unknown;
   try {
     value = JSON.parse(serialized);
@@ -79,11 +80,11 @@ export function parseScientificAutosave<T>(serialized: string, schemaVersion = 1
   return candidate as ScientificAutosaveEnvelope<T>;
 }
 
-export function readScientificAutosave<T>(storage: ScientificStorage | null, storageKey: string, schemaVersion = 1, validate?: (value: unknown) => value is T) {
+export function readScientificAutosave<T>(storage: ScientificStorage | null, storageKey: string, schemaVersion = 1, validate?: (value: unknown) => value is T, maxBytes = 1_500_000) {
   if (!storage) return null;
   try {
     const serialized = storage.getItem(storageKey);
-    return serialized ? parseScientificAutosave<T>(serialized, schemaVersion, validate) : null;
+    return serialized ? parseScientificAutosave<T>(serialized, schemaVersion, validate, maxBytes) : null;
   } catch {
     return null;
   }
@@ -92,7 +93,7 @@ export function readScientificAutosave<T>(storage: ScientificStorage | null, sto
 export function writeScientificAutosave<T>(storage: ScientificStorage, storageKey: string, data: T, schemaVersion = 1, maxBytes = 1_500_000) {
   const serialized = serializeScientificAutosave(data, schemaVersion, new Date().toISOString(), maxBytes);
   storage.setItem(storageKey, serialized);
-  return parseScientificAutosave<T>(serialized, schemaVersion)!;
+  return parseScientificAutosave<T>(serialized, schemaVersion, undefined, maxBytes)!;
 }
 
 export function removeScientificAutosave(storage: ScientificStorage | null, storageKey: string) {
@@ -122,7 +123,7 @@ export function useScientificAutosave<T>({
   initialRecovery = null,
 }: ScientificAutosaveOptions<T>): ScientificAutosaveController<T> {
   const storage = useMemo(() => providedStorage === undefined ? browserStorage() : providedStorage, [providedStorage]);
-  const [recovery, setRecovery] = useState<ScientificAutosaveEnvelope<T> | null>(() => readScientificAutosave(storage, storageKey, schemaVersion, validate) ?? initialRecovery);
+  const [recovery, setRecovery] = useState<ScientificAutosaveEnvelope<T> | null>(() => readScientificAutosave(storage, storageKey, schemaVersion, validate, maxBytes) ?? initialRecovery);
   const [status, setStatus] = useState<ScientificAutosavePhase>(() => storage ? "idle" : "unavailable");
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

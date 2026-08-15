@@ -55,7 +55,7 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain('.scientific-task-panel button:not([role="tab"])');
     expect(styles).toContain('.scientific-inspector button:not([role="tab"])');
     expect(styles).toContain('.scientific-workbench button:not([role="tab"])');
-    expect(styles).not.toContain("  .scientific-result-switcher button,");
+    expect(styles).toMatch(/@media \(pointer: coarse\), \(max-width: 65\.99rem\)[\s\S]*\.scientific-result-switcher button \{[\s\S]*min-block-size: var\(--scientific-ui-target-size\);/);
   });
 
   it("owns panel rhythm and plot theme synchronization centrally", () => {
@@ -111,7 +111,9 @@ describe("scientific workbench contract", () => {
     expect(components.indexOf("scientific-header__theme")).toBeLessThan(components.indexOf("scientific-header__help"));
     expect(theme).toContain("ScientificThemeToggle");
     expect(theme).toContain('data-scientific-theme={resolvedTheme}');
-    expect(theme).toContain('normalizeThemePreference(window.localStorage.getItem(storageKey)) ?? defaultPreference');
+    expect(theme).toContain('readThemePreference(storageKey) ?? defaultPreference');
+    expect(theme).toContain('window.localStorage.getItem(storageKey)');
+    expect(theme).toContain('window.localStorage.setItem(storageKey, preference)');
     expect(theme).toContain('defaultPreference = "light"');
     expect(theme).not.toContain('defaultPreference = "system"');
     expect(theme).toContain('window.addEventListener("storage", synchronizeStoredTheme)');
