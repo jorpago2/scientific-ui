@@ -2,6 +2,16 @@ import { expect, test } from "@playwright/test";
 
 const widths = [320, 375, 414, 768, 1024, 1440];
 
+test("critical desktop and mobile shell visuals remain stable", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await expect(page.locator(".scientific-header")).toHaveScreenshot("desktop-header.png", { animations: "disabled", maxDiffPixelRatio: 0.01 });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/?theme=dark&recovery=1");
+  await expect(page.locator(".scientific-app-shell")).toHaveScreenshot("mobile-dark-recovery.png", { animations: "disabled", maxDiffPixelRatio: 0.01 });
+});
+
 for (const width of widths) {
   test(`workbench remains usable at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 600 ? 844 : 900 });

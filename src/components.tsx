@@ -185,7 +185,7 @@ export function ScientificHeaderHelp({
             ))}
             <div><dt><kbd>?</kbd></dt><dd>Toggle this help</dd></div>
           </dl>
-          {action && <ToggletipActions><Button size="sm" kind="tertiary" onClick={() => {
+          {action && <ToggletipActions><Button className="scientific-header-help__action" size="sm" kind="tertiary" onClick={() => {
             buttonRef.current?.focus();
             buttonRef.current?.click();
             window.requestAnimationFrame(action.onClick);

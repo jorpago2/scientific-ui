@@ -245,6 +245,8 @@ a.scientific-header__brand.scientific-app-header__brand {
 .scientific-header-help__popover {
   inline-size: min(22rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
   max-inline-size: min(22rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
+  background: var(--cds-background-inverse);
+  color: var(--cds-text-inverse);
 }
 
 .scientific-header-help__content {
@@ -252,6 +254,11 @@ a.scientific-header__brand.scientific-app-header__brand {
   inline-size: 100%;
   gap: var(--scientific-ui-spacing-03);
   color: var(--cds-text-inverse, #ffffff);
+}
+
+.scientific-header-help__action {
+  border-color: var(--cds-border-inverse);
+  color: var(--cds-text-inverse);
 }
 
 .scientific-header-help__title,
