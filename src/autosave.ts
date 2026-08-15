@@ -123,13 +123,14 @@ export function useScientificAutosave<T>({
   initialRecovery = null,
 }: ScientificAutosaveOptions<T>): ScientificAutosaveController<T> {
   const storage = useMemo(() => providedStorage === undefined ? browserStorage() : providedStorage, [providedStorage]);
-  const [recovery, setRecovery] = useState<ScientificAutosaveEnvelope<T> | null>(() => readScientificAutosave(storage, storageKey, schemaVersion, validate, maxBytes) ?? initialRecovery);
-  const [status, setStatus] = useState<ScientificAutosavePhase>(() => storage ? "idle" : "unavailable");
+  const [recovery, setRecovery] = useState<ScientificAutosaveEnvelope<T> | null>(initialRecovery);
+  const [status, setStatus] = useState<ScientificAutosavePhase>("idle");
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const initialFingerprint = useRef<string | null>(null);
   const restored = useRef(false);
-  const decisionMade = useRef(recovery === null);
+  const hydrated = useRef(false);
+  const decisionMade = useRef(initialRecovery === null);
   const valueFingerprint = useMemo(() => {
     try {
       return JSON.stringify(value);
@@ -141,7 +142,15 @@ export function useScientificAutosave<T>({
   if (initialFingerprint.current === null && valueFingerprint !== null) initialFingerprint.current = valueFingerprint;
 
   useEffect(() => {
-    if (!enabled || !storage || !decisionMade.current || recovery || valueFingerprint === null || !shouldSave(value)) return;
+    const storedRecovery = readScientificAutosave(storage, storageKey, schemaVersion, validate, maxBytes) ?? initialRecovery;
+    setRecovery(storedRecovery);
+    setStatus(storage ? "idle" : "unavailable");
+    decisionMade.current = storedRecovery === null;
+    hydrated.current = true;
+  }, [initialRecovery, maxBytes, schemaVersion, storage, storageKey, validate]);
+
+  useEffect(() => {
+    if (!hydrated.current || !enabled || !storage || !decisionMade.current || recovery || valueFingerprint === null || !shouldSave(value)) return;
     if (!restored.current && valueFingerprint === initialFingerprint.current) return;
     setStatus("saving");
     setError(null);

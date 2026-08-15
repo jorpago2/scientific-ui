@@ -81,10 +81,7 @@ export function ScientificThemeProvider({
   className,
   ...props
 }: ScientificThemeProviderProps) {
-  const [internalPreference, setInternalPreference] = useState<ScientificThemePreference>(() => {
-    if (controlledPreference !== undefined || typeof window === "undefined") return defaultPreference;
-    return readThemePreference(storageKey) ?? defaultPreference;
-  });
+  const [internalPreference, setInternalPreference] = useState<ScientificThemePreference>(defaultPreference);
   const preference = controlledPreference ?? internalPreference;
   const prefersDark = usePrefersDarkScheme();
   const isDark = preference === "dark" || preference === "g100" || (preference === "system" && prefersDark);

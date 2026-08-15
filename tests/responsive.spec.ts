@@ -17,6 +17,10 @@ for (const width of widths) {
     await page.setViewportSize({ width, height: width < 600 ? 844 : 900 });
     await page.goto("/");
     await expect(page.getByRole("link", { name: "Scientific UI" })).toBeVisible();
+    if (width <= 1024) {
+      await expect(page.locator(".scientific-header__compact-product")).toHaveText("SciUI");
+      await expect(page.locator(".scientific-header__compact-product")).toBeVisible();
+    }
     await expect(page.getByRole("button", { name: "Run model" }).first()).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(1);
@@ -218,7 +222,7 @@ test("task panel owns consistent Carbon surface, heading and scrolling", async (
   await expect(panel).toBeHidden();
 });
 
-test("mobile panels use the safe workspace above bottom navigation", async ({ page }) => {
+test("mobile panels preserve a bounded, inert stage preview above bottom navigation", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await page.evaluate(() => document.documentElement.style.setProperty("--scientific-ui-safe-area-bottom", "24px"));
@@ -231,11 +235,18 @@ test("mobile panels use the safe workspace above bottom navigation", async ({ pa
   expect(Math.round((await navigation.boundingBox())?.height ?? 0)).toBe(80);
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(716);
   await expect(status).toBeHidden();
-  await expect(stage).toBeHidden();
+  await expect(stage).toBeVisible();
+  await expect(stage).toHaveAttribute("inert", "");
+  await expect(stage).toHaveAttribute("aria-hidden", "true");
+  const previewHeight = (await stage.boundingBox())?.height ?? 0;
+  expect(previewHeight).toBeGreaterThanOrEqual(143);
+  expect(previewHeight).toBeLessThanOrEqual(209);
 
   await page.locator("#fixture-panel").getByRole("button", { name: "Close panel" }).click();
   await expect(status).toBeVisible();
   await expect(stage).toBeVisible();
+  await expect(stage).not.toHaveAttribute("inert", "");
+  await expect(stage).not.toHaveAttribute("aria-hidden", "true");
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(676);
 });
 
@@ -259,7 +270,7 @@ test("long scientific results remain scrollable inside the workbench stage", asy
   expect(await stage.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
 });
 
-test("tablet panels occupy the full workbench without a preview row", async ({ page }) => {
+test("tablet panels retain a bounded stage preview without competing interaction", async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/");
 
@@ -268,10 +279,16 @@ test("tablet panels occupy the full workbench without a preview row", async ({ p
   const stage = page.locator(".scientific-workbench__stage");
   const status = page.locator(".scientific-status-bar");
 
-  await expect(stage).toBeHidden();
+  await expect(stage).toBeVisible();
+  await expect(stage).toHaveAttribute("inert", "");
+  await expect(stage).toHaveAttribute("aria-hidden", "true");
   await expect(status).toBeHidden();
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(796);
-  expect(Math.abs(((await panel.boundingBox())?.height ?? 0) - ((await workbench.boundingBox())?.height ?? 0))).toBeLessThanOrEqual(1);
+  const panelHeight = (await panel.boundingBox())?.height ?? 0;
+  const stageHeight = (await stage.boundingBox())?.height ?? 0;
+  expect(stageHeight).toBeGreaterThanOrEqual(143);
+  expect(stageHeight).toBeLessThanOrEqual(209);
+  expect(Math.abs(panelHeight + stageHeight - ((await workbench.boundingBox())?.height ?? 0))).toBeLessThanOrEqual(2);
 });
 
 test("shared commands collapse into Carbon overflow without global overflow", async ({ page }) => {
@@ -343,5 +360,8 @@ for (const width of [320, 390, 768, 1024]) {
     await close.click();
     await expect(page.locator("#fixture-panel")).toBeHidden();
     await expect(page.getByRole("complementary", { name: "Session recovery" })).toBeVisible();
+    for (const action of await page.getByRole("complementary", { name: "Session recovery" }).getByRole("button").all()) {
+      expect((await action.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
+    }
   });
 }

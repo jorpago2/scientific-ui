@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 const styles = readFileSync(fileURLToPath(new URL("./styles.css", import.meta.url)), "utf8");
+const tokens = readFileSync(fileURLToPath(new URL("../tokens.css", import.meta.url)), "utf8");
 const layout = readFileSync(fileURLToPath(new URL("./scientific-layout.tsx", import.meta.url)), "utf8");
 const components = readFileSync(fileURLToPath(new URL("./components.tsx", import.meta.url)), "utf8");
 const plots = readFileSync(fileURLToPath(new URL("./plots.tsx", import.meta.url)), "utf8");
@@ -49,6 +50,18 @@ describe("scientific workbench contract", () => {
     expect(styles).toMatch(/\.scientific-header__context a,[\s\S]*min-inline-size: var\(--scientific-ui-target-size\);/);
     expect(styles).toMatch(/@media \(max-width: 25\.875rem\)[\s\S]*\.scientific-header__primary-action \.scientific-command-bar__label[\s\S]*display: none;/);
     expect(styles).toContain("a.scientific-header__brand.scientific-app-header__brand");
+    expect(components).toContain("compactProduct?: ReactNode");
+    expect(components).toContain('className="scientific-header__compact-product" aria-hidden="true"');
+    expect(styles).toContain(".scientific-header__compact-product");
+  });
+
+  it("keeps an inert stage preview visible while compact task panels are active", () => {
+    expect(components).toContain("previewStageWhenPanelOpen?: boolean");
+    expect(components).toContain("const stagePreviewActive = panelOpen && previewStageWhenPanelOpen && compactWorkbench");
+    expect(components).toContain("inert={stagePreviewActive || undefined}");
+    expect(components).toContain("aria-hidden={stagePreviewActive || undefined}");
+    expect(tokens).toContain("--scientific-ui-panel-preview-block-size");
+    expect(styles).toContain("[data-panel-open][data-stage-preview] .scientific-workbench__stage");
   });
 
   it("preserves Carbon tab and content-switcher heights on touch viewports", () => {
@@ -105,13 +118,16 @@ describe("scientific workbench contract", () => {
     expect(layout).toContain('label="Outcome actions"');
     expect(styles).toContain(".scientific-outcome-summary");
     expect(styles).toContain('.scientific-outcome-summary[data-state="modified"]');
+    expect(styles).toContain("container-type: inline-size");
+    expect(styles).toContain("@container (max-width: 32rem)");
   });
 
   it("keeps the shared theme action before the terminal help action", () => {
     expect(components.indexOf("scientific-header__theme")).toBeLessThan(components.indexOf("scientific-header__help"));
     expect(theme).toContain("ScientificThemeToggle");
     expect(theme).toContain('data-scientific-theme={resolvedTheme}');
-    expect(theme).toContain('readThemePreference(storageKey) ?? defaultPreference');
+    expect(theme).toContain('useState<ScientificThemePreference>(defaultPreference)');
+    expect(theme).toContain('const storedPreference = readThemePreference(storageKey)');
     expect(theme).toContain('window.localStorage.getItem(storageKey)');
     expect(theme).toContain('window.localStorage.setItem(storageKey, preference)');
     expect(theme).toContain('defaultPreference = "light"');
@@ -128,6 +144,9 @@ describe("scientific workbench contract", () => {
     expect(components).toContain("export function ScientificAutosaveStatus");
     expect(autosave).toContain('SCIENTIFIC_AUTOSAVE_FORMAT = "scientific-ui/autosave@1"');
     expect(autosave).toContain("!decisionMade.current || recovery");
+    expect(autosave).toContain("if (!hydrated.current || !enabled");
+    expect(autosave).toContain("const storedRecovery = readScientificAutosave");
     expect(styles).toContain(".scientific-recovery-notice");
+    expect(styles).toMatch(/\.scientific-recovery-notice button \{[\s\S]*min-block-size: var\(--scientific-ui-target-size\);/);
   });
 });

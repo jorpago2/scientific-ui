@@ -41,6 +41,7 @@ function Demo() {
   return <ScientificAppShell
     header={<ScientificHeader
       product="Scientific UI"
+      compactProduct="SciUI"
       context="Conformance fixture"
       status={status}
       secondaryActions={<>
@@ -86,9 +87,10 @@ function Demo() {
       </ScientificPanelSection>
     </ScientificTaskPanel> : undefined}
     panelOpen={active !== null}
+    previewStageWhenPanelOpen
     inspector={<InspectorPanel open={inspectorOpen} title="Result inspector" triggerRef={inspectorTriggerRef} onClose={() => setInspectorOpen(false)}>
       <p>Carbon manages focus, Escape and return focus for this inspector.</p>
-      <Button data-modal-primary-focus onClick={() => setInspectorOpen(false)}>Apply</Button>
+      <Button kind="secondary" data-modal-primary-focus onClick={() => setInspectorOpen(false)}>Apply</Button>
     </InspectorPanel>}
     statusBar={<ScientificStatusBar status={status} metadata="390–1440 px" />}
   >

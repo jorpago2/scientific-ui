@@ -177,6 +177,11 @@ a.scientific-header__brand.scientific-app-header__brand {
   text-overflow: ellipsis;
 }
 
+.scientific-header__compact-product,
+.scientific-header__compact-separator {
+  display: none;
+}
+
 .scientific-header__actions {
   display: flex;
   block-size: var(--scientific-ui-header-block-size);
@@ -938,7 +943,29 @@ body.scientific-plot-fullscreen-open {
     padding-inline: var(--scientific-ui-spacing-03);
   }
 
+  .scientific-header__compact-product {
+    display: inline-flex;
+    min-inline-size: 0;
+    max-inline-size: 6rem;
+    flex: 0 1 auto;
+    align-items: center;
+    overflow: hidden;
+    font-size: var(--scientific-ui-body-compact-font-size);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .scientific-header__compact-separator {
+    display: inline;
+    flex: 0 0 auto;
+    margin-inline: var(--scientific-ui-spacing-03);
+    color: var(--scientific-ui-text-helper);
+  }
+
   .scientific-header__context-value {
+    min-inline-size: 0;
+    flex: 1 1 auto;
     font-size: var(--scientific-ui-body-compact-font-size);
   }
 
@@ -1356,6 +1383,25 @@ body.scientific-plot-fullscreen-open {
   .scientific-app-shell[data-panel-open] .scientific-workbench__stage,
   .scientific-app-shell[data-panel-open] > .scientific-status-bar {
     display: none;
+  }
+
+  .scientific-app-shell[data-panel-open][data-stage-preview] .scientific-workbench {
+    grid-template-rows: minmax(0, 1fr) var(--scientific-ui-panel-preview-block-size);
+  }
+
+  .scientific-app-shell[data-panel-open][data-stage-preview] .scientific-workbench__panel {
+    grid-row: 1;
+  }
+
+  .scientific-app-shell[data-panel-open][data-stage-preview] .scientific-workbench__stage {
+    position: relative;
+    display: block;
+    min-block-size: 0;
+    grid-row: 2;
+    overflow: hidden;
+    border-block-start: 1px solid var(--scientific-ui-border-strong);
+    background: var(--scientific-ui-background);
+    pointer-events: none;
   }
 }
 
@@ -1934,6 +1980,7 @@ body.scientific-plot-fullscreen-open {
 
 .scientific-outcome-summary {
   min-inline-size: 0;
+  container-type: inline-size;
   border-block-start: 2px solid var(--cds-border-strong-01);
   color: var(--cds-text-primary);
   background: var(--cds-layer-01);
@@ -2126,6 +2173,47 @@ body.scientific-plot-fullscreen-open {
   padding: var(--scientific-ui-spacing-05);
   color: var(--cds-text-primary);
   background: var(--cds-layer-01);
+}
+
+.scientific-evidence-summary {
+  container-type: inline-size;
+}
+
+@container (max-width: 32rem) {
+  .scientific-outcome-summary__copy-column,
+  .scientific-outcome-summary__action-column {
+    grid-column: 1 / -1;
+  }
+
+  .scientific-outcome-summary__heading,
+  .scientific-evidence-summary__header,
+  .scientific-evidence-summary__check-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--scientific-ui-spacing-03);
+  }
+
+  .scientific-outcome-summary__action-column,
+  .scientific-outcome-summary__actions {
+    justify-content: flex-start;
+  }
+
+  .scientific-outcome-summary .scientific-metric-grid,
+  .scientific-evidence-summary[data-density="compact"] .scientific-evidence-summary__checks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scientific-outcome-summary .scientific-metric {
+    grid-column: auto;
+  }
+}
+
+@container (max-width: 22rem) {
+  .scientific-outcome-summary .scientific-metric-grid,
+  .scientific-evidence-summary__checks,
+  .scientific-evidence-summary[data-density="compact"] .scientific-evidence-summary__checks {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .scientific-evidence-summary__header,
@@ -2326,6 +2414,10 @@ body.scientific-plot-fullscreen-open {
 }
 
 @media (max-width: 65.99rem) {
+  .scientific-recovery-notice button {
+    min-block-size: var(--scientific-ui-target-size);
+  }
+
   .scientific-command-bar__action[data-collapse-at="md"],
   .scientific-command-bar__action[data-collapse-at="lg"] { display: none; }
   .scientific-command-bar[data-overflow-md="true"] > .scientific-command-bar__overflow,

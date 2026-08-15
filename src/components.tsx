@@ -55,8 +55,21 @@ function joinClassNames(...classNames: Array<string | undefined | false>) {
   return classNames.filter(Boolean).join(" ");
 }
 
+function useCompactWorkbench() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 65.99rem)");
+    const update = () => setCompact(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  return compact;
+}
+
 export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   product: string;
+  compactProduct?: ReactNode;
   productIcon?: ScientificProductIcon;
   productMark?: ReactNode;
   descriptor?: ReactNode;
@@ -73,7 +86,7 @@ export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   skipLink?: ReactNode;
 }
 
-export function ScientificHeader({ product, productIcon, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, help, showThemeToggle = true, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
+export function ScientificHeader({ product, compactProduct, productIcon, productMark, descriptor, href = "./", contextLabel, context, contextDetail, status, primaryAction, secondaryActions, help, showThemeToggle = true, actionsLabel = "Application actions", skipLink, className, ...props }: ScientificHeaderProps) {
   return (
     <Header className={joinClassNames("scientific-header", "scientific-app-header", className)} {...props}>
       {skipLink}
@@ -82,6 +95,10 @@ export function ScientificHeader({ product, productIcon, productMark, descriptor
         <span className="scientific-header__brand-copy"><strong>{product}</strong>{descriptor && <small>{descriptor}</small>}</span>
       </HeaderName>
       {(contextLabel || context || contextDetail || status) && <div className="scientific-header__context scientific-app-header__context">
+        {compactProduct && <>
+          <span className="scientific-header__compact-product" aria-hidden="true">{compactProduct}</span>
+          <span className="scientific-header__compact-separator" aria-hidden="true">·</span>
+        </>}
         {contextLabel && <span className="scientific-header__context-label">{contextLabel}</span>}
         {context && <div className="scientific-header__context-value">{context}</div>}
         {contextDetail && <div className="scientific-header__context-detail">{contextDetail}</div>}
@@ -731,14 +748,18 @@ export interface ScientificAppShellProps {
   inspector?: ReactNode;
   statusBar?: ReactNode;
   panelOpen?: boolean;
+  previewStageWhenPanelOpen?: boolean;
   className?: string;
 }
 
-export function ScientificAppShell({ header, navigation, recovery, panel, children, inspector, statusBar, panelOpen = Boolean(panel), className }: ScientificAppShellProps) {
+export function ScientificAppShell({ header, navigation, recovery, panel, children, inspector, statusBar, panelOpen = Boolean(panel), previewStageWhenPanelOpen = false, className }: ScientificAppShellProps) {
+  const compactWorkbench = useCompactWorkbench();
+  const stagePreviewActive = panelOpen && previewStageWhenPanelOpen && compactWorkbench;
   return (
     <div
       className={joinClassNames("scientific-app-shell", className)}
       data-panel-open={panelOpen || undefined}
+      data-stage-preview={stagePreviewActive || undefined}
     >
       {header}
       {navigation}
@@ -755,7 +776,14 @@ export function ScientificAppShell({ header, navigation, recovery, panel, childr
             {panel}
           </Column>
         )}
-        <Column sm={4} md={8} lg={panelOpen ? 12 : 16} className="scientific-workbench__stage">
+        <Column
+          sm={4}
+          md={8}
+          lg={panelOpen ? 12 : 16}
+          className="scientific-workbench__stage"
+          inert={stagePreviewActive || undefined}
+          aria-hidden={stagePreviewActive || undefined}
+        >
           {children}
         </Column>
       </Grid>
