@@ -1,5 +1,13 @@
 # @jorpago2/scientific-ui
 
+## 0.14.8
+
+### Patch Changes
+
+- Align collapsible panel disclosures with Carbon's end-chevron pattern and recover Carbon's reserved disclosure gutter so scientific fields retain the available panel width.
+- Balance preflight and validation evidence into stable two-column groups, collapsing to one column on mobile without orphaned tracks.
+- Apply Carbon theme tokens and IBM Plex Sans to Plotly hover labels.
+
 ## 0.14.7
 
 ### Patch Changes

@@ -67,7 +67,7 @@ export function ScientificPanelSection({
   if (collapsible) {
     return (
       <section className={joinClassNames("scientific-panel-section", "scientific-panel-section--collapsible", className)} {...props}>
-        <Accordion align="start" size="sm">
+        <Accordion align="end" size="sm">
           <AccordionItem
             title={heading}
             open={open}

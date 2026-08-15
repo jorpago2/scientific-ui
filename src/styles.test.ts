@@ -70,6 +70,9 @@ describe("scientific workbench contract", () => {
 
   it("gives panel fields the full Carbon grid width and standardizes handoff behavior", () => {
     expect(layout).toContain('lg={columns === 2 ? 8 : 16}');
+    expect(layout).toContain('<Accordion align="end" size="sm">');
+    expect(styles).toMatch(/\.scientific-panel-section--collapsible \.scientific-panel-section__content \{[\s\S]*inline-size: calc\(125% \+ var\(--scientific-ui-spacing-03\)\);/);
+    expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-panel-section--collapsible \.scientific-panel-section__content,[\s\S]*inline-size: calc\(100% \+ 2 \* var\(--scientific-ui-spacing-05\)\);/);
     expect(layout).toContain("export function ScientificParameterSection");
     expect(components).toContain("export function ScientificExampleWorkflow");
     expect(components).toContain("target.scrollIntoView");
@@ -78,6 +81,12 @@ describe("scientific workbench contract", () => {
     expect(workflow).toContain('result.dataset.scientificResultFocusTarget = "true"');
     expect(styles).toContain("[data-scientific-result-focus-target]:focus");
     expect(layout).toContain("export function ScientificStageHeader");
+  });
+
+  it("keeps evidence cards balanced without orphaned grid tracks", () => {
+    expect(styles).toMatch(/\.scientific-evidence-summary__checks \{[\s\S]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/);
+    expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-evidence-summary__checks \{[\s\S]*grid-template-columns: minmax\(0, 1fr\);/);
+    expect(styles).not.toContain("repeat(auto-fit, minmax(min(100%, 16rem), 1fr))");
   });
 
   it("defines one Carbon-grid post-operation handoff for every scientific app", () => {

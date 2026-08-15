@@ -153,6 +153,8 @@ export function createScientificPlotlyLayout(options: ScientificPlotlyLayoutOpti
   const yaxis = (overrides.yaxis ?? {}) as Record<string, unknown>;
   const legend = (overrides.legend ?? {}) as Record<string, unknown>;
   const font = (overrides.font ?? {}) as Record<string, unknown>;
+  const hoverlabel = (overrides.hoverlabel ?? {}) as Record<string, unknown>;
+  const hoverlabelFont = (hoverlabel.font ?? {}) as Record<string, unknown>;
 
   return {
     autosize: true,
@@ -167,6 +169,13 @@ export function createScientificPlotlyLayout(options: ScientificPlotlyLayoutOpti
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: theme.background,
     font: { size: 12, ...font, family: SCIENTIFIC_PLOT_FONT, color: theme.textSecondary },
+    hoverlabel: {
+      align: "left",
+      bgcolor: theme.layer,
+      bordercolor: theme.axis,
+      ...hoverlabel,
+      font: { size: 12, ...hoverlabelFont, family: SCIENTIFIC_PLOT_FONT, color: theme.text },
+    },
     xaxis: { ...createScientificPlotlyAxis(theme, options.xTitle, xaxis), color: theme.textSecondary, gridcolor: theme.grid, linecolor: theme.axis, zerolinecolor: theme.axis },
     yaxis: { ...createScientificPlotlyAxis(theme, options.yTitle, yaxis), color: theme.textSecondary, gridcolor: theme.grid, linecolor: theme.axis, zerolinecolor: theme.axis },
   };

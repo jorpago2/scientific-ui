@@ -31,6 +31,12 @@ describe("scientific Plotly contract", () => {
       overrides: { xaxis: { type: "log" } },
     });
     expect(layout.font).toMatchObject({ family: SCIENTIFIC_PLOT_FONT });
+    expect(layout.hoverlabel).toMatchObject({
+      align: "left",
+      bgcolor: "gray",
+      bordercolor: "dimgray",
+      font: { family: SCIENTIFIC_PLOT_FONT, color: "black" },
+    });
     expect(layout.xaxis).toMatchObject({ title: { text: "Wavelength (µm)" }, type: "log", gridcolor: "silver" });
     expect(layout.yaxis).toMatchObject({ title: { text: "Effective index" }, linecolor: "dimgray" });
   });
