@@ -33,7 +33,7 @@ Rail selection, `aria-expanded`, panel visibility and Close are controlled by th
 
 The standard order is outcome, explanation and actions, key metrics, result switcher, plot/canvas, then numerical evidence and model limits. `ScientificPlotFrame` owns plot heading, toolbar placement and accessible description. Applications provide an associated table or textual data summary when a graphic contains values needed to interpret the result.
 
-Plotly figures use the shared publication theme rather than Carbon theme tokens: white printable paper, neutral Arial/Helvetica typography, restrained axes and grid, thin strokes and colour-blind-safe series. Carbon continues to own the surrounding frame and controls. A `g10`/`g100` change must not recolour the scientific figure.
+Plotly figures and their figure-local toolbar use the shared publication theme rather than Carbon theme tokens: white printable paper, neutral Arial/Helvetica typography, restrained axes and grid, thin strokes, colour-blind-safe series and monochrome controls with a discreet active state. Carbon continues to own the surrounding application frame, not the figure-local controls. A `g10`/`g100` change must not recolour the scientific figure or its toolbar.
 
 Canvas surfaces normally follow Carbon theme tokens. A scientifically meaningful permanently dark viewport uses `scientific-render-surface--dark`, including its shared border and contrast treatment, rather than an undocumented local theme override.
 

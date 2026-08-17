@@ -83,8 +83,8 @@ const FULLSCREEN_ICON = {
   height: 32,
   ascent: 32,
   descent: 0,
-  /* Carbon Maximize 32 glyph, adapted to Plotly's path-only icon contract. */
-  path: "M20 2 20 4 26.586 4 18 12.582 19.414 14 28 5.414 28 12 30 12 30 2 20 2z M14 19.416 12.592 18 4 26.586 4 20 2 20 2 30 12 30 12 28 5.414 28 14 19.416z",
+  /* Neutral corner-frame glyph for Plotly's path-only icon contract. */
+  path: "M2 2h10v2H4v8H2V2zm18 0h10v10h-2V4h-8V2zM2 20h2v8h8v2H2V20zm26 0h2v10H20v-2h8v-8z",
 };
 
 let fullscreenPlot: PlotElement | null = null;

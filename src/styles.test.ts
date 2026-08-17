@@ -101,6 +101,10 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain(".scientific-plot-frame__toolbar .modebar");
     expect(styles).toContain(".scientific-plot-frame__toolbar .modebar-btn svg path");
     expect(styles).toContain('.scientific-plot-frame__toolbar .modebar-btn[data-title]::after');
+    expect(styles).toMatch(/\.scientific-plot-frame__toolbar \{[\s\S]*background: #ffffff;/);
+    expect(styles).toMatch(/\.scientific-plot-frame__toolbar \.modebar-btn\.active \{[\s\S]*background: #e8e8e2;[\s\S]*box-shadow: inset 0 -2px #005f99;/);
+    expect(styles).not.toContain("var(--cds-button-primary)");
+    expect(plots).not.toContain("Carbon Maximize");
     expect(styles).not.toContain(".scientific-plot-surface .modebar {");
   });
 
