@@ -11,7 +11,7 @@ This contract defines the common chrome and interaction rules for the browser-ba
 - `ScientificStatusBar` is 40 px high. Document save state, calculation state and scientific quality remain separate values.
 - `ScientificAppShell` is the single owner of rail, panel, stage, recovery and status placement.
 
-Applications may choose `previewStageWhenPanelOpen` only when a read-only preview materially helps configure the model. Otherwise a compact panel replaces the stage. Preview content is inert and must not expose interactive descendants.
+On compact viewports, an open task panel replaces the stage and status bar so configuration remains the only visible, scrollable workspace content above the tool rail.
 
 ## Header actions
 

@@ -55,18 +55,6 @@ function joinClassNames(...classNames: Array<string | undefined | false>) {
   return classNames.filter(Boolean).join(" ");
 }
 
-function useCompactWorkbench() {
-  const [compact, setCompact] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 65.99rem)");
-    const update = () => setCompact(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-  return compact;
-}
-
 export interface ScientificHeaderProps extends HTMLAttributes<HTMLElement> {
   product: string;
   compactProduct?: ReactNode;
@@ -754,18 +742,14 @@ export interface ScientificAppShellProps {
   inspector?: ReactNode;
   statusBar?: ReactNode;
   panelOpen?: boolean;
-  previewStageWhenPanelOpen?: boolean;
   className?: string;
 }
 
-export function ScientificAppShell({ header, navigation, recovery, panel, children, inspector, statusBar, panelOpen = Boolean(panel), previewStageWhenPanelOpen = false, className }: ScientificAppShellProps) {
-  const compactWorkbench = useCompactWorkbench();
-  const stagePreviewActive = panelOpen && previewStageWhenPanelOpen && compactWorkbench;
+export function ScientificAppShell({ header, navigation, recovery, panel, children, inspector, statusBar, panelOpen = Boolean(panel), className }: ScientificAppShellProps) {
   return (
     <div
       className={joinClassNames("scientific-app-shell", className)}
       data-panel-open={panelOpen || undefined}
-      data-stage-preview={stagePreviewActive || undefined}
     >
       {header}
       {navigation}
@@ -790,8 +774,6 @@ export function ScientificAppShell({ header, navigation, recovery, panel, childr
           md={8}
           lg={panelOpen ? 12 : 16}
           className="scientific-workbench__stage"
-          inert={stagePreviewActive || undefined}
-          aria-hidden={stagePreviewActive || undefined}
         >
           {children}
         </Column>

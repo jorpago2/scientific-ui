@@ -222,7 +222,7 @@ test("task panel owns consistent Carbon surface, heading and scrolling", async (
   await expect(panel).toBeHidden();
 });
 
-test("mobile panels preserve a bounded, inert stage preview above bottom navigation", async ({ page }) => {
+test("mobile panels replace the stage above bottom navigation", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await page.evaluate(() => document.documentElement.style.setProperty("--scientific-ui-safe-area-bottom", "24px"));
@@ -235,18 +235,12 @@ test("mobile panels preserve a bounded, inert stage preview above bottom navigat
   expect(Math.round((await navigation.boundingBox())?.height ?? 0)).toBe(80);
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(716);
   await expect(status).toBeHidden();
-  await expect(stage).toBeVisible();
-  await expect(stage).toHaveAttribute("inert", "");
-  await expect(stage).toHaveAttribute("aria-hidden", "true");
-  const previewHeight = (await stage.boundingBox())?.height ?? 0;
-  expect(previewHeight).toBeGreaterThanOrEqual(143);
-  expect(previewHeight).toBeLessThanOrEqual(209);
+  await expect(stage).toBeHidden();
+  expect(Math.round((await page.locator(".scientific-workbench__panel").boundingBox())?.height ?? 0)).toBe(716);
 
   await page.locator("#fixture-panel").getByRole("button", { name: "Close panel" }).click();
   await expect(status).toBeVisible();
   await expect(stage).toBeVisible();
-  await expect(stage).not.toHaveAttribute("inert", "");
-  await expect(stage).not.toHaveAttribute("aria-hidden", "true");
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(676);
 });
 
@@ -270,7 +264,7 @@ test("long scientific results remain scrollable inside the workbench stage", asy
   expect(await stage.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
 });
 
-test("tablet panels retain a bounded stage preview without competing interaction", async ({ page }) => {
+test("tablet panels replace the stage without competing content", async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/");
 
@@ -280,16 +274,11 @@ test("tablet panels retain a bounded stage preview without competing interaction
   const stage = page.locator(".scientific-workbench__stage");
   const status = page.locator(".scientific-status-bar");
 
-  await expect(stage).toBeVisible();
-  await expect(stage).toHaveAttribute("inert", "");
-  await expect(stage).toHaveAttribute("aria-hidden", "true");
+  await expect(stage).toBeHidden();
   await expect(status).toBeHidden();
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(796);
   const panelHeight = (await panelColumn.boundingBox())?.height ?? 0;
-  const stageHeight = (await stage.boundingBox())?.height ?? 0;
-  expect(stageHeight).toBeGreaterThanOrEqual(143);
-  expect(stageHeight).toBeLessThanOrEqual(209);
-  expect(Math.abs(panelHeight + stageHeight - ((await workbench.boundingBox())?.height ?? 0))).toBeLessThanOrEqual(2);
+  expect(Math.abs(panelHeight - ((await workbench.boundingBox())?.height ?? 0))).toBeLessThanOrEqual(2);
 });
 
 test("shared commands collapse into Carbon overflow without global overflow", async ({ page }) => {

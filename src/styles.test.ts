@@ -69,13 +69,11 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain(".scientific-header__compact-product");
   });
 
-  it("keeps an inert stage preview visible while compact task panels are active", () => {
-    expect(components).toContain("previewStageWhenPanelOpen?: boolean");
-    expect(components).toContain("const stagePreviewActive = panelOpen && previewStageWhenPanelOpen && compactWorkbench");
-    expect(components).toContain("inert={stagePreviewActive || undefined}");
-    expect(components).toContain("aria-hidden={stagePreviewActive || undefined}");
-    expect(tokens).toContain("--scientific-ui-panel-preview-block-size");
-    expect(styles).toContain("[data-panel-open][data-stage-preview] .scientific-workbench__stage");
+  it("gives compact task panels exclusive ownership of the workspace", () => {
+    expect(components).not.toContain("previewStageWhenPanelOpen");
+    expect(components).not.toContain("data-stage-preview");
+    expect(tokens).not.toContain("--scientific-ui-panel-preview-block-size");
+    expect(styles).toMatch(/@media \(max-width: 65\.99rem\)[\s\S]*\[data-panel-open\] \.scientific-workbench__stage,[\s\S]*> \.scientific-status-bar \{[\s\S]*display: none;/);
   });
 
   it("preserves Carbon tab targets and lets content switchers grow with enlarged text", () => {

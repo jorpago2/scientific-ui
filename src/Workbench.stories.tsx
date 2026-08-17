@@ -15,7 +15,6 @@ function WorkbenchExample({ status = { state: "modified", label: "Parameters mod
         { id: "export", label: "Export", controlsId: "example-panel" },
       ]} />}
       panel={<ScientificTaskPanel id="example-panel" title={activeId} titleId="example-panel-title" eyebrow="Scientific workflow"><p>{longContent ? "A deliberately long configuration description verifies wrapping without changing the width of the scientific canvas or hiding the primary action." : "Controlled application content."}</p></ScientificTaskPanel>}
-      previewStageWhenPanelOpen
       statusBar={<ScientificStatusBar status={status} metadata="Fixture · deterministic" />}
     >
       <ScientificEmptyState title="No result yet" description="Configure the model and run it to create the first result." action={<Button size="sm">Run model</Button>} />

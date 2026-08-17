@@ -87,7 +87,6 @@ function Demo() {
       </ScientificPanelSection>
     </ScientificTaskPanel> : undefined}
     panelOpen={active !== null}
-    previewStageWhenPanelOpen
     inspector={<InspectorPanel open={inspectorOpen} title="Result inspector" triggerRef={inspectorTriggerRef} onClose={() => setInspectorOpen(false)}>
       <p>Carbon manages focus, Escape and return focus for this inspector.</p>
       <Button kind="secondary" data-modal-primary-focus onClick={() => setInspectorOpen(false)}>Apply</Button>
