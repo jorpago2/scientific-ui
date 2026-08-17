@@ -507,7 +507,7 @@ a.scientific-header__brand.scientific-app-header__brand {
   min-inline-size: 0;
   min-block-size: 18rem;
   overflow: hidden;
-  background: var(--scientific-ui-background);
+  background: #ffffff;
 }
 
 .scientific-plot-frame__toolbar {
@@ -530,7 +530,7 @@ a.scientific-header__brand.scientific-app-header__brand {
   inline-size: 100%;
   min-inline-size: 0;
   min-block-size: 18rem;
-  background: var(--scientific-ui-background);
+  background: #ffffff;
   touch-action: manipulation;
 }
 

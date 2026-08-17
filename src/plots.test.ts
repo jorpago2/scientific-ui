@@ -20,10 +20,10 @@ const theme: ScientificPlotTheme = {
 
 describe("scientific Plotly contract", () => {
   it("provides a shared visual hierarchy for scientific traces", () => {
-    expect(SCIENTIFIC_PLOT_LINE_WIDTHS).toEqual({ reference: 2, secondary: 3, primary: 4, emphasis: 5 });
+    expect(SCIENTIFIC_PLOT_LINE_WIDTHS).toEqual({ reference: 1, secondary: 1.25, primary: 1.75, emphasis: 2.5 });
   });
 
-  it("uses IBM Plex Sans and merges scientific axis overrides", () => {
+  it("uses a publication layout independent of Carbon and merges scientific axis overrides", () => {
     const layout = createScientificPlotlyLayout({
       theme,
       xTitle: "Wavelength (µm)",
@@ -31,6 +31,7 @@ describe("scientific Plotly contract", () => {
       overrides: { xaxis: { type: "log" } },
     });
     expect(layout.font).toMatchObject({ family: SCIENTIFIC_PLOT_FONT });
+    expect(layout).toMatchObject({ paper_bgcolor: "white", plot_bgcolor: "white" });
     expect(layout.hoverlabel).toMatchObject({
       align: "left",
       bgcolor: "gray",
@@ -51,12 +52,15 @@ describe("scientific Plotly contract", () => {
     expect(config.modeBarButtonsToAdd).toHaveLength(1);
   });
 
-  it("creates accessible Carbon-token axes", () => {
+  it("creates restrained publication axes", () => {
     expect(createScientificPlotlyAxis(theme, "Voltage (V)")).toMatchObject({
       color: "gray",
       gridcolor: "silver",
+      gridwidth: 0.5,
       linecolor: "dimgray",
+      linewidth: 1,
       showline: true,
+      zeroline: false,
     });
   });
 });

@@ -1,13 +1,13 @@
-import { useEffect, useId, useState, type CSSProperties, type ReactNode } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 
-export const SCIENTIFIC_PLOT_FONT = '"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif';
+export const SCIENTIFIC_PLOT_FONT = 'Arial, "Helvetica Neue", Helvetica, sans-serif';
 
 /** Semantic stroke widths for scientific data and plot annotations, in CSS pixels. */
 export const SCIENTIFIC_PLOT_LINE_WIDTHS = {
-  reference: 2,
-  secondary: 3,
-  primary: 4,
-  emphasis: 5,
+  reference: 1,
+  secondary: 1.25,
+  primary: 1.75,
+  emphasis: 2.5,
 } as const;
 
 export interface ScientificPlotTheme {
@@ -68,14 +68,14 @@ export interface ScientificPlotlyConfigOptions {
 
 type PlotElement = HTMLElement & { ownerDocument: Document };
 
-const FALLBACK_THEME: ScientificPlotTheme = {
+const PAPER_THEME: ScientificPlotTheme = {
   background: "#ffffff",
-  layer: "#f4f4f4",
-  grid: "#e0e0e0",
-  axis: "#8d8d8d",
-  text: "#161616",
-  textSecondary: "#525252",
-  focus: "#0f62fe",
+  layer: "#f7f7f5",
+  grid: "#d9d9d4",
+  axis: "#4a4a46",
+  text: "#11110f",
+  textSecondary: "#363633",
+  focus: "#005f99",
 };
 
 const FULLSCREEN_ICON = {
@@ -91,40 +91,14 @@ let fullscreenPlot: PlotElement | null = null;
 let fullscreenFrame: HTMLElement | null = null;
 let fullscreenSnapshot: { width: string; height: string; focus: HTMLElement | null } | null = null;
 
-function cssValue(style: CSSStyleDeclaration, name: string, fallback: string): string {
-  return style.getPropertyValue(name).trim() || fallback;
+/** Stable publication palette; plots remain printable and independent of Carbon themes. */
+export function readScientificPlotTheme(_element?: Element): ScientificPlotTheme {
+  return PAPER_THEME;
 }
 
-/** Reads resolved Carbon theme tokens so plots change with the application theme. */
-export function readScientificPlotTheme(element?: Element): ScientificPlotTheme {
-  if (typeof window === "undefined" || typeof document === "undefined") return FALLBACK_THEME;
-  const style = window.getComputedStyle(element ?? document.documentElement);
-  return {
-    background: cssValue(style, "--cds-background", FALLBACK_THEME.background),
-    layer: cssValue(style, "--cds-layer-01", FALLBACK_THEME.layer),
-    grid: cssValue(style, "--cds-border-subtle-01", FALLBACK_THEME.grid),
-    axis: cssValue(style, "--cds-border-strong-01", FALLBACK_THEME.axis),
-    text: cssValue(style, "--cds-text-primary", FALLBACK_THEME.text),
-    textSecondary: cssValue(style, "--cds-text-secondary", FALLBACK_THEME.textSecondary),
-    focus: cssValue(style, "--cds-focus", FALLBACK_THEME.focus),
-  };
-}
-
-/**
- * Reactive Carbon plot tokens. Plot renderers draw colors into SVG/canvas and
- * therefore cannot rely on CSS inheritance when the application theme changes.
- */
-export function useScientificPlotTheme(element?: Element | null): ScientificPlotTheme {
-  const [theme, setTheme] = useState<ScientificPlotTheme>(() => readScientificPlotTheme(element ?? undefined));
-
-  useEffect(() => {
-    const update = () => setTheme(readScientificPlotTheme(element ?? undefined));
-    update();
-    window.addEventListener("scientific-ui:theme-applied", update);
-    return () => window.removeEventListener("scientific-ui:theme-applied", update);
-  }, [element]);
-
-  return theme;
+/** Backwards-compatible hook for consumers that render Plotly imperatively. */
+export function useScientificPlotTheme(_element?: Element | null): ScientificPlotTheme {
+  return PAPER_THEME;
 }
 
 export function createScientificPlotlyAxis(
@@ -133,13 +107,19 @@ export function createScientificPlotlyAxis(
   overrides: Record<string, unknown> = {},
 ): Record<string, unknown> {
   return {
-    ...(title ? { title: { text: title } } : {}),
+    ...(title ? { title: { text: title, font: { family: SCIENTIFIC_PLOT_FONT, size: 13, color: theme.text }, standoff: 10 } } : {}),
     color: theme.textSecondary,
     gridcolor: theme.grid,
+    gridwidth: 0.5,
     linecolor: theme.axis,
-    zerolinecolor: theme.axis,
+    linewidth: 1,
+    zeroline: false,
     showline: true,
     ticks: "outside",
+    tickcolor: theme.axis,
+    tickfont: { family: SCIENTIFIC_PLOT_FONT, size: 11, color: theme.textSecondary },
+    ticklen: 4,
+    tickwidth: 1,
     automargin: true,
     ...overrides,
   };
@@ -163,10 +143,10 @@ export function createScientificPlotlyLayout(options: ScientificPlotlyLayoutOpti
     hovermode: options.hovermode ?? "x unified",
     dragmode: options.dragmode ?? "pan",
     showlegend: options.showlegend ?? true,
-    legend: { orientation: "h", x: 0, y: 1.12, ...legend },
+    legend: { orientation: "h", x: 0, y: 1.12, bgcolor: "rgba(0,0,0,0)", font: { family: SCIENTIFIC_PLOT_FONT, size: 11, color: theme.text }, ...legend },
     ...(options.uirevision ? { uirevision: options.uirevision } : {}),
     ...overrides,
-    paper_bgcolor: "rgba(0,0,0,0)",
+    paper_bgcolor: theme.background,
     plot_bgcolor: theme.background,
     font: { size: 12, ...font, family: SCIENTIFIC_PLOT_FONT, color: theme.textSecondary },
     hoverlabel: {

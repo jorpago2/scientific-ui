@@ -92,9 +92,10 @@ describe("scientific workbench contract", () => {
     expect(components).toContain('className="scientific-content-switcher scientific-content-switcher--md"');
   });
 
-  it("owns panel rhythm and plot theme synchronization centrally", () => {
+  it("owns panel rhythm and a publication plot theme centrally", () => {
     expect(styles).toMatch(/\.scientific-task-panel__body \{[\s\S]*display: grid;[\s\S]*gap: var\(--scientific-ui-spacing-05\);/);
-    expect(plots).toContain('window.addEventListener("scientific-ui:theme-applied", update)');
+    expect(plots).toContain('const PAPER_THEME: ScientificPlotTheme');
+    expect(plots).not.toContain('cssValue(style, "--cds-');
     expect(plots).toContain('toolbar.className = "scientific-plot-frame__toolbar"');
     expect(plots).toContain("aria-describedby={description ? descriptionId : undefined}");
     expect(styles).toContain(".scientific-plot-frame__toolbar .modebar");
