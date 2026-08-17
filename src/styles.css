@@ -1324,6 +1324,32 @@ body.scientific-plot-fullscreen-open {
   white-space: nowrap;
 }
 
+/* Carbon fixes the ContentSwitcher block size, so enlarged text can escape the
+   control and overlap the following content. Keep Carbon's normal size as a
+   minimum while allowing the control to grow with its labels. */
+.scientific-content-switcher {
+  --scientific-content-switcher-block-size: 2.5rem;
+
+  block-size: auto;
+  min-block-size: var(--scientific-content-switcher-block-size);
+}
+
+.scientific-content-switcher--sm {
+  --scientific-content-switcher-block-size: 2rem;
+}
+
+.scientific-content-switcher--md {
+  --scientific-content-switcher-block-size: 2.5rem;
+}
+
+.scientific-content-switcher--lg {
+  --scientific-content-switcher-block-size: 3rem;
+}
+
+.scientific-content-switcher.scientific-content-switcher.scientific-content-switcher > button {
+  padding-block: max(0px, calc((var(--scientific-content-switcher-block-size) - 1lh - 2px) / 2));
+}
+
 .scientific-workflow {
   border-block-start: 1px solid var(--scientific-ui-border-strong);
   border-inline-end: 0;

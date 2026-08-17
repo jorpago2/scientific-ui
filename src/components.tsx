@@ -735,7 +735,7 @@ export function ResultSwitcher({ options, activeId, onChange, label = "Result vi
   const selectedIndex = Math.max(0, options.findIndex((option) => option.id === activeId));
   return (
     <div className={joinClassNames("scientific-result-switcher", className)} role="group" aria-label={label}>
-      <ContentSwitcher selectedIndex={selectedIndex} selectionMode="manual" onChange={({ index }) => {
+      <ContentSwitcher className="scientific-content-switcher scientific-content-switcher--md" selectedIndex={selectedIndex} selectionMode="manual" onChange={({ index }) => {
         const option = options[index ?? -1];
         if (option && !option.disabled) onChange(option.id);
       }}>

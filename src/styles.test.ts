@@ -78,12 +78,18 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain("[data-panel-open][data-stage-preview] .scientific-workbench__stage");
   });
 
-  it("preserves Carbon tab and content-switcher heights on touch viewports", () => {
+  it("preserves Carbon tab targets and lets content switchers grow with enlarged text", () => {
     expect(styles).toContain('.scientific-task-panel button:not([role="tab"])');
     expect(styles).toContain('.scientific-inspector button:not([role="tab"])');
     expect(styles).toContain('.scientific-workbench button:not([role="tab"])');
     expect(styles).toMatch(/@media \(pointer: coarse\), \(max-width: 65\.99rem\)[\s\S]*\.scientific-result-switcher button \{[\s\S]*min-block-size: var\(--scientific-ui-target-size\);/);
     expect(styles).toMatch(/@media \(pointer: coarse\), \(max-width: 65\.99rem\)[\s\S]*\.scientific-app-shell \[role="tablist"\] \[role="tab"\] \{[\s\S]*min-block-size: var\(--scientific-ui-target-size\);/);
+    expect(styles).toMatch(/\.scientific-content-switcher \{[\s\S]*block-size: auto;/);
+    expect(styles).toContain(".scientific-content-switcher--sm");
+    expect(styles).toContain(".scientific-content-switcher--md");
+    expect(styles).toContain(".scientific-content-switcher--lg");
+    expect(styles).toMatch(/\.scientific-content-switcher\.scientific-content-switcher\.scientific-content-switcher > button \{[\s\S]*padding-block: max\(0px,/);
+    expect(components).toContain('className="scientific-content-switcher scientific-content-switcher--md"');
   });
 
   it("owns panel rhythm and plot theme synchronization centrally", () => {
