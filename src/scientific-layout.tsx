@@ -354,7 +354,7 @@ export interface ScientificMetricGridProps extends HTMLAttributes<HTMLDListEleme
 export function ScientificMetricGrid({ metrics, columns = 4, className, ...props }: ScientificMetricGridProps) {
   const lg = columns === 2 ? 8 : columns === 3 ? 5 : 4;
   return (
-    <Grid as="dl" fullWidth narrow className={joinClassNames("scientific-metric-grid", className)} {...props}>
+    <Grid as="dl" fullWidth narrow className={joinClassNames("scientific-metric-grid", className)} {...props} data-count={metrics.length}>
       {metrics.map((metric) => (
         <Column sm={2} md={4} lg={lg} key={metric.id} className="scientific-metric" data-status={metric.status ?? "neutral"}>
           <dt>{metric.label}</dt>
@@ -441,7 +441,7 @@ export function ScientificEvidenceSummary({
         </div>
         <ScientificStatus status={status} compact />
       </div>
-      <ul className="scientific-evidence-summary__checks">
+      <ul className="scientific-evidence-summary__checks" data-count={checks.length}>
         {checks.map((check) => (
           <li key={check.id} data-state={check.state}>
             <div className="scientific-evidence-summary__check-heading">

@@ -276,6 +276,7 @@ test("tablet panels retain a bounded stage preview without competing interaction
 
   const workbench = page.locator(".scientific-workbench");
   const panel = page.locator("#fixture-panel");
+  const panelColumn = page.locator(".scientific-workbench__panel");
   const stage = page.locator(".scientific-workbench__stage");
   const status = page.locator(".scientific-status-bar");
 
@@ -284,7 +285,7 @@ test("tablet panels retain a bounded stage preview without competing interaction
   await expect(stage).toHaveAttribute("aria-hidden", "true");
   await expect(status).toBeHidden();
   expect(Math.round((await workbench.boundingBox())?.height ?? 0)).toBe(796);
-  const panelHeight = (await panel.boundingBox())?.height ?? 0;
+  const panelHeight = (await panelColumn.boundingBox())?.height ?? 0;
   const stageHeight = (await stage.boundingBox())?.height ?? 0;
   expect(stageHeight).toBeGreaterThanOrEqual(143);
   expect(stageHeight).toBeLessThanOrEqual(209);
@@ -314,6 +315,24 @@ test("registered commands appear in Help and execute from one shortcut registry"
   await page.keyboard.press("Escape");
   await page.keyboard.press("Control+Enter");
   await expect(page.getByText("Simulation running").first()).toBeVisible();
+});
+
+test("header Help action remains visible in the dark theme", async ({ page }) => {
+  await page.goto("/?theme=dark");
+  await page.getByRole("button", { name: "Help" }).click();
+
+  const popover = page.locator(".scientific-header-help__popover");
+  const action = popover.getByRole("button", { name: "Open documentation" });
+  const colors = await action.evaluate((element) => ({
+    actionBackground: getComputedStyle(element).backgroundColor,
+    foreground: getComputedStyle(element).color,
+    popoverBackground: getComputedStyle(element.closest(".scientific-header-help__popover")!).backgroundColor,
+  }));
+
+  await expect(action).toBeVisible();
+  expect(colors.popoverBackground).not.toBe("rgba(0, 0, 0, 0)");
+  expect(colors.actionBackground).not.toBe(colors.popoverBackground);
+  expect(colors.foreground).not.toBe(colors.actionBackground);
 });
 
 test("theme provider applies Carbon g100 to the complete workbench", async ({ page }) => {
@@ -351,6 +370,9 @@ for (const width of [320, 390, 768, 1024]) {
     await page.setViewportSize({ width, height: width <= 390 ? 844 : 900 });
     await page.goto("/?recovery=1");
     const close = page.locator("#fixture-panel").getByRole("button", { name: "Close panel" });
+    const recovery = page.getByRole("complementary", { name: "Session recovery" });
+    await expect(recovery).toBeVisible();
+    await expect(recovery.locator("xpath=ancestor::*[contains(@class, 'scientific-workbench__panel-stack')]")).toHaveCount(1);
     const receivesPointer = await close.evaluate((element) => {
       const bounds = element.getBoundingClientRect();
       const hit = document.elementFromPoint(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
@@ -359,8 +381,8 @@ for (const width of [320, 390, 768, 1024]) {
     expect(receivesPointer).toBe(true);
     await close.click();
     await expect(page.locator("#fixture-panel")).toBeHidden();
-    await expect(page.getByRole("complementary", { name: "Session recovery" })).toBeVisible();
-    for (const action of await page.getByRole("complementary", { name: "Session recovery" }).getByRole("button").all()) {
+    await expect(recovery).toBeVisible();
+    for (const action of await recovery.getByRole("button").all()) {
       expect((await action.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
     }
   });

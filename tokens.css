@@ -74,7 +74,8 @@
   .scientific-notifications,
   .scientific-theme,
   .scientific-plot-frame,
-  .scientific-plot-surface
+  .scientific-plot-surface,
+  .scientific-render-surface--dark
 ) {
   --scientific-ui-background: var(--cds-background);
   --scientific-ui-layer: var(--cds-layer-01);

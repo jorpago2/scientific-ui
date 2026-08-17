@@ -309,13 +309,18 @@ export function ScientificPlotFrame({
 }: ScientificPlotFrameProps) {
   const generatedId = useId();
   const headingId = titleId ?? `scientific-plot-${generatedId.replace(/:/g, "")}`;
+  const descriptionId = `${headingId}-description`;
   return (
-    <section className={["scientific-plot-frame", className].filter(Boolean).join(" ")} aria-labelledby={headingId}>
+    <section
+      className={["scientific-plot-frame", className].filter(Boolean).join(" ")}
+      aria-labelledby={headingId}
+      aria-describedby={description ? descriptionId : undefined}
+    >
       <header className="scientific-plot-frame__header">
         <div className="scientific-plot-frame__heading">
           {eyebrow ? <p className="scientific-plot-frame__eyebrow">{eyebrow}</p> : null}
           <h2 id={headingId}>{title}</h2>
-          {description ? <p className="scientific-plot-frame__description">{description}</p> : null}
+          {description ? <p id={descriptionId} className="scientific-plot-frame__description">{description}</p> : null}
         </div>
         {legend.length > 0 ? (
           <ul className="scientific-plot-legend" aria-label="Plot legend">

@@ -202,7 +202,7 @@ export function ScientificHeaderHelp({
             ))}
             <div><dt><kbd>?</kbd></dt><dd>Toggle this help</dd></div>
           </dl>
-          {action && <ToggletipActions><Button className="scientific-header-help__action" size="sm" kind="tertiary" onClick={() => {
+          {action && <ToggletipActions><Button size="sm" kind="primary" onClick={() => {
             buttonRef.current?.focus();
             buttonRef.current?.click();
             window.requestAnimationFrame(action.onClick);
@@ -458,7 +458,13 @@ export function ScientificStatus({ status, compact, iconOnly = false, className,
   }[status.state] as "not-started" | "normal" | "in-progress" | "succeeded" | "pending" | "caution-minor" | "failed";
   return (
     <div className={joinClassNames("scientific-status", compact && "scientific-status--compact", iconOnly && "scientific-status--icon-only", className)} data-state={status.state} role="status" aria-live={live} aria-atomic="true" {...props}>
-      <IconIndicator className="scientific-status__indicator" kind={indicatorKind} label={status.label} size={16} />
+      <IconIndicator
+        className="scientific-status__indicator"
+        kind={indicatorKind}
+        label={status.label}
+        compact={Boolean(compact || iconOnly)}
+        size={16}
+      />
       <span className="scientific-status__content">
         {!compact && status.detail && <span>{status.detail}</span>}
       </span>
@@ -763,7 +769,7 @@ export function ScientificAppShell({ header, navigation, recovery, panel, childr
     >
       {header}
       {navigation}
-      {recovery}
+      {!panelOpen && recovery}
       <Grid as="main" fullWidth condensed className="scientific-workbench">
         {panel && (
           <Column
@@ -773,7 +779,10 @@ export function ScientificAppShell({ header, navigation, recovery, panel, childr
             className="scientific-workbench__panel"
             hidden={!panelOpen}
           >
-            {panel}
+            <div className="scientific-workbench__panel-stack">
+              {panelOpen && recovery}
+              <div className="scientific-workbench__panel-content">{panel}</div>
+            </div>
           </Column>
         )}
         <Column

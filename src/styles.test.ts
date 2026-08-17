@@ -34,6 +34,20 @@ describe("scientific typography contract", () => {
     expect(styles).toMatch(/\.scientific-metric__value > span,[\s\S]*color: inherit;[\s\S]*font: inherit;/);
     expect(styles).not.toContain(".scientific-metric dd span");
   });
+
+  it("keeps four outcome metrics in a two-by-two mobile grid", () => {
+    expect(layout).toContain('data-count={metrics.length}');
+    expect(layout).toContain('<Column sm={2} md={4} lg={lg}');
+    expect(styles).not.toContain('.scientific-outcome-summary .scientific-metric {\n    grid-column: auto;\n  }');
+  });
+
+  it("uses Carbon compact indicators without repeating evidence labels", () => {
+    expect(components).toContain('compact={Boolean(compact || iconOnly)}');
+    expect(layout).not.toContain("function ScientificStatusBadge");
+    expect(layout).toContain("<ScientificStatus status={scientificCheckStatus(check)} compact iconOnly={compact} />");
+    expect(layout).toContain('data-count={checks.length}');
+    expect(styles).toContain('.scientific-evidence-summary__checks[data-count="3"]');
+  });
 });
 
 describe("scientific workbench contract", () => {
@@ -69,12 +83,14 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain('.scientific-inspector button:not([role="tab"])');
     expect(styles).toContain('.scientific-workbench button:not([role="tab"])');
     expect(styles).toMatch(/@media \(pointer: coarse\), \(max-width: 65\.99rem\)[\s\S]*\.scientific-result-switcher button \{[\s\S]*min-block-size: var\(--scientific-ui-target-size\);/);
+    expect(styles).toMatch(/@media \(pointer: coarse\), \(max-width: 65\.99rem\)[\s\S]*\.scientific-app-shell \[role="tablist"\] \[role="tab"\] \{[\s\S]*min-block-size: var\(--scientific-ui-target-size\);/);
   });
 
   it("owns panel rhythm and plot theme synchronization centrally", () => {
     expect(styles).toMatch(/\.scientific-task-panel__body \{[\s\S]*display: grid;[\s\S]*gap: var\(--scientific-ui-spacing-05\);/);
     expect(plots).toContain('window.addEventListener("scientific-ui:theme-applied", update)');
     expect(plots).toContain('toolbar.className = "scientific-plot-frame__toolbar"');
+    expect(plots).toContain("aria-describedby={description ? descriptionId : undefined}");
     expect(styles).toContain(".scientific-plot-frame__toolbar .modebar");
     expect(styles).toContain(".scientific-plot-frame__toolbar .modebar-btn svg path");
     expect(styles).toContain('.scientific-plot-frame__toolbar .modebar-btn[data-title]::after');
@@ -148,5 +164,9 @@ describe("scientific workbench contract", () => {
     expect(autosave).toContain("const storedRecovery = readScientificAutosave");
     expect(styles).toContain(".scientific-recovery-notice");
     expect(styles).toMatch(/\.scientific-recovery-notice button \{[\s\S]*min-block-size: var\(--scientific-ui-target-size\);/);
+    expect(components).toContain("!panelOpen && recovery");
+    expect(components).toContain('className="scientific-workbench__panel-stack"');
+    expect(components).toContain("panelOpen && recovery");
+    expect(styles).toMatch(/\.scientific-workbench__panel-stack > \.scientific-recovery-notice \{[\s\S]*position: static;/);
   });
 });

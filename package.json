@@ -1,7 +1,7 @@
 {
   "name": "@jorpago2/scientific-ui",
-  "version": "0.14.12",
-  "description": "Carbon-based workbench components for scientific web applications.",
+  "version": "0.16.0",
+  "description": "Carbon-based workbench and scientific result components for browser simulations.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,7 +18,11 @@
   ],
   "files": [
     "dist",
+    "docs",
     "scripts/check-conformance.mjs",
+    "scripts/check-consumer-conformance.mjs",
+    "scripts/check-consumer-contract.mjs",
+    "scripts/check-consumer-versions.mjs",
     "tokens.css",
     "README.md",
     "LICENSE"
@@ -53,6 +57,11 @@
     "test:ui": "playwright test",
     "test:a11y": "playwright test tests/accessibility.spec.ts",
     "check:conformance": "node scripts/check-conformance.mjs --shared src tokens.css",
+    "check:contract": "node scripts/check-consumer-contract.mjs",
+    "check:consumer-conformance": "node scripts/check-consumer-conformance.mjs",
+    "check:consumers": "node scripts/check-consumer-versions.mjs",
+    "verify:fast": "pnpm typecheck && pnpm test && pnpm check:conformance",
+    "verify:workspace": "pnpm check:consumers && pnpm check:contract && pnpm check:consumer-conformance",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "changeset": "changeset",

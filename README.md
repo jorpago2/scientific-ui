@@ -1,94 +1,49 @@
 # @jorpago2/scientific-ui
 
-`ScientificHeader` accepts a `productIcon` from the shared eight-application mark family. The AI-directed identity is normalized as production SVG on a common 32-unit grid, with consistent optical weight, monochrome Carbon header treatment and compact 22 px rendering.
+Shared Carbon workbench and scientific-result components for the interactive simulation applications. Applications own domain state and numerical logic; this package owns the common shell and interaction contract.
 
-## Scientific plots
+## Main API
 
-Use `SCIENTIFIC_PLOT_LINE_WIDTHS` for trace hierarchy: `primary` (4 px), `emphasis` (5 px), `secondary` (3 px), and `reference` (2 px). Scientific meaning should also remain identifiable through colour, dash patterns, markers and labels.
+The default entry point contains the common workbench and domain-oriented building blocks:
 
-`ScientificPlotFrame` owns plot title, description, legend, actions, status and responsive composition. Plot engines remain local. Plotly consumers use `createScientificPlotlyLayout`, `createScientificPlotlyConfig` and `prepareScientificPlotlyToolbar` so IBM Plex Sans, Carbon theme tokens, export, reset, fullscreen and keyboard behavior stay identical across applications.
-
-Scientific series colours and axis semantics remain application-owned because they encode physical quantities. Canvas simulations, GDS previews and React Flow diagrams are not forced into the Plotly contract.
-
-Shared Carbon `g10` workbench components for the jorpago2 scientific web applications. The package owns interface structure, navigation, responsive behavior and scientific-result status; consuming applications retain all domain state and numerical logic.
-
-`ScientificHeader`, `ScientificTaskPanel`, `ScientificToolRail`, `InspectorPanel` and `ScientificStatus` compose Carbon React's `Header`, `Layer`, `SideNav`, `ComposedModal` and `IconIndicator` primitives. Carbon owns their semantics, focus behavior and visual states; the package adds only scientific workflow state and responsive composition.
-
-`ScientificToolRail` is the normative application navigation: the canonical 256 px Carbon `SideNav` from `lg`, with 32 px rows, 16 px padding and icons, 14 px semibold labels, and a 4 px selected indicator. Below `lg`, the same semantic `SideNav` is presented as a 56 px bottom bar. This mobile presentation is the sole documented shell exception.
-
-Pass `help={{ summary, shortcuts, action, footer }}` to `ScientificHeader` to render the canonical Carbon Help action at the far-right edge. The package owns its official icon, toggletip, `?` shortcut, Escape handling, responsive geometry and focus restoration; applications provide only workflow-specific content.
-
-`ScientificUiProvider` follows the operating-system theme by default, persists an explicit user choice and makes `ScientificHeader` render the canonical Carbon theme action immediately before Help. Use `useScientificTheme()` when a local canvas or rendering engine must react to the resolved `g10`/`g100` theme.
-
-```tsx
-import { ScientificHeader, ScientificStatusBar } from "@jorpago2/scientific-ui";
-import "@jorpago2/scientific-ui/styles.css";
-```
-
-Load the shared stylesheet after application styles. Consumers may position the rail container, but must not target `scientific-tool-rail__*` descendants; their geometry and states are part of the package contract.
-
-Application headers use Carbon `Header`, `HeaderName` and `HeaderGlobalBar`; legacy adapters use `scientific-app-header` only while they are migrated. The shared contract follows Carbon UI Shell Header: the active theme's semantic tokens, a 48 px height and a subtle border. Applications may provide product, context and actions without redefining that shell geometry.
-
-Task panels use `ScientificTaskPanel`: a Carbon `Layer` surface with a 72 px heading, 16 px spacing, a single scrolling body and a 360–384 px desktop width. At smaller breakpoints the panel uses the available width. Consumers own only grid placement and domain content; they must not redefine panel padding, heading geometry, borders or scrolling.
-
-Themes must be supplied by Carbon (`GlobalTheme` or `Theme`). Shared CSS consumes the resulting semantic `--cds-*` values and never selects internal `.cds--*` classes.
-
-All interface text and scientific values use IBM Plex Sans. Numeric controls, metrics, units and status metadata retain tabular numerals for stable alignment; use `scientific-value`, `scientific-coordinate` or `scientific-identifier` for local readouts that remain outside shared components.
-
-## Composition APIs
-
-Use `ScientificUiProvider` at the application root. It applies Carbon `g10`/`g100` to the complete document, including portaled menus and modals, and installs one shortcut registry and one notification surface.
-
-- `ScientificCommandBar` owns visible/overflow action priority and can respond to either the viewport or its containing result region.
-- `ScientificRunControl` presents run, pause, resume, stop, progress and live execution state without owning a solver.
-- `ScientificParameterSection`, `ScientificParameterGroup`, `ScientificFieldRow` and `ScientificPanelFooter` define panel rhythm and full-width responsive form composition.
-- `ScientificResultsLayout`, `ScientificResultsToolbar`, `ScientificMetricGrid` and `ScientificLegend` define result hierarchy while charts remain local.
-- `ScientificOutcomeSummary` is the canonical post-operation handoff: current/stale state, one scientific conclusion, key quantities and the next actions. It does not equate solver completion with validation.
-- `ScientificStatusBar` is a root workbench footer by default; pass `embedded` only when the owning stage already accounts for responsive navigation in a legacy adapter.
-- `ScientificViewportToolbar` exposes zoom and fit callbacks with official Carbon icons. It never introduces a minimap or mini-preview.
-- `ScientificProjectActions` and `ExportReceipt` provide reproducibility actions and explicit export feedback.
-- `ScientificPreflightSummary` reports whether inputs, discretization and stability are ready for execution.
-- `ScientificValidationSummary` reports independent convergence, conservation and reference checks; a completed solver is not automatically validated.
-- `ScientificModelScope` keeps assumptions and interpretation limits next to the scientific result.
-- `ScientificResultProvenance` and `ScientificReproducibilityManifest` bind a result to its solver, inputs, mesh and generation context.
-- `ScientificNumberField` and `formatScientificValue` provide one decimal/scientific-notation policy for editable and read-only quantities.
-- `ValidationSummary` keeps errors adjacent to fields and can move focus from a summary issue to its `targetId`.
-- `ScientificExampleWorkflow` makes loading a reproducible example and running it two explicit actions.
-- `useScientificResultTransition` reveals and focuses the primary outcome after a completed operation without stealing focus on initial render.
-- `useScientificAutosave`, `ScientificRecoveryNotice` and `ScientificAutosaveStatus` provide versioned, size-limited local recovery without overwriting an unread draft or persisting scientific results by default.
-
-Evidence-heavy views may import from `@jorpago2/scientific-ui/scientific-layout` so secondary review panels can be loaded on demand without increasing the initial application bundle.
-
-Input validity, execution, result freshness, numerical convergence, scientific validation and project save state are separate contracts. `up-to-date` means that a result corresponds to current inputs; use `validated` only after all applicable evidence checks have passed.
-
-Application code should pass descriptors and callbacks. It must not wrap every Carbon primitive or move scientific state into this package.
+- `ScientificUiProvider`, `ScientificAppShell`, `ScientificHeader`, `ScientificToolRail`, `ScientificTaskPanel` and `ScientificStatusBar`;
+- shared recovery, numeric fields, actions, responsive navigation and empty states;
+- scientific outcome, evidence, validation, provenance and model-scope layouts;
+- Plotly theme, layout, configuration and toolbar helpers;
+- scientific number parsing and formatting;
+- autosave serialization and recovery logic;
+- result freshness and reveal transitions;
+- shared scientific state and descriptor types.
 
 ```tsx
 import {
-  ScientificRunControl,
-  ScientificUiProvider,
-  ScientificViewportToolbar,
+  ScientificOutcomeSummary,
+  ScientificValidationSummary,
+  createScientificPlotlyLayout,
+  useScientificAutosave,
 } from "@jorpago2/scientific-ui";
-
-root.render(
-  <ScientificUiProvider theme="system">
-    <App />
-  </ScientificUiProvider>,
-);
+import "@jorpago2/scientific-ui/styles.css";
 ```
 
-Actions with a `shortcut` register automatically and appear in the shared header Help. Use `useScientificShortcut` for application-specific commands and `useScientificNotifications` for transient Carbon notifications.
+Use Carbon React directly for domain-specific controls that do not have a shared scientific contract. Do not recreate the shell, rail, panel, recovery placement or status bar locally. The normative geometry and responsive behavior are documented in [`docs/application-contract.md`](docs/application-contract.md).
+
+## Plot contract
+
+`SCIENTIFIC_PLOT_LINE_WIDTHS` defines trace hierarchy. `ScientificPlotFrame`, `createScientificPlotlyLayout`, `createScientificPlotlyConfig` and `prepareScientificPlotlyToolbar` keep typography, tokens, export, reset, fullscreen and keyboard behavior consistent. Series colours and physical semantics remain application-owned.
 
 ## CSS ownership
 
-Run `pnpm check:conformance` in this package. Consumer CI can call `node node_modules/@jorpago2/scientific-ui/scripts/check-conformance.mjs src` to reject internal Carbon selectors, `!important` and local overrides of shared shell geometry. Domain colors remain allowed only in scientific rendering code.
+Carbon owns primitive appearance and interaction. Shared CSS supplies workbench geometry, responsive behavior, scientific result layouts and tokens. Consumers must not target Carbon internal classes or redefine shared shell dimensions.
 
 ## Commands
 
-- `pnpm build` emits ESM, declarations and the shared stylesheet.
-- `pnpm test` validates number parsing and keyboard contracts.
-- `pnpm check:conformance` validates CSS ownership.
-- `pnpm test:ui` checks responsive behavior and accessibility.
-- `pnpm storybook` opens the component catalogue.
+- `pnpm test`
+- `pnpm typecheck`
+- `pnpm build`
+- `pnpm test:ui`
+- `pnpm check:conformance`
+- `pnpm check:contract`
+- `pnpm check:consumer-conformance`
+- `pnpm check:consumers`
 
-Consumers must provide React 19.2, React DOM 19.2, Carbon React 1.113 and a Carbon `g10` theme context.
+Consumers provide React 19.2, React DOM 19.2 and Carbon React 1.113.
