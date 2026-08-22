@@ -352,19 +352,22 @@ export interface ScientificMetricGridProps extends HTMLAttributes<HTMLDListEleme
 }
 
 export function ScientificMetricGrid({ metrics, columns = 4, className, ...props }: ScientificMetricGridProps) {
-  const lg = columns === 2 ? 8 : columns === 3 ? 5 : 4;
   return (
     <Grid as="dl" fullWidth narrow className={joinClassNames("scientific-metric-grid", className)} {...props} data-count={metrics.length}>
-      {metrics.map((metric) => (
-        <Column sm={2} md={4} lg={lg} key={metric.id} className="scientific-metric" data-status={metric.status ?? "neutral"}>
+      {metrics.map((metric, index) => {
+        const position = index % columns;
+        const sm = columns === 3 && position === 2 ? 4 : 2;
+        const md = columns === 2 ? 4 : columns === 3 ? (position === 2 ? 2 : 3) : 4;
+        const lg = columns === 2 ? 8 : columns === 3 ? (position === 0 ? 6 : 5) : 4;
+        return <Column sm={sm} md={md} lg={lg} key={metric.id} className="scientific-metric" data-status={metric.status ?? "neutral"}>
           <dt>{metric.label}</dt>
           <dd>
             <strong className="scientific-metric__value">{typeof metric.value === "number" ? formatScientificValue(metric.value, metric.format) : metric.value}</strong>
             {metric.unit && <span className="scientific-metric__unit">{metric.unit}</span>}
           </dd>
           {metric.detail && <p>{metric.detail}</p>}
-        </Column>
-      ))}
+        </Column>;
+      })}
     </Grid>
   );
 }

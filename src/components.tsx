@@ -531,7 +531,10 @@ export function ScientificStatusBar({ status, metadata, actions, embedded = fals
     <footer className={joinClassNames("scientific-status-bar", embedded && "scientific-status-bar--embedded", className)} {...props}>
       <Grid fullWidth condensed>
         <Column sm={4} md={4} lg={8} className="scientific-status-bar__status"><ScientificStatus status={status} compact /></Column>
-        <Column sm={4} md={4} lg={8} className="scientific-status-bar__metadata">{metadata}{actions}</Column>
+        <Column sm={4} md={4} lg={8} className="scientific-status-bar__metadata">
+          <span className="scientific-status-bar__metadata-content">{metadata}</span>
+          <span className="scientific-status-bar__actions">{actions}</span>
+        </Column>
       </Grid>
     </footer>
   );

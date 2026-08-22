@@ -23,7 +23,7 @@ describe("scientific typography contract", () => {
   });
 
   it("keeps mobile result metrics compact and scannable", () => {
-    expect(layout).toContain('<Column sm={2} md={4} lg={lg}');
+    expect(layout).toContain('<Column sm={sm} md={md} lg={lg}');
     expect(styles).toMatch(/\.scientific-metric \{[\s\S]*min-block-size: 5\.5rem;[\s\S]*grid-template-rows: auto auto;/);
     expect(styles).toContain("grid-template-rows: minmax(calc(2 * var(--scientific-ui-label-line-height)), auto) auto");
   });
@@ -37,7 +37,7 @@ describe("scientific typography contract", () => {
 
   it("keeps four outcome metrics in a two-by-two mobile grid", () => {
     expect(layout).toContain('data-count={metrics.length}');
-    expect(layout).toContain('<Column sm={2} md={4} lg={lg}');
+    expect(layout).toContain('const sm = columns === 3 && position === 2 ? 4 : 2');
     expect(styles).not.toContain('.scientific-outcome-summary .scientific-metric {\n    grid-column: auto;\n  }');
   });
 
@@ -81,6 +81,12 @@ describe("scientific workbench contract", () => {
     expect(components).not.toContain("data-stage-preview");
     expect(tokens).not.toContain("--scientific-ui-panel-preview-block-size");
     expect(styles).toMatch(/@media \(max-width: 65\.99rem\)[\s\S]*\[data-panel-open\] \.scientific-workbench__stage,[\s\S]*> \.scientific-status-bar \{[\s\S]*display: none;/);
+  });
+
+  it("keeps status-bar actions accessible on mobile without secondary metadata", () => {
+    expect(components).toContain('className="scientific-status-bar__metadata-content"');
+    expect(components).toContain('className="scientific-status-bar__actions"');
+    expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-status-bar__status \{[\s\S]*grid-column: 1 \/ span 3;[\s\S]*\.scientific-status-bar__metadata \{[\s\S]*display: flex;[\s\S]*grid-column: 4 \/ -1;[\s\S]*\.scientific-status-bar__metadata-content \{[\s\S]*display: none;/);
   });
 
   it("preserves Carbon tab targets and lets content switchers grow with enlarged text", () => {
@@ -152,6 +158,13 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain('.scientific-outcome-summary[data-state="modified"]');
     expect(styles).toContain("container-type: inline-size");
     expect(styles).toContain("@container (max-width: 48rem)");
+  });
+
+  it("fills the Carbon grid for three-metric summaries at every breakpoint", () => {
+    expect(layout).toContain("columns === 3 && position === 2 ? 4 : 2");
+    expect(layout).toContain("position === 2 ? 2 : 3");
+    expect(layout).toContain("position === 0 ? 6 : 5");
+    expect(styles).toMatch(/@media \(min-width: 66rem\) \{[\s\S]*@container \(max-width: 48rem\) \{[\s\S]*\.scientific-metric-grid\[data-count="3"\] \.scientific-metric \{[\s\S]*grid-column: span 4;/);
   });
 
   it("keeps the shared theme action before the terminal help action", () => {
