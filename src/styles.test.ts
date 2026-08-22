@@ -87,6 +87,7 @@ describe("scientific workbench contract", () => {
     expect(components).toContain('className="scientific-status-bar__metadata-content"');
     expect(components).toContain('className="scientific-status-bar__actions"');
     expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-status-bar__status \{[\s\S]*grid-column: 1 \/ span 3;[\s\S]*\.scientific-status-bar__metadata \{[\s\S]*display: flex;[\s\S]*grid-column: 4 \/ -1;[\s\S]*\.scientific-status-bar__metadata-content \{[\s\S]*display: none;/);
+    expect(styles).toMatch(/\.scientific-status-bar__metadata-content \{[\s\S]*gap: var\(--scientific-ui-spacing-04\);/);
   });
 
   it("preserves Carbon tab targets and lets content switchers grow with enlarged text", () => {

@@ -1227,6 +1227,10 @@ body.scientific-plot-fullscreen-open {
   align-items: center;
 }
 
+.scientific-status-bar__metadata-content {
+  gap: var(--scientific-ui-spacing-04);
+}
+
 .scientific-status-bar__actions {
   margin-inline-start: auto;
 }
