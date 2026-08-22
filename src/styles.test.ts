@@ -74,18 +74,20 @@ describe("scientific workbench contract", () => {
     expect(components).toContain("compactProduct?: ReactNode");
     expect(components).toContain('className="scientific-header__compact-product" aria-hidden="true"');
     expect(styles).toContain(".scientific-header__compact-product");
+    expect(styles).toMatch(/\.scientific-header-help__popover \{[\s\S]*inline-size: min\(18rem,/);
   });
 
-  it("gives compact task panels exclusive ownership of the workspace", () => {
+  it("gives narrow task panels exclusive ownership and restores canvas context when space permits", () => {
     expect(components).not.toContain("previewStageWhenPanelOpen");
     expect(components).not.toContain("data-stage-preview");
     expect(tokens).not.toContain("--scientific-ui-panel-preview-block-size");
     expect(styles).toMatch(/@media \(max-width: 65\.99rem\)[\s\S]*\[data-panel-open\] \.scientific-workbench__stage,[\s\S]*> \.scientific-status-bar \{[\s\S]*display: none;/);
+    expect(styles).toMatch(/@media \(min-width: 60rem\) and \(max-width: 65\.99rem\)[\s\S]*\[data-panel-open\] \.scientific-workbench \{[\s\S]*grid-template-columns:[\s\S]*\[data-panel-open\] \.scientific-workbench__stage \{[\s\S]*display: block;/);
   });
 
   it("keeps status-bar actions accessible on mobile without secondary metadata", () => {
-    expect(components).toContain('className="scientific-status-bar__metadata-content"');
-    expect(components).toContain('className="scientific-status-bar__actions"');
+    expect(components).toContain('<div className="scientific-status-bar__metadata-content">');
+    expect(components).toContain('<div className="scientific-status-bar__actions">');
     expect(styles).toMatch(/@media \(max-width: 41\.99rem\)[\s\S]*\.scientific-status-bar__status \{[\s\S]*grid-column: 1 \/ span 3;[\s\S]*\.scientific-status-bar__metadata \{[\s\S]*display: flex;[\s\S]*grid-column: 4 \/ -1;[\s\S]*\.scientific-status-bar__metadata-content \{[\s\S]*display: none;/);
     expect(styles).toMatch(/\.scientific-status-bar__metadata-content \{[\s\S]*gap: var\(--scientific-ui-spacing-04\);/);
   });

@@ -249,17 +249,15 @@ a.scientific-header__brand.scientific-app-header__brand {
 }
 
 .scientific-header-help__popover {
-  inline-size: min(22rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
-  max-inline-size: min(22rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
-  background: var(--cds-background-inverse);
-  color: var(--cds-text-inverse);
+  inline-size: min(18rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
+  max-inline-size: min(18rem, calc(100vw - 2 * var(--scientific-ui-spacing-03)));
 }
 
 .scientific-header-help__content {
   display: grid;
   inline-size: 100%;
   gap: var(--scientific-ui-spacing-03);
-  color: var(--cds-text-inverse, #ffffff);
+  color: inherit;
 }
 
 .scientific-header-help__title,
@@ -273,7 +271,7 @@ a.scientific-header__brand.scientific-app-header__brand {
 
 .scientific-header-help__summary,
 .scientific-header-help__footer {
-  color: var(--cds-text-inverse, #ffffff);
+  color: inherit;
 }
 
 .scientific-header-help__shortcuts {
@@ -295,9 +293,9 @@ a.scientific-header__brand.scientific-app-header__brand {
 
 .scientific-header-help__shortcuts kbd {
   padding: var(--scientific-ui-spacing-01) var(--scientific-ui-spacing-02);
-  border: 1px solid var(--cds-border-inverse, #8d8d8d);
+  border: 1px solid currentColor;
   background: transparent;
-  color: var(--cds-text-inverse, #ffffff);
+  color: inherit;
   font-family: var(--scientific-ui-font-sans);
   font-size: var(--scientific-ui-label-font-size);
 }
@@ -1451,6 +1449,21 @@ body.scientific-plot-fullscreen-open {
   .scientific-app-shell[data-panel-open] .scientific-workbench__stage,
   .scientific-app-shell[data-panel-open] > .scientific-status-bar {
     display: none;
+  }
+}
+
+@media (min-width: 60rem) and (max-width: 65.99rem) {
+  .scientific-app-shell[data-panel-open] .scientific-workbench {
+    grid-template-columns: minmax(22.5rem, var(--scientific-ui-panel-inline-size)) minmax(0, 1fr);
+  }
+
+  .scientific-app-shell[data-panel-open] .scientific-workbench__panel {
+    grid-column: 1;
+  }
+
+  .scientific-app-shell[data-panel-open] .scientific-workbench__stage {
+    display: block;
+    grid-column: 2;
   }
 }
 
