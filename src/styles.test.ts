@@ -41,6 +41,13 @@ describe("scientific typography contract", () => {
     expect(styles).not.toContain('.scientific-outcome-summary .scientific-metric {\n    grid-column: auto;\n  }');
   });
 
+  it("ellipsizes compact header context and constrains outcome status", () => {
+    expect(styles).toMatch(/\.scientific-header__context-value \{[\s\S]*display: block;[\s\S]*text-overflow: ellipsis;[\s\S]*white-space: nowrap;/);
+    expect(styles).toMatch(/\.scientific-outcome-summary__heading \.scientific-status \{[\s\S]*max-inline-size: 50%;[\s\S]*flex: 0 1 50%;/);
+    expect(styles).toMatch(/\.scientific-outcome-summary__heading \.scientific-status__content span \{[\s\S]*overflow-wrap: anywhere;[\s\S]*white-space: normal;/);
+    expect(styles).toMatch(/@container \(max-width: 48rem\) \{[\s\S]*\.scientific-outcome-summary__heading \.scientific-status \{[\s\S]*inline-size: 100%;[\s\S]*max-inline-size: 100%;/);
+  });
+
   it("uses Carbon compact indicators without repeating evidence labels", () => {
     expect(components).toContain('compact={Boolean(compact || iconOnly)}');
     expect(layout).not.toContain("function ScientificStatusBadge");
@@ -144,7 +151,7 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain(".scientific-outcome-summary");
     expect(styles).toContain('.scientific-outcome-summary[data-state="modified"]');
     expect(styles).toContain("container-type: inline-size");
-    expect(styles).toContain("@container (max-width: 32rem)");
+    expect(styles).toContain("@container (max-width: 48rem)");
   });
 
   it("keeps the shared theme action before the terminal help action", () => {
