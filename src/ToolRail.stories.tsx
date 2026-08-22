@@ -30,10 +30,10 @@ function ToolRailStatePreview() {
   </main>;
 }
 
-function InteractiveToolRail() {
+function InteractiveToolRail({ compact = false }: { compact?: boolean }) {
   const [activeId, setActiveId] = useState<string | null>("input");
   return <main className="tool-rail-interactive">
-    <ScientificToolRail activeId={activeId} onChange={setActiveId} items={[
+    <ScientificToolRail activeId={activeId} compact={compact} onChange={setActiveId} items={[
       { id: "input", label: "Input", controlsId: "interactive-panel" },
       { id: "model", label: "Model", controlsId: "interactive-panel" },
       { id: "results", label: "Results", controlsId: "interactive-panel", status: "success", statusLabel: "Results up to date" },
@@ -48,3 +48,4 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const EightStates: Story = {};
 export const Interactive: Story = { render: () => <InteractiveToolRail /> };
+export const Compact: Story = { render: () => <InteractiveToolRail compact /> };

@@ -305,6 +305,7 @@ export interface ScientificToolRailProps {
   label?: string;
   className?: string;
   collapsible?: boolean;
+  compact?: boolean;
   registerItemRef?: (id: string, node: HTMLButtonElement | null) => void;
 }
 
@@ -316,6 +317,7 @@ export function ScientificToolRail({
   label = "Scientific tools",
   className,
   collapsible = true,
+  compact = false,
   registerItemRef,
 }: ScientificToolRailProps) {
   const navigationRef = useRef<HTMLElement>(null);
@@ -336,7 +338,7 @@ export function ScientificToolRail({
   return (
     <SideNav
       ref={navigationRef}
-      className={joinClassNames("scientific-tool-rail", className)}
+      className={joinClassNames("scientific-tool-rail", compact && "scientific-tool-rail--compact", className)}
       aria-label={label}
       expanded
       isFixedNav

@@ -148,6 +148,14 @@ describe("scientific workbench contract", () => {
     expect(styles).toContain(".scientific-run-control .scientific-command-bar__action > svg");
   });
 
+  it("offers a compact desktop tool rail without losing accessible labels", () => {
+    expect(components).toContain("compact?: boolean");
+    expect(components).toContain('compact && "scientific-tool-rail--compact"');
+    expect(styles).toContain("--scientific-ui-rail-compact-inline-size");
+    expect(styles).toContain(".scientific-tool-rail--compact .scientific-tool-rail__label");
+    expect(styles).toContain(".scientific-tool-rail--compact) .scientific-header__brand-copy");
+  });
+
   it("defines one Carbon-grid post-operation handoff for every scientific app", () => {
     expect(layout).toContain("export function ScientificOutcomeSummary");
     expect(layout).toContain('sm={4}');

@@ -1525,6 +1525,14 @@ body.scientific-plot-fullscreen-open {
 }
 
 @media (min-width: 66rem) {
+  .scientific-app-shell:has(.scientific-tool-rail--compact) {
+    --scientific-ui-rail-inline-size: var(--scientific-ui-rail-compact-inline-size);
+  }
+
+  .scientific-app-shell:has(.scientific-tool-rail--compact) .scientific-header__brand-copy {
+    display: none;
+  }
+
   .scientific-tool-rail__item {
     display: flex;
     block-size: var(--scientific-ui-tool-rail-item-block-size);
@@ -1551,6 +1559,32 @@ body.scientific-plot-fullscreen-open {
     inline-size: 100%;
     flex-direction: row;
     gap: var(--scientific-ui-spacing-06);
+  }
+
+  .scientific-tool-rail.scientific-tool-rail--compact .scientific-tool-rail__item {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .scientific-tool-rail--compact .scientific-tool-rail__content {
+    justify-content: center;
+    gap: 0;
+  }
+
+  .scientific-tool-rail--compact .scientific-tool-rail__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .scientific-tool-rail--compact .scientific-tool-rail__state {
+    position: absolute;
+    inset-block-start: var(--scientific-ui-spacing-02);
+    inset-inline-end: var(--scientific-ui-spacing-02);
+    margin: 0;
   }
 
   .scientific-status-bar__status,
